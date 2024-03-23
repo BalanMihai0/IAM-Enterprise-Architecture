@@ -18,12 +18,16 @@ ___
 ___
 
 
-Run backend on localhost:
+### Run backend on localhost:
+```
   cd iam-enterprise-architecture-backend
   npm install
   npm run start
+```
 
-Run frontend on localhost:
+### Run frontend on localhost:
+```
   cd iam-enterprise-architecture-frontend
   npm install
   npm run dev
+```
