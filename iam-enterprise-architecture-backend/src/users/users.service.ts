@@ -8,7 +8,7 @@ import { User } from './entities/user.entity';
 export class UsersService {
     private readonly users: User[] = [];
 
-    create(userDto: NewUserDto) {
+    async create(userDto: NewUserDto): Promise<User> {
         // user emails must be unique
         if (this.users.some(user => user.email === userDto.email)) {
             throw new HttpException('User with this email already exists', 400);
@@ -24,16 +24,16 @@ export class UsersService {
             role: 'customer'
         };
         //stores in memory for now
-        this.users.push(user);
+        await this.users.push(user);
         return user;
     }
 
-    findAll() {
-        return this.users;
+    async findAll(): Promise<User[]> {
+        return await this.users;
     }
 
-    findByEmail(email: string): User {
-        const foundUser = this.users.find(user => user.email === email);
+    async findByEmail(email: string): Promise<User> {
+        const foundUser = await this.users.find(user => user.email === email);
         if (!foundUser) throw new HttpException("User with this email does not exist", 404)
 
         return foundUser;

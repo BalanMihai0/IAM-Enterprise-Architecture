@@ -11,6 +11,7 @@ export class UsersController {
         return this.usersService.create(userDto);
     }
 
+    //will be accessible only for administrators
     @Get()
     findAll() {
         return this.usersService.findAll();
