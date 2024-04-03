@@ -8,12 +8,14 @@ export class AuthController {
 
     constructor() { }
 
-    @Post('Login')
+    //endpoint to retrieve an access token if credentials were valid (LocalGuard does the Auth)
+    @Post('login')
     @UseGuards(LocalGuard)
     login(@Req() req: Request) {
         return req.user;
     }
 
+    //endpoint to check if token is valid (JwtAuthGuard protects the endpoint)
     @Get('status')
     @UseGuards(JwtAuthGuard)
     status(@Req() req: Request) {

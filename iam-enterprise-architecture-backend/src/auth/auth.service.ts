@@ -1,52 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { AuthPayloadDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
-
-const tempUsers = [
-    {
-        id: 1,
-        email: "johndoe@gmail.com",
-        password: "abc123",
-        role: 'customer'
-    },
-    {
-        id: 2,
-        email: "leoking@gmail.com",
-        password: "123psw",
-        role: 'customer'
-    },
-    {
-        id: 3,
-        email: "hawkerbob@gmail.com",
-        password: "123321",
-        role: 'sales'
-    }
-]
+import { UsersService } from 'src/users/users.service';
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class AuthService {
 
-    constructor(private jwtService: JwtService) { }
+    constructor(
+        private jwtService: JwtService,
+        private usersService: UsersService,
+    ) { }
 
-    //method to check if user exists and if entered password is correct
-    //for now does not include hash comparison (since passwords are not hashed of demo users)
-    validateUser(payload: AuthPayloadDto): string | null {
-        const { email, password } = payload; 
-        const foundUser = tempUsers.find((user) => user.email === email);
-        
-        if (!foundUser || password !== foundUser.password) {
+    //method to check if user exists and if entered password is correct + hash comparison
+    async validateUser(payload: AuthPayloadDto): Promise<string | null> {
+        const { email, password } = payload;
+        const user = await this.usersService.findByEmail(email);
+        if (!user || !bcrypt.compareSync(password, user.password)) {
             return null;
         }
-        return this.login(foundUser);
+        return this.login(user);
     }
 
-    //method to generate a jwt token
-    private login(user: any) {
+    //method used to generate a jwt
+    private login(loginPayload: any): string {
         const tokenPayload = {
-            id: user.id.toString(),
-            role: user.role
+            id: loginPayload.id.toString(),
+            role: loginPayload.role,
         };
         return this.jwtService.sign(tokenPayload);
     }
-    
+
 }
