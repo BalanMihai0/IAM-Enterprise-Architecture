@@ -6,7 +6,7 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-    private readonly users: User[] = [];
+    private readonly users: User[] = [{id: '1', email: 'admin@gmail.com', fullName: 'admin', password: bcrypt.hashSync('123456', 12), role: 'admin' }];
 
     async create(userDto: NewUserDto): Promise<User> {
         // user emails must be unique
@@ -34,6 +34,13 @@ export class UsersService {
 
     async findByEmail(email: string): Promise<User> {
         const foundUser = await this.users.find(user => user.email === email);
+        if (!foundUser) throw new HttpException("User with this email does not exist", 404)
+
+        return foundUser;
+    }
+
+    async findById(id: string): Promise<User> {
+        const foundUser = await this.users.find(user => user.id === id);
         if (!foundUser) throw new HttpException("User with this email does not exist", 404)
 
         return foundUser;
