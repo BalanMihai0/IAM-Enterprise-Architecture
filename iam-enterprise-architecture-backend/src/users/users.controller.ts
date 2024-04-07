@@ -7,14 +7,19 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
     @Post()
-    create(@Body() userDto: NewUserDto) {
-        return this.usersService.create(userDto);
+    async create(@Body() userDto: NewUserDto) {
+        return await this.usersService.create(userDto);
     }
 
     //will be accessible only for administrators
     @Get()
-    findAll() {
-        return this.usersService.findAll();
+    async findAll() {
+        return await this.usersService.findAll();
+    }
+
+    @Get(':email')
+    async findByEmail(@Param('email') email: string) {
+        return await this.usersService.findByEmail(email);
     }
 }
 
