@@ -3,8 +3,9 @@ import { UsersService } from './users.service';
 import { NewUserDto } from './dto/user.dto';
 import { Roles } from '../auth/roles/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
-import { RolesGuard } from '../auth/roles/roles.guard';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
@@ -17,6 +18,7 @@ export class UsersController {
 
     @Get()
     @Roles("admin")
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     findAll() {
         return this.usersService.findAll();
