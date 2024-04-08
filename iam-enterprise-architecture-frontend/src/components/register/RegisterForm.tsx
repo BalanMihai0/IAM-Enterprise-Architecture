@@ -39,16 +39,16 @@ export default function RegisterForm({ handleClick, isLoading, termsAgreed, togg
     }
 
     return (
-        <Card color="transparent" shadow={false} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="p-6 items-center rounded-md border border-gray-500 shadow-xl bg-gray-100">
-            <Typography variant="h4" color="blue-gray" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Card color="transparent" className="p-6 items-center rounded-md border border-gray-500 shadow-xl bg-gray-100">
+            <Typography variant="h4" color="blue-gray">
                 Sign Up
             </Typography>
-            <Typography color="gray" className="mt-1 font-normal" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Typography color="gray" className="mt-1 font-normal">
                 Nice to meet you! Enter your details to register.
             </Typography>
             <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
                 <div className="mb-1 flex flex-col gap-6">
-                    <Typography variant="h6" color="blue-gray" className="-mb-3" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <Typography variant="h6" color="blue-gray" className="-mb-3">
                         Your Name
                     </Typography>
                     {errors && Array.isArray(errors) && errors.find(error => error.field === 'fullName')?.message && (
@@ -64,11 +64,8 @@ export default function RegisterForm({ handleClick, isLoading, termsAgreed, togg
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
-                        onPointerEnterCapture={undefined}
-                        onPointerLeaveCapture={undefined}
-                        crossOrigin={undefined}
                     />
-                    <Typography variant="h6" color="blue-gray" className="-mb-3" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <Typography variant="h6" color="blue-gray" className="-mb-3">
                         Your Email
                     </Typography>
                     {errors && Array.isArray(errors) && errors.find(error => error.field === 'email')?.message && (
@@ -83,8 +80,9 @@ export default function RegisterForm({ handleClick, isLoading, termsAgreed, togg
                         className=" !border-t-blue-gray-200 focus:!border-t-gray-900 bg-white"
                         labelProps={{
                             className: "before:content-none after:content-none",
-                        }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
-                    <Typography variant="h6" color="blue-gray" className="-mb-3" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        }}
+                    />
+                    <Typography variant="h6" color="blue-gray" className="-mb-3">
                         Password
                     </Typography>
                     {errors && Array.isArray(errors) && errors.find(error => error.field === 'password')?.message && (
@@ -101,8 +99,9 @@ export default function RegisterForm({ handleClick, isLoading, termsAgreed, togg
                         icon={<PassIconComponent onClick={toggleShowPassword} />}
                         labelProps={{
                             className: "before:content-none after:content-none",
-                        }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
-                    <Typography variant="h6" color="blue-gray" className="-mb-3" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        }}
+                    />
+                    <Typography variant="h6" color="blue-gray" className="-mb-3">
                         Confirm Password
                     </Typography>
                     {errors && Array.isArray(errors) && errors.find(error => error.field === 'confirmPassword')?.message && (
@@ -119,27 +118,33 @@ export default function RegisterForm({ handleClick, isLoading, termsAgreed, togg
                         icon={<ConfirmPassIconComponent onClick={toggleShowConfirmPassword} />}
                         labelProps={{
                             className: "before:content-none after:content-none",
-                        }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
+                        }}
+                    />
                 </div>
-                <Checkbox
-                    label={<Typography
-                        variant="small"
-                        color="gray"
-                        className="flex items-center font-normal" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                    >
-                        I agree the
-                        <Modal header="Terms & Conditions" body={termsAndConditionsBody} triggerButton={<a
-                            className="font-medium transition-colors hover:text-gray-900"
+                <div className="flex flex-row justify-left items-center underline">
+                    <Checkbox
+                        checked={termsAgreed}
+                        onChange={toggleTerms}
+                        containerProps={{ className: "-ml-2.5" }}
+                    />
+                    <Modal header="Terms & Conditions" body={termsAndConditionsBody} triggerButton={
+                        <Typography
+                            variant="small"
+                            color="gray"
+                            className="flex items-center font-normal"
+                            style={{
+                                cursor: "pointer",
+                            }}
                         >
-                            &nbsp;Terms and Conditions
-                        </a>} />
-                    </Typography>}
-                    checked={termsAgreed}
-                    onClick={toggleTerms}
-                    containerProps={{ className: "-ml-2.5" }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
-                <Button className="mt-6 justify-center" fullWidth placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onClick={handleClick} loading={isLoading}>
+                            I agree the terms and conditions
+                        </Typography>
+                    }
+                    />
+                </div>
+                <Button className="mt-2 justify-center" fullWidth onClick={handleClick} loading={isLoading}>
                     sign up
                 </Button>
-                <Typography color="gray" className="mt-4 text-center font-normal" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <Typography color="gray" className="mt-4 text-center font-normal">
                     Already have an account?{" "}
                     <a onClick={() => navigate("/login")} className="font-medium text-gray-900">
                         Sign In

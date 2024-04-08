@@ -25,13 +25,13 @@ export default function LoginForm({handleClick, isLoading, loginData, errors} : 
     }
 
     return (
-        <Card color="transparent" shadow={false} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="p-6 items-center rounded-md border border-gray-500 shadow-xl bg-gray-100">
-            <Typography variant="h4" color="blue-gray" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Card color="transparent" className="p-6 items-center rounded-md border border-gray-500 shadow-xl bg-gray-100">
+            <Typography variant="h4" color="blue-gray">
                 Log in
             </Typography>
             <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
                 <div className="mb-1 flex flex-col gap-6">
-                    <Typography variant="h6" color="blue-gray" className="-mb-3" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <Typography variant="h6" color="blue-gray" className="-mb-3">
                         Email
                     </Typography>
                     {errors && Array.isArray(errors) && errors.find(error => error.field === 'email')?.message && (
@@ -46,8 +46,9 @@ export default function LoginForm({handleClick, isLoading, loginData, errors} : 
                         className=" !border-t-blue-gray-200 focus:!border-t-gray-900 bg-white"
                         labelProps={{
                             className: "before:content-none after:content-none",
-                        }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
-                    <Typography variant="h6" color="blue-gray" className="-mb-3" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        }}
+                    />
+                    <Typography variant="h6" color="blue-gray" className="-mb-3">
                         Password
                     </Typography>
                     {errors && Array.isArray(errors) && errors.find(error => error.field === 'password')?.message && (
@@ -64,9 +65,10 @@ export default function LoginForm({handleClick, isLoading, loginData, errors} : 
                         icon={<IconComponent onClick={toggleShowPassword} />}
                         labelProps={{
                             className: "before:content-none after:content-none",
-                        }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
+                        }}
+                    />
                 </div>
-                <Button className="mt-6 justify-center" fullWidth placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} variant="gradient" loading={isLoading} onClick={handleClick}>
+                <Button className="mt-6 justify-center" fullWidth variant="gradient" loading={isLoading} onClick={handleClick}>
                     log in
                 </Button>
             </form>

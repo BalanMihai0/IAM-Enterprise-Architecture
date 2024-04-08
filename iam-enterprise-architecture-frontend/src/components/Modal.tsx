@@ -21,17 +21,17 @@ export default function Modal({ header, body, triggerButton }: ModalProps) {
     return (
         <>
             <div onClick={handleOpen}>{triggerButton}</div>
-            <Dialog placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} open={open} handler={handleOpen}>
-                <DialogHeader placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{header}</DialogHeader>
-                <DialogBody placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{body}</DialogBody>
-                <DialogFooter placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Dialog open={open} handler={handleOpen}>
+                <DialogHeader>{header}</DialogHeader>
+                <DialogBody>{body}</DialogBody>
+                <DialogFooter>
                     <Button
                         variant="text"
                         color="red"
                         onClick={handleOpen}
-                        className="mr-1" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
+                        className="mr-1"
                     >
-                        <span>Close</span>
+                        Close
                     </Button>
                 </DialogFooter>
             </Dialog>
