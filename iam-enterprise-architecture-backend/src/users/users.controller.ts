@@ -12,17 +12,16 @@ export class UsersController {
 
     @Post()
     @Roles("*")
-    create(@Body() userDto: NewUserDto) {
-        return this.usersService.create(userDto);
+    async create(@Body() userDto: NewUserDto) {
+        return await this.usersService.create(userDto);
     }
 
     @Get()
     @Roles("admin")
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    findAll() {
-        return this.usersService.findAll();
+    async findAll() {
+        return await this.usersService.findAll();
     }
-
 }
 

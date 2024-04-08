@@ -27,8 +27,8 @@ describe('AuthService', () => {
     it('should return a JWT token if user exists and password is correct', async () => {
       //mock an existing user
       const user = {
-        id: '1',
-        fullName: 'Example User',
+        id: 1,
+        full_name: 'Example User',
         email: 'test@example.com',
         password: bcrypt.hashSync('password', 12),
         role: 'customer'
@@ -45,8 +45,8 @@ describe('AuthService', () => {
     it('should return null if user exists but password is incorrect', async () => {
       //mock an existing user
       const user = {
-        id: '1',
-        fullName: 'Example User',
+        id: 1,
+        full_name: 'Example User',
         email: 'test@example.com',
         password: bcrypt.hashSync('password', 12),
         role: 'customer'

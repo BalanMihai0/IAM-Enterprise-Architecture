@@ -1,39 +1,45 @@
 import { NewUserDto } from './dto/user.dto';
 import { HttpException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
-import { User } from './entities/user.entity';
+import { User } from '../typeorm/entities/user';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-    private readonly users: User[] = [{id: '1', email: 'admin@gmail.com', fullName: 'admin', password: bcrypt.hashSync('123456', 12), role: 'admin' }];
+    private readonly users: User[] = [{id: 99999, email: 'admin@gmail.com', fullName: 'admin', password: bcrypt.hashSync('123456', 12), role: 'admin' }];
+    constructor(
+        @InjectRepository(User) private readonly userRepository: Repository<User>
+    ) { }
 
     async create(userDto: NewUserDto): Promise<User> {
         // user emails must be unique
-        if (this.users.some(user => user.email === userDto.email)) {
+        if (await this.userRepository.findOne({ where: { email: userDto.email } })) {
             throw new HttpException('User with this email already exists', 400);
         }
 
         const hashedPassword = bcrypt.hashSync(userDto.password, 12);
-        const user = {
-            //for now id is uuid, later might switch to auto increment when db is connected
-            id: uuidv4(),
-            fullName: userDto.fullName,
+
+        //create new user instance
+        const newUser = this.userRepository.create({
+            //id is generated automatically
+            full_name: userDto.fullName,
             email: userDto.email,
             password: hashedPassword,
             role: 'customer'
-        };
-        //stores in memory for now
-        await this.users.push(user);
-        return user;
+        });
+
+        //save to db
+        console.log('newUser', newUser)
+        return this.userRepository.save(newUser);
     }
 
     async findAll(): Promise<User[]> {
-        return await this.users;
+        return await this.userRepository.find();
     }
 
     async findByEmail(email: string): Promise<User> {
-        const foundUser = await this.users.find(user => user.email === email);
+        const foundUser = await this.userRepository.findOne({where: {email}});
         if (!foundUser) throw new HttpException("User with this email does not exist", 404)
 
         return foundUser;
