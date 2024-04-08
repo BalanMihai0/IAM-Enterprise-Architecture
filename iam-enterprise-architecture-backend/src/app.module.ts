@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JobsModule } from './jobs/jobs.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/roles/roles.guard';
+import { ValidationPipe } from '@nestjs/common';
 
 
 @Module({
@@ -45,6 +46,5 @@ import { RolesGuard } from './auth/roles/roles.guard';
       useClass: RolesGuard,
     },
   ],
-  
 })
 export class AppModule {}
