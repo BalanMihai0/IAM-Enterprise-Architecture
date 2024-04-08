@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { JobsController } from './jobs.controller';
 import { JobsService } from './jobs.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Job } from 'src/typeorm/entities/job';
+import { Job } from '../typeorm/entities/job'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Job])],

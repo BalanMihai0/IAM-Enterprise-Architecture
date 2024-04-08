@@ -7,7 +7,6 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-    private readonly users: User[] = [{id: 99999, email: 'admin@gmail.com', fullName: 'admin', password: bcrypt.hashSync('123456', 12), role: 'admin' }];
     constructor(
         @InjectRepository(User) private readonly userRepository: Repository<User>
     ) { }
@@ -45,9 +44,9 @@ export class UsersService {
         return foundUser;
     }
 
-    async findById(id: string): Promise<User> {
-        const foundUser = await this.users.find(user => user.id === id);
-        if (!foundUser) throw new HttpException("User with this email does not exist", 404)
+    async findById(id: number): Promise<User> {
+        const foundUser = await this.userRepository.findOne({where: {id}});
+        if (!foundUser) throw new HttpException("User with this id does not exist", 404)
 
         return foundUser;
     }
