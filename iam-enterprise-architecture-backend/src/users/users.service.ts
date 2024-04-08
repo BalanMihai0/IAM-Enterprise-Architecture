@@ -43,4 +43,11 @@ export class UsersService {
 
         return foundUser;
     }
+
+    async findById(id: number): Promise<User> {
+        const foundUser = await this.userRepository.findOne({where: {id}});
+        if (!foundUser) throw new HttpException("User with this id does not exist", 404)
+
+        return foundUser;
+    }
 }
