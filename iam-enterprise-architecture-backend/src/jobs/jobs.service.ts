@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable,HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from 'src/typeorm/entities/job';
 import { Repository } from 'typeorm';
@@ -24,5 +24,11 @@ export class JobsService {
         });
 
         return this.jobRepository.save(newJob);
+    }
+
+    async findById(id: number): Promise<Job>{
+        const foundJob=await this.jobRepository.findOne({where: {id}});
+        if (!foundJob) throw new HttpException("Job with this id does not exist", 404)
+            return foundJob;
     }
 }

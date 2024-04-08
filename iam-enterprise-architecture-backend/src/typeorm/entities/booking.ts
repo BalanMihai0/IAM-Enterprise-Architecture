@@ -1,10 +1,13 @@
-// import { Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./user";
+import { Job } from "./job";
 
-// @Entity({ name: 'bookings' })
-// export class Booking {
-//     @PrimaryGeneratedColumn()
-//     id: number;
-
-// }
-
-// TODO: Implement the Booking entity
+@Entity({name:'bookings'})
+export class Booking{
+    @PrimaryGeneratedColumn()
+    id: number;
+    @Column()
+    requester:User;
+    @Column()
+    job:Job;
+}
