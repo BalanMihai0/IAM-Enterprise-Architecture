@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
+import { RolesGuard } from './auth/roles/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './typeorm/entities/user';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -13,6 +15,7 @@ import { JobsModule } from './jobs/jobs.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      cache: true;
       envFilePath: '.env'
     }),
     AuthModule,
@@ -34,7 +37,13 @@ import { JobsModule } from './jobs/jobs.module';
     JobsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
   
 })
 export class AppModule {}
