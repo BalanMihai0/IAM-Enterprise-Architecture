@@ -1,4 +1,5 @@
-import { Controller, Body, Post, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Body, Post, Get, Param, UseGuards, Req, UnauthorizedException, ForbiddenException } from '@nestjs/common';
+import { Request } from 'express';
 import { UsersService } from './users.service';
 import { NewUserDto } from './dto/user.dto';
 import { Roles } from '../auth/roles/roles.decorator';
@@ -23,5 +24,20 @@ export class UsersController {
     async findAll() {
         return await this.usersService.findAll();
     }
+
+    @Get(':id')
+    @Roles("admin", "customer")
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    async findById(@Param('id') id: number, @Req() req: Request) {
+        const token : any = req.user;
+
+        if (token.id != id) {
+            // If user ID from token does not match the requested ID, return an error
+            throw new ForbiddenException("You are not authorized to access this resource.");
+        }
+        return await this.usersService.findById(id);
+    }
+
 }
 
