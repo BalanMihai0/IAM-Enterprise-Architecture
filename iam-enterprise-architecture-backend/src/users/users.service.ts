@@ -3,7 +3,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import * as bcrypt from 'bcrypt';
 import { User } from '../typeorm/entities/user';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Injectable()
@@ -39,21 +39,21 @@ export class UsersService {
     }
 
     async findByEmail(email: string): Promise<User> {
-        const foundUser = await this.userRepository.findOne({where: {email}});
+        const foundUser = await this.userRepository.findOne({ where: { email } });
         if (!foundUser) throw new NotFoundException("User with this email does not exist")
 
         return foundUser;
     }
 
     async findById(id: number): Promise<User> {
-        const foundUser = await this.userRepository.findOne({where: {id}});
+        const foundUser = await this.userRepository.findOne({ where: { id } });
         if (!foundUser) throw new NotFoundException("User with this id does not exist")
 
         return foundUser;
     }
 
     async updateById(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-        const user = await this.userRepository.findOne({where: {id}});
+        const user = await this.userRepository.findOne({ where: { id } });
 
         if (!user) {
             throw new NotFoundException('User not found');
@@ -70,6 +70,22 @@ export class UsersService {
             return this.userRepository.save(user);
         } else {
             throw new BadRequestException('New password and confirm password do not match');
+        }
+    }
+
+    async deleteById(id: number): Promise<boolean> {
+        const user = await this.userRepository.findOne({ where: { id } });
+
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        const deletionResult: DeleteResult = await this.userRepository.delete(id);
+
+        if (deletionResult && deletionResult.affected && deletionResult.affected > 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

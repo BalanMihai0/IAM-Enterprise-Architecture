@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Get, Param, UseGuards, Req, UnauthorizedException, ForbiddenException, BadRequestException, Patch } from '@nestjs/common';
+import { Controller, Body, Post, Get, Param, UseGuards, Req, UnauthorizedException, ForbiddenException, BadRequestException, Patch, Delete } from '@nestjs/common';
 import { Request, request } from 'express';
 import { UsersService } from './users.service';
 import { NewUserDto } from './dto/user.dto';
@@ -44,34 +44,43 @@ export class UsersController {
     async findById(@Param('id') id: number, @Req() req: Request) {
         const token: any = req.user;
 
-        if (token.id != id) {
-            // If user ID from token does not match the requested ID, return an error
+        if (token.id != id && token.role != "admin") {
             throw new ForbiddenException("You are not authorized to access this resource.");
         }
         return await this.usersService.findById(id);
     }
 
-    @Patch(':id') 
+    @Patch(':id')
     @Roles("customer")
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     async updateById(@Param('id') id: number, @Body() userDto: UpdateUserDto, @Req() req: Request) {
         const token: any = req.user;
 
-        if (token.id !== id) {
-            // If user ID from token does not match the requested ID, return an error
+        if (token.id != id && token.role != "admin") {
             throw new ForbiddenException("You are not authorized to update this resource.");
         }
-    
-        // Optionally, you may want to validate the updateUserDto here
+
         const errors = await validate(userDto);
         if (errors.length > 0) {
             throw new BadRequestException(errors);
         }
-    
-        // Proceed with updating the user information
+
         return await this.usersService.updateById(id, userDto);
     }
 
+    @Delete(":id")
+    @Roles("admin", "customer")
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    async deleteById(@Param('id') id: number, @Req() req: Request) {
+        const token: any = req.user;
+
+        if (token.id !== id && token.role != "admin") {
+            throw new ForbiddenException("You are not authorized to update this resource.");
+        }
+
+        return await this.usersService.deleteById(id);
+    }
 }
 
