@@ -21,8 +21,8 @@ export default function ProtectedRoute({ allowedRoles }) {
 } */
 
 type ProtectedRouteProps = {
-    allowedRoles: string[]; // This specifies that allowedRoles is an array of strings
-   };
+    allowedRoles: string[];
+};
 
 export default function ProtectedRoute({allowedRoles}:ProtectedRouteProps) {
     return (
