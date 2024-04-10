@@ -76,7 +76,8 @@ jobs:
             sonar-scanner \
             -Dsonar.projectKey=your_project_key \
             -Dsonar.host.url=http://localhost:9000 \
-            -Dsonar.login=$SONAR_TOKEN
+            -Dsonar.login=$SONAR_TOKEN \
+            -Dsonar.sources=./iam-enterprise-architecture-backend
 
 
  deploy:
@@ -84,7 +85,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      # Replace this with steps to deploy to users
+      # does nothing atm
       - run:
           name: deploy
           command: echo 'Deploy not implemented'
@@ -98,8 +99,10 @@ workflows:
           requires:
             - build-backend
       - sonarqube-analysis
-    # - deploy:
-    #     requires:
-    #       - build-frontend
-    #       - build-backend
-    #       - test-backend
+          requires:
+            - build-backend
+            - test-backend
+            - build-frontend
+      - deploy:
+          requires:
+            - sonarqube-analysis
