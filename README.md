@@ -2,7 +2,7 @@
 
 ### Information on the repository
 
-This is the GitHub repository for the "Enterprise IAM solutions" project.
+This is the GitHub repository for the "Enterprise IAM solutions" software project.
 ___
 
 ### Student credentials
