@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: fixing directory
-    - run: cd iam-enterprise-architecture-backend
+      run: cd /iam-enterprise-architecture-backend
     
     - uses: actions/checkout@v3
     
