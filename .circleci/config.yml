@@ -97,6 +97,7 @@ workflows:
       - test-backend:
           requires:
             - build-backend
+      - sonarqube-analysis
     # - deploy:
     #     requires:
     #       - build-frontend
