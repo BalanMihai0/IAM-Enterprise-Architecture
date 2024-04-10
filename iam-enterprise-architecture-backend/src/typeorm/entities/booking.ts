@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user";
 import { Job } from "./job";
 
@@ -6,8 +6,8 @@ import { Job } from "./job";
 export class Booking{
     @PrimaryGeneratedColumn()
     id: number;
-    @Column()
+    @OneToOne(()=>User)
     requester:User;
-    @Column()
+    @OneToOne(()=>Job)
     job:Job;
 }

@@ -11,6 +11,9 @@ import { JobsModule } from './jobs/jobs.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/roles/roles.guard';
 import { ValidationPipe } from '@nestjs/common';
+import { Job } from './typeorm/entities/job';
+import { Booking } from './typeorm/entities/booking';
+import { BookingsModule } from './bookings/bookings.module';
 
 
 @Module({
@@ -31,12 +34,13 @@ import { ValidationPipe } from '@nestjs/common';
         username: configService.get<string>('DATABASE_USER'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: [User],
+        entities: [User, Job, Booking],
         synchronize: true,
       }),
       inject: [ConfigService]
     }),
     JobsModule,
+    BookingsModule,
   ],
   controllers: [AppController],
   providers: [

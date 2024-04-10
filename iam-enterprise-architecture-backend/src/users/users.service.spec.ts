@@ -65,6 +65,7 @@ describe('UsersService', () => {
         fullName: 'John Doe',
         email: 'john@example.com',
         password: 'password123',
+        confirmPassword: 'password'
       };
 
       const createdUser = await service.create(newUser);
@@ -108,6 +109,7 @@ describe('UsersService', () => {
         fullName: 'John Doe',
         email: 'john@example.com',
         password: 'password123',
+        confirmPassword: 'password'
       };
 
       await expect(service.create(newUser)).rejects.toThrow(HttpException);

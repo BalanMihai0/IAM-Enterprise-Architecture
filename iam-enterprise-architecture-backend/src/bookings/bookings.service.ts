@@ -1,12 +1,12 @@
 import { Injectable,HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Booking } from 'src/typeorm/entities/booking';
+import { Booking } from '../typeorm/entities/booking';
 import { Repository } from 'typeorm';
 import { NewBookingDTO } from './dto/booking.dto';
-import { Job } from 'src/typeorm/entities/job';
-import { User } from 'src/typeorm/entities/user';
-import { UsersService } from 'src/users/users.service';
-import { JobsService } from 'src/jobs/jobs.service';
+import { Job } from '../typeorm/entities/job';
+import { User } from '../typeorm/entities/user';
+import { UsersService } from '../users/users.service';
+import { JobsService } from '../jobs/jobs.service';
 
 
 @Injectable()
@@ -19,7 +19,7 @@ export class BookingService{
 
     async create(bookingDto:NewBookingDTO):Promise<Booking>{
         const foundUser = await this.userService.findById(bookingDto.requester)
-        const foundJob=await this.jobService.findById(bookingDto.job)
+        const foundJob = await this.jobService.findById(bookingDto.job)
         const currentDate = new Date();
         if(foundJob.start_date < currentDate || foundJob.end_date < currentDate )throw new HttpException("Error on start or end date!", 400)
         const NewBooking=this.bookingRepository.create({
@@ -49,7 +49,7 @@ export class BookingService{
         const foundUser = await this.userService.findById(id)
         if (!foundUser) throw new HttpException("User with this email does not exist", 404)
         const foundBookings = await this.bookingRepository.find({ where: { requester: foundUser } });
-        if(!foundBookings) throw new HttpException("There are no bookings made by this user!",404)
+        if (!foundBookings) throw new HttpException("There are no bookings made by this user!",404)
         else return foundBookings;
     }
 
@@ -57,7 +57,7 @@ export class BookingService{
         const foundJob=await this.jobService.findById(id)
         if (!foundJob) throw new HttpException("Job with this id does not exist", 404)
         const foundBookings = await this.bookingRepository.find({ where: { job: foundJob } }); 
-        if(!foundBookings) throw new HttpException("There are no bookings with this job!",404)
+        if (!foundBookings) throw new HttpException("There are no bookings with this job!",404)
             else return foundBookings;
     }
 
@@ -67,7 +67,7 @@ export class BookingService{
             const foundJob=await this.jobService.findById(jobId)
         if (!foundJob) throw new HttpException("Job with this id does not exist", 404) 
         const foundBookings = await this.bookingRepository.find({where : {requester:foundUser,job:foundJob}})
-        if(!foundBookings) throw new HttpException("There are no bookings with this job!",404)
+        if (!foundBookings) throw new HttpException("There are no bookings with this job!",404)
             else return foundBookings; 
     }
 }
