@@ -3,12 +3,14 @@ import { BookingService } from './bookings.service';
 import { NewBookingDTO } from './dto/booking.dto';
 import { Roles } from '../auth/roles/roles.decorator';
 import { Request } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 
 
 
+@ApiTags('Bookings')
 @Controller('bookings')
 export class BookingsController{
-    constructor (private readonly bookingService:BookingService){}
+    constructor (private readonly bookingService:BookingService) {}
 
     @Post()
     @Roles()

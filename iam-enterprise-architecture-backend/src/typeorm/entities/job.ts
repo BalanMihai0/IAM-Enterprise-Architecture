@@ -7,6 +7,7 @@ export class Job {
     @Column()
     title: string;
     @Column()
+    @Column({ length: 1000 })
     description: string;
     @Column()
     location: string;
