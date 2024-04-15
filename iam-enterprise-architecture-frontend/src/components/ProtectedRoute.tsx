@@ -25,6 +25,7 @@ type ProtectedRouteProps = {
 };
 
 export default function ProtectedRoute({allowedRoles}:ProtectedRouteProps) {
+    console.log(allowedRoles);
     return (
         <>
         </>
