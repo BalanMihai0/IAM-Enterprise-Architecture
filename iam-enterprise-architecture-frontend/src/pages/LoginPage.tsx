@@ -22,7 +22,7 @@ export default function LoginPage() {
   } catch (error) {
       if (error instanceof z.ZodError) {
           setErrors(error.errors.map(e => ({
-              field: e.path.join('.'), // Join path segments to form the field name
+              field: e.path.join('.'),
               message: e.message,
           })));
       }
