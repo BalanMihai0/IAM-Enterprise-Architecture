@@ -43,14 +43,16 @@ export class JobsService {
         const job = await this.jobRepository.findOne({ where: { id } });
 
         if (!job) {
-            throw new NotFoundException('User not found');
+            throw new NotFoundException('Job not found');
         }
 
-        job.description = updateJobDto.description;
-        job.price = updateJobDto.price;
+        // Update fields only if they are not null or undefined. In this case only specified in request fields will get updated
+        job.description = updateJobDto.description ?? job.description;
+        job.price = updateJobDto.price ?? job.price;
 
         return this.jobRepository.save(job);
     }
+
 
     async deleteById(id: number): Promise<boolean> {
         const job = await this.jobRepository.findOne({ where: { id } });
