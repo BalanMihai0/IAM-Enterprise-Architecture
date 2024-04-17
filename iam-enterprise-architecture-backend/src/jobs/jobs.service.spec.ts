@@ -62,7 +62,7 @@ describe('JobsService', () => {
       (repository.create as jest.Mock).mockReturnValue(newJob);
       (repository.save as jest.Mock).mockResolvedValue(newJob);
 
-      const createdJob = await service.create(newJobDto);
+      const createdJob = await service.create(newJobDto, 69);
 
       expect(createdJob).toEqual(newJob);
 

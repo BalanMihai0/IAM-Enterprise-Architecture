@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsISO8601, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsDate, IsISO8601, IsNotEmpty, IsNumber, IsString, Matches } from "class-validator";
 
 export class NewJobDTO {
     @ApiProperty()
@@ -24,11 +24,15 @@ export class NewJobDTO {
     
     @ApiProperty()
     @IsNotEmpty()
-    @IsISO8601()
-    startDate: string;
+    @Matches(/^\d{4}(-)(((0)[0-9])|((1)[0-2]))(-)([0-2][0-9]|(3)[0-1])$/i, {
+        message: "$property must be formatted as yyyy-mm-dd"
+    })    
+    startDate: Date;
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsISO8601()
-    endDate: string;
+    @Matches(/^\d{4}(-)(((0)[0-9])|((1)[0-2]))(-)([0-2][0-9]|(3)[0-1])$/i, {
+        message: "$property must be formatted as yyyy-mm-dd"
+    })    
+    endDate: Date;
 }
