@@ -1,13 +1,16 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { JoinColumn } from "typeorm";
 import { User } from "./user";
 import { Job } from "./job";
 
 @Entity({name:'bookings'})
-export class Booking{
+export class Booking {
     @PrimaryGeneratedColumn()
     id: number;
-    @OneToOne(()=>User)
-    requester:User;
-    @OneToOne(()=>Job)
-    job:Job;
+
+    @ManyToOne(() => User)
+    requester: User;
+
+    @ManyToOne(() => Job)
+    job: Job;
 }

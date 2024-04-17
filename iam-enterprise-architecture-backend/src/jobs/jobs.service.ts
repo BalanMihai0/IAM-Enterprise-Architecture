@@ -19,8 +19,6 @@ export class JobsService {
             description: jobDto.description,
             location: jobDto.location,
             price: jobDto.price,
-            start_date: new Date(jobDto.startDate),
-            end_date: new Date(jobDto.endDate),
             posted_by: postedById,
             posted_on: new Date()
         });

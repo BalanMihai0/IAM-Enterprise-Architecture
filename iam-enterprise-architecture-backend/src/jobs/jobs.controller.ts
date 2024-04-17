@@ -26,16 +26,12 @@ export class JobsController {
 
     @Get()
     @Roles("*")
-    @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard)
     async findAll() {
         return await this.jobsService.findAll();
     }
 
     @Get(':id')
     @Roles("*")
-    @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard)
     async findById(@Param('id') id: number, @Req() req: Request) {
         return await this.jobsService.findById(id);
     }

@@ -21,18 +21,4 @@ export class NewJobDTO {
     @IsNotEmpty()
     @IsNumber()
     price: number;
-    
-    @ApiProperty()
-    @IsNotEmpty()
-    @Matches(/^\d{4}(-)(((0)[0-9])|((1)[0-2]))(-)([0-2][0-9]|(3)[0-1])$/i, {
-        message: "$property must be formatted as yyyy-mm-dd"
-    })    
-    startDate: Date;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @Matches(/^\d{4}(-)(((0)[0-9])|((1)[0-2]))(-)([0-2][0-9]|(3)[0-1])$/i, {
-        message: "$property must be formatted as yyyy-mm-dd"
-    })    
-    endDate: Date;
 }
