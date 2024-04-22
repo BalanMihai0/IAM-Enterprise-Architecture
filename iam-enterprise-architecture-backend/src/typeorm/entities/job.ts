@@ -7,15 +7,12 @@ export class Job {
     @Column()
     title: string;
     @Column()
+    @Column({ length: 1000 })
     description: string;
     @Column()
     location: string;
-    @Column()
+    @Column({ type: 'decimal', precision: 10, scale: 2 })
     price: number;
-    @Column()
-    start_date: Date;
-    @Column()
-    end_date: Date;
     @Column()
     posted_by: number;
     @Column()

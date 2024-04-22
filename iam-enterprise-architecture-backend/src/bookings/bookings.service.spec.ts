@@ -57,8 +57,6 @@ describe('BookingService', () => {
                             description: 'This is a test job.',
                             location: 'Test Location',
                             price: 100,
-                            start_date: new Date(),
-                            end_date: new Date(),
                             posted_by: 1,
                             posted_on: new Date(),
                         })
@@ -90,15 +88,17 @@ describe('BookingService', () => {
     });
 
     describe('create', () => {
+
+        const currentDate = new Date();
+        const mockDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
+
         it('should create a new booking', async () => {
             const bookingDto: NewBookingDTO = {
                 requester: 1, // Assuming userId
                 job: 1, // Assuming jobId
+                startDate:mockDate,
+                endDate:mockDate,
             };
-
-            const currentDate = new Date();
-            const mockDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
-
 
             // Mock the behavior of findById methods of UserService and JobService
             jest.spyOn(userService, 'findById').mockResolvedValueOnce({
@@ -114,8 +114,6 @@ describe('BookingService', () => {
                 description: 'This is a test job.',
                 location: 'Test Location',
                 price: 100,
-                start_date: mockDate,
-                end_date: mockDate,
                 posted_by: 1,
                 posted_on: mockDate,
             }); // Mock job found
@@ -136,11 +134,12 @@ describe('BookingService', () => {
                     description: 'This is a test job.',
                     location: 'Test Location',
                     price: 100,
-                    start_date: mockDate,
-                    end_date: mockDate,
                     posted_by: 1,
                     posted_on: mockDate,
                 },
+                startDate:mockDate,
+                endDate:mockDate,
+                creationDate:mockDate
             }));
 
             jest.spyOn(repository, 'save').mockResolvedValueOnce({
@@ -158,11 +157,12 @@ describe('BookingService', () => {
                     description: 'This is a test job.',
                     location: 'Test Location',
                     price: 100,
-                    start_date: mockDate,
-                    end_date: mockDate,
                     posted_by: 1,
                     posted_on: mockDate,
                 },
+                startDate:mockDate,
+                endDate:mockDate,
+                creationDate:mockDate
             });
 
             // Call create method of BookingService
@@ -185,11 +185,12 @@ describe('BookingService', () => {
                     description: 'This is a test job.',
                     location: 'Test Location',
                     price: 100,
-                    start_date: mockDate,
-                    end_date: mockDate,
                     posted_by: 1,
                     posted_on: mockDate,
                 },
+                startDate:mockDate,
+                endDate:mockDate,
+                creationDate:mockDate
             });
         });
     });
@@ -203,16 +204,23 @@ describe('BookingService', () => {
             jest.spyOn(repository, 'findOne').mockResolvedValue(booking);
 
             expect(await service.findById(id)).toEqual(booking);
-            expect(repository.findOne).toHaveBeenCalledWith({ where: { id } });
+            expect(repository.findOne).toHaveBeenCalledWith({
+                where: { id },
+                relations: ["requester", "job"], // Include the relations property here
+            });
         });
 
         it('should throw an error if booking does not exist', async () => {
             const id = 1;
 
+            // Mock the findOne method to return undefined, simulating a booking not found scenario
             jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
 
+            // Expect the service method to reject with an HttpException
             await expect(service.findById(id)).rejects.toThrow(HttpException);
-            expect(repository.findOne).toHaveBeenCalledWith({ where: { id } });
+
+            // Verify that repository.findOne was called with the correct id
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { id }, relations: ["requester", "job"], });
         });
     });
 
