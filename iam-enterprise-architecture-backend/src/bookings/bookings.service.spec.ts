@@ -88,14 +88,21 @@ describe('BookingService', () => {
     });
 
     describe('create', () => {
+
+        const currentDate = new Date();
+            const mockDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
+
+
         it('should create a new booking', async () => {
             const bookingDto: NewBookingDTO = {
                 requester: 1, // Assuming userId
                 job: 1, // Assuming jobId
+                startDate:mockDate,
+                endDate:mockDate,
+                creationDate:mockDate
             };
 
-            const currentDate = new Date();
-            const mockDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
+            
 
 
             // Mock the behavior of findById methods of UserService and JobService
@@ -135,6 +142,9 @@ describe('BookingService', () => {
                     posted_by: 1,
                     posted_on: mockDate,
                 },
+                startDate:mockDate,
+                endDate:mockDate,
+                creationDate:mockDate
             }));
 
             jest.spyOn(repository, 'save').mockResolvedValueOnce({
@@ -155,6 +165,9 @@ describe('BookingService', () => {
                     posted_by: 1,
                     posted_on: mockDate,
                 },
+                startDate:mockDate,
+                endDate:mockDate,
+                creationDate:mockDate
             });
 
             // Call create method of BookingService
@@ -180,6 +193,9 @@ describe('BookingService', () => {
                     posted_by: 1,
                     posted_on: mockDate,
                 },
+                startDate:mockDate,
+                endDate:mockDate,
+                creationDate:mockDate
             });
         });
     });

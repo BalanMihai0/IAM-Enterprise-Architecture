@@ -18,10 +18,14 @@ export class BookingService {
     async create(bookingDto: NewBookingDTO): Promise<Booking> {
         const foundUser = await this.userService.findById(bookingDto.requester);
         const foundJob = await this.jobService.findById(bookingDto.job);
+        
 
         const newBooking = new Booking();
         newBooking.requester = foundUser;
         newBooking.job = foundJob;
+        newBooking.startDate=bookingDto.startDate;
+        newBooking.endDate=bookingDto.endDate;
+        newBooking.creationDate=bookingDto.creationDate;
 
         return this.bookingRepository.save(newBooking);
     }

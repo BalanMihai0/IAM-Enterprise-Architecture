@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber } from "class-validator";
 
 export class NewBookingDTO{
     @ApiProperty()
@@ -11,4 +11,21 @@ export class NewBookingDTO{
     @IsNumber()
     @IsNotEmpty()
     job: number;
+
+    @ApiProperty()
+    @IsDate()
+    @IsNotEmpty()
+    startDate:Date;
+
+
+    @ApiProperty()
+    @IsDate()
+    @IsNotEmpty()
+    endDate:Date;
+
+    @ApiProperty()
+    @IsDate()
+    @IsNotEmpty()
+    creationDate:Date;
+
 }

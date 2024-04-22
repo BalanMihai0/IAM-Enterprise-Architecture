@@ -13,4 +13,13 @@ export class Booking {
 
     @ManyToOne(() => Job)
     job: Job;
+
+    @Column()
+    startDate: Date;
+
+    @Column()
+    endDate: Date;
+    
+    @Column()
+    creationDate: Date;
 }
