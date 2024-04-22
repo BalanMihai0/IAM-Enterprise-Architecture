@@ -23,9 +23,10 @@ export class BookingService {
         const newBooking = new Booking();
         newBooking.requester = foundUser;
         newBooking.job = foundJob;
-        newBooking.startDate=bookingDto.startDate;
-        newBooking.endDate=bookingDto.endDate;
-        newBooking.creationDate=bookingDto.creationDate;
+        newBooking.startDate = new Date(bookingDto.startDate);
+        newBooking.endDate = new Date(bookingDto.endDate);
+        const currentDate = new Date();
+        newBooking.creationDate = new Date();
 
         return this.bookingRepository.save(newBooking);
     }

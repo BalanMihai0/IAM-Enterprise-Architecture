@@ -90,8 +90,7 @@ describe('BookingService', () => {
     describe('create', () => {
 
         const currentDate = new Date();
-            const mockDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
-
+        const mockDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
 
         it('should create a new booking', async () => {
             const bookingDto: NewBookingDTO = {
@@ -99,11 +98,7 @@ describe('BookingService', () => {
                 job: 1, // Assuming jobId
                 startDate:mockDate,
                 endDate:mockDate,
-                creationDate:mockDate
             };
-
-            
-
 
             // Mock the behavior of findById methods of UserService and JobService
             jest.spyOn(userService, 'findById').mockResolvedValueOnce({
