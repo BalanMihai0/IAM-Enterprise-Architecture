@@ -18,14 +18,17 @@ ___
 ___
 
 
-### Run backend on localhost:
+### Run backend on localhost (dev):
+  API endpoints: http://localhost:{be-port}/api/v1  
 ```
   cd iam-enterprise-architecture-backend
   npm install
-  npm run start
+  npm run start:dev
 ```
 
 ### Run frontend on localhost:
+API endpoints (make sure that backend is running): http://localhost:{fe-port}/api/v1  
+Client: http://localhost:{fe-port}/login
 ```
   cd iam-enterprise-architecture-frontend
   npm install
