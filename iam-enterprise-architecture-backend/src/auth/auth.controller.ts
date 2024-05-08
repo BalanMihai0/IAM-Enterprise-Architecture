@@ -1,13 +1,16 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { LocalGuard } from './guards/local.guard';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { Roles } from './roles/roles.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthPayloadDto } from './dto/auth.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { AzureADGuard } from './guards/azure-ad.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
+@UseGuards(AuthGuard())
 export class AuthController {
 
     constructor() { }
@@ -29,4 +32,11 @@ export class AuthController {
         return req.user;
     }
 
+    @Get('validate-token')
+    @ApiBearerAuth()
+    @Roles("*")
+    @UseGuards(AzureADGuard)
+    async validateToken(@Req() req) {
+        return { message: 'Token is valid' };
+    }
 }

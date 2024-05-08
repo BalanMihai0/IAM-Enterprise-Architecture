@@ -7,6 +7,7 @@ import { LocalStrategy } from './stategies/local.strategy';
 import { JwtStrategy } from './stategies/jwt.strategy';
 import { UsersModule } from 'src/users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AzureADStrategy } from './stategies/azure-ad.strategy';
 
 @Module({
   imports: [
@@ -21,9 +22,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         },
       }),
       inject: [ConfigService]
+    }),
+    PassportModule.register({
+      defaultStrategy: 'azure-ad',
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy]
+  providers: [AuthService, LocalStrategy, JwtStrategy, AzureADStrategy]
 })
 export class AuthModule { }
