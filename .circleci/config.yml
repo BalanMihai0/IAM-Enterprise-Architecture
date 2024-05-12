@@ -101,6 +101,6 @@ workflows:
             - sonarqube-analysis
           filters:
             branches:
-              ignore: true
+              ignore: ["*"]
             tags:
-              ignore: true
+              ignore: ["*"]
