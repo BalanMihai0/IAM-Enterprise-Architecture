@@ -82,7 +82,7 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  build-and-deploy:
     jobs:
       - build-frontend
       - build-backend
@@ -94,8 +94,6 @@ workflows:
             - build-backend
             - test-backend
             - build-frontend
-  deploy:
-    jobs:
       - deploy:
           requires:
             - sonarqube-analysis
