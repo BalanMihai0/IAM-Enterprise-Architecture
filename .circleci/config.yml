@@ -71,14 +71,18 @@ jobs:
 
 
  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
-    steps:
-      # does nothing atm
-      - run:
-          name: deploy
-          command: echo 'Deploy not implemented'
+   # This is an example deploy job, not actually used by the workflow
+   docker:
+     - image: cimg/base:stable
+   steps:
+     - run:
+         name: deploy
+         command: |
+           if [[ "$CIRCLE_BRANCH" == "main" ]]; then
+             echo 'Deploy not implemented'
+           else
+             echo 'Skipping deploy for branch: '$CIRCLE_BRANCH
+           fi
 
 workflows:
   version: 2
