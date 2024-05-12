@@ -1,0 +1,20 @@
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+
+@Entity({ name: 'jobs' })
+export class Job {
+    @PrimaryGeneratedColumn()
+    id: number;
+    @Column()
+    title: string;
+    @Column()
+    @Column({ length: 1000 })
+    description: string;
+    @Column()
+    location: string;
+    @Column({ type: 'decimal', precision: 10, scale: 2 })
+    price: number;
+    @Column()
+    posted_by: number;
+    @Column()
+    posted_on: Date;
+}
