@@ -43,3 +43,64 @@ jobs:
       - store_artifacts:
           path: ~/artifacts
           destination: backend-build
+
+ test-backend:
+    executor: node/default
+    working_directory: ~/project/iam-enterprise-architecture-backend
+    steps:
+      - checkout:
+          path: ~/project
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm test
+
+          
+ sonarqube-analysis:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Run SonarQube Analysis
+          command: |
+            echo "Running SonarQube analysis..."
+            if [[ $CIRCLE_TAG =~ ^prod|preprod$ ]]; then
+              bash sonar_run.sh
+            fi
+
+
+ deploy:
+    # This is an example deploy job, not actually used by the workflow
+    docker:
+      - image: cimg/base:stable
+    steps:
+      # does nothing atm
+      - run:
+          name: deploy
+          command: echo 'Deploy not implemented'
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-frontend
+      - build-backend
+      - test-backend:
+          requires:
+            - build-backend
+      - sonarqube-analysis:
+          requires:
+            - build-backend
+            - test-backend
+            - build-frontend
+  deploy:
+    jobs:
+      - deploy:
+          requires:
+            - sonarqube-analysis
+          filters:
+            branches:
+              ignore: true
+            tags:
+              ignore: true
