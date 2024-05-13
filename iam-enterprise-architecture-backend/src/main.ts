@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
 
@@ -21,6 +22,7 @@ async function bootstrap() {
   SwaggerModule.setup('api/v1', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
+  app.use(cookieParser());
 
   await app.listen(3000);
 }

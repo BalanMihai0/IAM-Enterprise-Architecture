@@ -11,23 +11,18 @@ import { AzureADStrategy } from './stategies/azure-ad.strategy';
 
 @Module({
   imports: [
-    UsersModule,
-    PassportModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET_KEY'),
-        signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRATION_TIME') + "m",
-        },
-      }),
-      inject: [ConfigService]
-    }),
-    PassportModule.register({
-      defaultStrategy: 'azure-ad',
-    })
+     UsersModule,
+     PassportModule,
+     JwtModule.registerAsync({
+       imports: [ConfigModule],
+       useFactory: async (configService: ConfigService) => ({
+         secret: configService.get<string>('JWT_SECRET_KEY'),
+       }),
+       inject: [ConfigService]
+     }),
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, AzureADStrategy]
-})
-export class AuthModule { }
+ })
+ export class AuthModule { }
+ 

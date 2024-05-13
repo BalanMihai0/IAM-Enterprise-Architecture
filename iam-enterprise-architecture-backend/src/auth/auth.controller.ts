@@ -1,26 +1,58 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 import { Request, Response } from 'express';
 import { LocalGuard } from './guards/local.guard';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { Roles } from './roles/roles.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthPayloadDto } from './dto/auth.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { AzureADGuard } from './guards/azure-ad.guard';
+import { JwtService } from '@nestjs/jwt';
+import { AuthService } from './auth.service';
+import { jwtDecode } from 'jwt-decode';
+import * as jwt from 'jsonwebtoken';
 
 @ApiTags('Auth')
 @Controller('auth')
-@UseGuards(AuthGuard())
 export class AuthController {
+    constructor(private jwtService: JwtService) { }
 
-    constructor() { }
-
-    //endpoint to retrieve an access token if credentials were valid (LocalGuard does the Auth)
+    //endpoint to retrieve a refresh token if credentials were valid (LocalGuard does the Auth)
     @Post('login')
     @Roles('*')
     @UseGuards(LocalGuard)
     login(@Req() req: Request, @Body() authDto: AuthPayloadDto) {
         return req.user;
+    }
+
+    //endpoint to retrieve an actual access token if refresh token was valid
+    @Get('refresh')
+    @Roles('*')
+    loginRefresh(@Req() req: Request) {
+        const refreshToken = req.cookies.refreshToken;
+
+        try { 
+            jwt.verify(refreshToken, process.env.JWT_SECRET_KEY);
+        } catch (error) {
+            throw new UnauthorizedException;
+        }
+
+        const decodedToken = jwtDecode(refreshToken);
+        
+        const uniqueName = (decodedToken as any).unique_name;
+
+        let role = 'customer';
+        if (decodedToken.iss === 'https://sts.windows.net/00968c3f-7e86-471d-b6e2-5811aaae8d59/') {
+            role = 'admin';
+        }
+
+        const newToken = this.jwtService.sign({
+            unique_name: uniqueName,
+            iat: Math.floor(Date.now() / 1000),
+            role: role
+        }, { expiresIn: '30m' });
+
+        return newToken;
     }
 
     //endpoint to check if token is valid (JwtAuthGuard protects the endpoint)
@@ -32,11 +64,23 @@ export class AuthController {
         return req.user;
     }
 
-    @Get('validate-token')
-    @ApiBearerAuth()
+    @Get('refresh/ms')
     @Roles("*")
+    @ApiBearerAuth()
     @UseGuards(AzureADGuard)
     async validateToken(@Req() req) {
-        return { message: 'Token is valid' };
+
+        let role = 'customer';
+        if (req.user.iss === `https://sts.windows.net/${process.env.AZURE_AD_TENANTID}/`) {
+            role = 'admin';
+        }
+
+        const newToken = this.jwtService.sign({
+            unique_name: req.user.unique_name,
+            iat: Math.floor(Date.now() / 1000),
+            role: role
+        }, { expiresIn: '30m' });
+
+        return newToken;
     }
 }
