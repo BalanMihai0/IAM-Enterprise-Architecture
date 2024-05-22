@@ -3,6 +3,7 @@ import { AuthPayloadDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt'
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable()
 export class AuthService {
@@ -22,13 +23,17 @@ export class AuthService {
         return this.login(user);
     }
 
-    //method used to generate a jwt
+    //method used to generate a refresh jwt
     private login(loginPayload: any): string {
         const tokenPayload = {
-            id: loginPayload.id.toString(),
-            role: loginPayload.role,
+            unique_name: loginPayload.id.toString(),
+            iss: 'bhk-sec-api',
+            iat: Math.floor(Date.now() / 1000),
+            exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60),
         };
+        //a refresh token is returned. Store in cookie!
         return this.jwtService.sign(tokenPayload);
     }
 
+    
 }
