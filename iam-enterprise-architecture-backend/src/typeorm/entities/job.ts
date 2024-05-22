@@ -14,7 +14,7 @@ export class Job {
     @Column({ type: 'decimal', precision: 10, scale: 2 })
     price: number;
     @Column()
-    posted_by: number;
+    posted_by: string;
     @Column()
     posted_on: Date;
 }
