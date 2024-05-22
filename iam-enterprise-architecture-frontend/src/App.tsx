@@ -12,6 +12,7 @@ import { Route, Routes } from "react-router"
 import { MsalProvider } from "@azure/msal-react"
 import AuthTestPage from "./pages/AuthTestPage.tsx"
 import { msalInstance } from "./authService.ts"
+import OffersPage from "./pages/OffersPage.tsx"
 
 (async () => {
   try {
@@ -32,6 +33,7 @@ function App() {
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="/test" element={<AuthTestPage />} />
+          <Route path="/offers" element={<OffersPage />} />
 
           {/* Protected routes */}
           {/* Common */}
