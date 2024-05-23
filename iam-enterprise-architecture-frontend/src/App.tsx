@@ -31,17 +31,17 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="/test" element={<AuthTestPage />} />
+          <Route path="test" element={<AuthTestPage />} />
 
           {/* Protected routes */}
           {/* Common */}
-          <Route element={<ProtectedRoute allowedRoles={["STUDENT", "TEACHER", "ADMINISTRATOR"]} />}>
-
+          <Route element={<ProtectedRoute allowedRoles={['STUDENT', 'TEACHER', 'ADMINISTRATOR']} />}>
+            {/* Add protected routes here */}
           </Route>
 
           {/* Student, Teacher */}
-          <Route element={<ProtectedRoute allowedRoles={["STUDENT", "TEACHER"]} />}>
-
+          <Route element={<ProtectedRoute allowedRoles={['STUDENT', 'TEACHER']} />}>
+            {/* Add protected routes here */}
           </Route>
         </Route>
 
@@ -50,7 +50,6 @@ function App() {
         <Route path="unauthorized" element={<UnauthorizedPage />} />
       </Routes>
     </MsalProvider>
-
   )
 }
 

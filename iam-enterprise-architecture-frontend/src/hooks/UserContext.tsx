@@ -4,12 +4,16 @@ import { User } from '../types/User';
 
 interface UserContextValue {
   user: User;
+  authToken: string;
   setUser: React.Dispatch<React.SetStateAction<User>>;
+  setAuthToken: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const UserContext = createContext<UserContextValue>({
   user: { name: '', email: '', role: '' },
+  authToken: '',
   setUser: () => { },
+  setAuthToken: () => { },
 });
 
 interface UserProviderProps {
@@ -18,9 +22,10 @@ interface UserProviderProps {
 
 export function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<User>({ name: '', email: '', role: '' });
+  const [authToken, setAuthToken] = useState<string>('');
  
   return (
-     <UserContext.Provider value={{ user, setUser }}>
+     <UserContext.Provider value={{ user, setUser, authToken, setAuthToken }}>
        {children}
      </UserContext.Provider>
   );

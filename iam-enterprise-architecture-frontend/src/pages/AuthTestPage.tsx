@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
-
 import React, { useEffect, useState } from 'react';
 import { getTokenResponse } from '../authService';
 import { useNavigate } from 'react-router';

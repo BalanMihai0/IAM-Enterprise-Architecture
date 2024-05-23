@@ -1,30 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
-
-import { useMsal } from "@azure/msal-react";
 import { Button } from "@material-tailwind/react";
-import { FaMicrosoft } from 'react-icons/fa';
 import microsoftLogo from '../../assets/microsoft.png'
-import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const MicrosoftLoginButton = () => {
- const { instance } = useMsal();
- const navigate = useNavigate()
+ const { login } = useAuth();
+ const navigate = useNavigate();
 
  const handleSignIn = async () => {
-    try {
-      const loginResponse = await instance.loginPopup({scopes: [`api://${process.env.MSAL_API_CLIENT_ID}/admin`]});
-
-      if (loginResponse) {
-        console.log(loginResponse)
-        const account = loginResponse.account;
-        await instance.setActiveAccount(account);
-        navigate("/test")
-      }
-    } catch (err) {
-      console.log('+++ Login error : ', err);
-      navigate("/login")
-    }
+  await login("Microsoft", null, null);
+  navigate("/");
  };
 
  return (
