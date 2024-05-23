@@ -19,6 +19,7 @@ const Sidebar = ({ selectedDateRange, onDateRangeChange, onSearch }) => {
                 </Typography>
                 <Input
                     type="text"
+                    size='md'
                     placeholder="Search..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
