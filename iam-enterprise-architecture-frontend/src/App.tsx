@@ -15,22 +15,22 @@ import { msalInstance } from "./authService.ts"
 
 (async () => {
   try {
-     await msalInstance.initialize();
-     console.log("MSAL instance initialized");
+    await msalInstance.initialize();
+    console.log("MSAL instance initialized");
   } catch (error) {
-     console.error("Failed to initialize MSAL instance", error);
+    console.error("Failed to initialize MSAL instance", error);
   }
- })();
+})();
 
 function App() {
   return (
     <MsalProvider instance={msalInstance}>
       <Routes>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<Layout />}>
           {/* Public routes */}
           <Route path="/" element={<LandingPage />} />
-          <Route path="register" element={<RegisterPage />} />
-          <Route path="login" element={<LoginPage />} />
           <Route path="/test" element={<AuthTestPage />} />
 
           {/* Protected routes */}
