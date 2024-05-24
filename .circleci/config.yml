@@ -118,6 +118,6 @@ workflows:
             - sonarqube-analysis
           filters:
             branches:
-              ignore: ["*"]
+              ignore: "!^dev$|^main$"
             tags:
               ignore: ["*"]
