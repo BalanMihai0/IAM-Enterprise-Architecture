@@ -11,14 +11,14 @@ import { useState } from "react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { ErrorObject } from "../../types/ErrorObject";
 
-type LoginFormsProps = {
+type LoginFormProps = {
     handleClick: () => void;
     isLoading: boolean;
     loginData: UseFormRegister<FieldValues>;
     errors: ErrorObject[];
 };
 
-export default function LoginForm({handleClick, isLoading, loginData, errors} : LoginFormsProps) {
+export default function LoginForm({handleClick, isLoading, loginData, errors} : LoginFormProps) {
     const [showPassword, setShowPassword] = useState(false);
     const IconComponent = showPassword ? FaEyeSlash : FaEye;
 

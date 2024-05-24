@@ -6,7 +6,9 @@ export async function fetchRefreshToken(requestBody: unknown) {
     });
 }
 export async function fetchAuthToken() {
-    return axios.post("/api/v1/auth/refresh").then(response => {
+    return axios.get("/api/v1/auth/refresh", {
+        withCredentials: true,
+    }).then(response => {
         return response;
     });
 }

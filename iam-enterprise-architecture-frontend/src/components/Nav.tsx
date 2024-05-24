@@ -1,7 +1,7 @@
 import React from "react";
 import {
   Navbar,
-  MobileNav,
+  Collapse,
   Typography,
   Button,
   IconButton,
@@ -138,7 +138,7 @@ export function Nav () {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>
+        <Collapse  open={openNav}>
           {navList}
           <div className="flex items-center gap-x-1">
             <Button fullWidth variant="text" size="sm" className="" placeholder={"log-in"}>
@@ -148,7 +148,7 @@ export function Nav () {
               <span>Sign in</span>
             </Button>
           </div>
-        </MobileNav>
+        </Collapse >
       </Navbar>
     </div>
   );

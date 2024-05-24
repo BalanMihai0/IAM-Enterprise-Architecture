@@ -21,7 +21,7 @@ export default function LoginPage() {
     try {
       LoginUserData.parse(d);
       setIsLoading(!isLoading);
-      await login("Local", d.email, d.password)
+      await login("Local", d.email, d.password);
       navigate("/");
     } catch (error) {
       if (error instanceof z.ZodError) {
