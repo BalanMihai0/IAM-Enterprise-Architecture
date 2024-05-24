@@ -12,8 +12,10 @@ jobs:
           pkg-manager: npm
       - run:
           command: npm install
-     # - run:
-         # command: npm run build
+      - run:
+          command: npm install --save-dev @types/node
+      - run:
+          command: npm run build
       - run:
           name: Create the ~/artifacts directory if it doesn't exist
           command: mkdir -p ~/artifacts
