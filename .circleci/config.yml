@@ -1,8 +1,8 @@
 version: 2.1
 orbs:
- node: circleci/node@5
+  node: circleci/node@5
 jobs:
- build-frontend:
+  build-frontend:
     executor: node/default
     working_directory: ~/project/iam-enterprise-architecture-frontend
     steps:
@@ -18,12 +18,16 @@ jobs:
       # Copy output to artifacts dir
       - run:
           name: Copy artifacts
-          command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
+          command: cp -R build dist public.output.next.docusaurus ~/artifacts 2>/dev/null || true
       - store_artifacts:
           path: ~/artifacts
           destination: frontend-build
+      # Example usage of environment variables
+      # - run:
+      #     name: Use environment variables
+      #     command: echo $MSAL_CLIENT_ID
 
- build-backend:
+  build-backend:
     executor: node/default
     working_directory: ~/project/iam-enterprise-architecture-backend
     steps:
@@ -39,12 +43,16 @@ jobs:
       # Copy output to artifacts dir
       - run:
           name: Copy artifacts
-          command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
+          command: cp -R build dist public.output.next.docusaurus ~/artifacts 2>/dev/null || true
       - store_artifacts:
           path: ~/artifacts
           destination: backend-build
+      # Example usage of environment variables
+      # - run:
+      #     name: Use environment variables
+      #     command: echo $MSAL_CLIENT_ID
 
- test-backend:
+  test-backend:
     executor: node/default
     working_directory: ~/project/iam-enterprise-architecture-backend
     steps:
@@ -54,9 +62,12 @@ jobs:
           pkg-manager: npm
       - run:
           command: npm test
+      # Example usage of environment variables
+      # - run:
+      #     name: Use environment variables
+      #     command: echo $MSAL_CLIENT_ID
 
-          
- sonarqube-analysis:
+  sonarqube-analysis:
     docker:
       - image: cimg/base:stable
     steps:
@@ -68,21 +79,27 @@ jobs:
             if [[ $CIRCLE_TAG =~ ^prod|preprod$ ]]; then
               bash sonar_run.sh
             fi
+      # Example usage of environment variables
+      # - run:
+      #     name: Use environment variables
+      #     command: echo $MSAL_CLIENT_ID
 
-
- deploy:
-   # This is an example deploy job, not actually used by the workflow
-   docker:
-     - image: cimg/base:stable
-   steps:
-     - run:
-         name: deploy
-         command: |
-           if [[ "$CIRCLE_BRANCH" == "main" ]]; then
-             echo 'Deploy not implemented'
-           else
-             echo 'Skipping deploy for branch: '$CIRCLE_BRANCH
-           fi
+  deploy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run:
+          name: deploy
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "main" ]]; then
+              echo 'Deploy not implemented'
+            else
+              echo 'Skipping deploy for branch: '$CIRCLE_BRANCH
+            fi
+      # Example usage of environment variables
+      # - run:
+      #     name: Use environment variables
+      #     command: echo $MSAL_CLIENT_ID
 
 workflows:
   version: 2
