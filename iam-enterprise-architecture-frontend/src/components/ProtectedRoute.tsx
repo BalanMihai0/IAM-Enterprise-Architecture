@@ -4,6 +4,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "../types/DecodedToken";
+import { useMsal } from "@azure/msal-react";
 
 type ProtectedRouteProps = {
     allowedRoles: string[];
@@ -11,6 +12,7 @@ type ProtectedRouteProps = {
 
 export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
     const { setAuthToken } = useUser();
+    const { instance } = useMsal();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -28,11 +30,12 @@ export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
                     navigate('/login', { state: { from: location }, replace: true });
                 }
             } catch {
-                navigate('/login', { state: { from: location }, replace: true });
+                if (!instance)
+                    navigate('/login', { state: { from: location }, replace: true });
             }
         }
         updateAuthToken();
-    }, [navigate, setAuthToken, location, allowedRoles]);
+    }, [navigate, setAuthToken, location, allowedRoles, instance]);
 
     return <Outlet />;
 }
