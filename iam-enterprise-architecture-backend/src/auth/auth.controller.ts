@@ -41,6 +41,18 @@ export class AuthController {
     return res.status(200).send({message: 'Login successful'});
   }
 
+  @Get('logout')
+  @Roles("*")
+  logout(@Req() req: Request, @Res() res: Response) {
+    res.cookie('refreshToken', '', {
+      sameSite: 'strict',
+      httpOnly: true,
+      maxAge: 0,
+    });
+
+    return res.status(200).send({ message: 'Logout successful' });
+  }
+
   //endpoint to retrieve an actual access token if refresh token was valid
   @Get('refresh')
   @Roles('*')
