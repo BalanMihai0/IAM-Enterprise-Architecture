@@ -4,6 +4,7 @@ import UnauthorizedPage from "./pages/UnauthorizedPage.tsx"
 import LandingPage from "./pages/LandingPage.tsx"
 import RegisterPage from "./pages/RegisterPage.tsx"
 import LoginPage from "./pages/LoginPage.tsx"
+import AdminPage from "./pages/AdminPage.tsx"
 
 import NotAuthenticatedRoute from "./components/NotAuthenticatedRoute.tsx"
 import ProtectedRoute from "./components/ProtectedRoute.tsx"
@@ -17,7 +18,6 @@ import { msalInstance } from "./authService.ts"
 (async () => {
   try {
     await msalInstance.initialize();
-    console.log("MSAL instance initialized");
   } catch (error) {
     console.error("Failed to initialize MSAL instance", error);
   }
@@ -39,16 +39,16 @@ function App() {
         {/* Stylized routes */}
         <Route element={<Layout />}>
           {/* Public routes */}
-          
+
 
           {/* Admin routes */}
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-            {/* Place admin routes here */}
+            <Route path="/admin" element={<AdminPage />} />
           </Route>
 
           {/* Admin & Customer routes */}
           <Route element={<ProtectedRoute allowedRoles={['admin', 'customer']} />}>
-            <Route path="/home" element={<LandingPage />} /> 
+            <Route path="/home" element={<LandingPage />} />
             {/* Place admin & customer shared routes here */}
           </Route>
         </Route>

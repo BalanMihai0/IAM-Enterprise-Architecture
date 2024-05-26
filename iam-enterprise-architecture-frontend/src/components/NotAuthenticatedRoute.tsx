@@ -7,9 +7,16 @@ export default function NotAuthenticatedRoute() {
 
     useEffect(() => {
         async function updateAuthToken() {
-            const response = await fetchAuthToken();
-            if (response) {
-                navigate("/home");
+            try {
+                const response = await fetchAuthToken();
+                if (response) {
+                    navigate("/home");
+                }
+            }
+            catch (error : any) {
+                if (error.response.status === 401) {
+                    return;
+                }
             }
         }
         updateAuthToken();

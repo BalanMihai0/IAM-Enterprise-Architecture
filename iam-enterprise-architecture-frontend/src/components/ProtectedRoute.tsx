@@ -29,9 +29,11 @@ export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
                     localStorage.removeItem("user");
                     navigate('/login', { state: { from: location }, replace: true });
                 }
-            } catch {
-                if (!instance)
-                    navigate('/login', { state: { from: location }, replace: true });
+            } catch (error : any) {
+                if (error.response.status === 401) {
+                    localStorage.removeItem("user");
+                    navigate('/login');
+                }
             }
         }
         updateAuthToken();

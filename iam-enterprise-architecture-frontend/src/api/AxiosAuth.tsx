@@ -5,13 +5,18 @@ export async function fetchRefreshToken(requestBody: unknown) {
         return response;
     });
 }
+
 export async function fetchAuthToken() {
-    return axios.get("/api/v1/auth/refresh", {
-        withCredentials: true,
-    }).then(response => {
+    try {
+        const response = await axios.get("/api/v1/auth/refresh", {
+            withCredentials: true,
+        });
         return response;
-    });
+    } catch (error) {
+        throw error;
+    }
 }
+
 export async function fetchUser(userId: string, authToken: string) {
     return axios.get(`/api/v1/users/${userId}`, {
         withCredentials: true,
