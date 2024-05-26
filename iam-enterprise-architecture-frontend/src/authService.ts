@@ -25,3 +25,11 @@ export const getClaims = async (scope: string): Promise<any> => {
  const tokenResponse = await getTokenResponse(scope);
  return tokenResponse ? tokenResponse.idTokenClaims : null;
 };
+
+export const isAuthenticated = async (): Promise<boolean> => {
+   const accounts = msalInstance.getAllAccounts();
+   if (accounts.length > 0) {
+      return true;
+   }
+   return false;
+}
