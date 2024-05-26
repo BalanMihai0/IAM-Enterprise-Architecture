@@ -10,6 +10,8 @@ import {
   BadRequestException,
   Patch,
   Delete,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { UsersService } from './users.service';
@@ -103,5 +105,11 @@ export class UsersController {
     }
 
     return await this.usersService.deleteById(id);
+  }
+
+  @Get('/health')
+  @HttpCode(HttpStatus.OK)
+  healthCheck() {
+    return { message: 'OK' };
   }
 }
