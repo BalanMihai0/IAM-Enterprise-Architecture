@@ -9,32 +9,48 @@ import ProtectedRoute from "./components/ProtectedRoute.tsx"
 import Layout from "./components/Layout.tsx"
 
 import { Route, Routes } from "react-router"
+import { MsalProvider } from "@azure/msal-react"
+import AuthTestPage from "./pages/AuthTestPage.tsx"
+import { msalInstance } from "./authService.ts"
+
+(async () => {
+  try {
+     await msalInstance.initialize();
+     console.log("MSAL instance initialized");
+  } catch (error) {
+     console.error("Failed to initialize MSAL instance", error);
+  }
+ })();
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}> 
-        {/* Public routes */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="register" element={<RegisterPage />} />
-        <Route path="login" element={<LoginPage />} />
-        
-        {/* Protected routes */}
+    <MsalProvider instance={msalInstance}>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          {/* Public routes */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="register" element={<RegisterPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="/test" element={<AuthTestPage />} />
+
+          {/* Protected routes */}
           {/* Common */}
           <Route element={<ProtectedRoute allowedRoles={["STUDENT", "TEACHER", "ADMINISTRATOR"]} />}>
-            
+
           </Route>
-            
+
           {/* Student, Teacher */}
           <Route element={<ProtectedRoute allowedRoles={["STUDENT", "TEACHER"]} />}>
-            
+
           </Route>
-      </Route>
-        
-      {/* Catch all */}
-      <Route path="*" element={<NotFoundPage />} />
-      <Route path="unauthorized" element={<UnauthorizedPage />} />
-    </Routes>
+        </Route>
+
+        {/* Catch all */}
+        <Route path="*" element={<NotFoundPage />} />
+        <Route path="unauthorized" element={<UnauthorizedPage />} />
+      </Routes>
+    </MsalProvider>
+
   )
 }
 

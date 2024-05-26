@@ -21,7 +21,6 @@ export class RolesGuard implements CanActivate {
     } else if (requiredRoles.includes("*")) {
       return true;
     }
-
     //If there is a role(s) specified: Roles("{RoleName}") It starts checking a token and see if it's valid and contains a specified role(s)
     const token = authHeader.split(' ')[1];
     const decoded: any = jwtDecode(token);
