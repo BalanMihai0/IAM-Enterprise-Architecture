@@ -7,7 +7,7 @@ import { ErrorObject } from "../types/ErrorObject";
 import { LoginUserData } from "../types/LoginUserData";
 import { z } from "zod";
 import MicrosoftLoginButton from "../components/login/MicrosoftLoginButton";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router";
 
 export default function LoginPage() {
@@ -21,14 +21,16 @@ export default function LoginPage() {
     try {
       LoginUserData.parse(d);
       setIsLoading(!isLoading);
-      await login("Local", d.email, d.password);
+      await login("local", { email: d.email, password: d.password });
       navigate("/");
     } catch (error) {
       if (error instanceof z.ZodError) {
-        setErrors(error.errors.map(e => ({
-          field: e.path.join('.'),
-          message: e.message,
-        })));
+        setErrors(
+          error.errors.map((e) => ({
+            field: e.path.join("."),
+            message: e.message,
+          }))
+        );
       }
     }
   }
@@ -36,7 +38,12 @@ export default function LoginPage() {
   return (
     <div className="page-center-items flex-col">
       <img src="./black-logo-no-bg.png" className="pb-5" />
-      <LoginForm handleClick={handleSubmit(handleClick)} isLoading={isLoading} loginData={register} errors={errors as ErrorObject[]} />
+      <LoginForm
+        handleClick={handleSubmit(handleClick)}
+        isLoading={isLoading}
+        loginData={register}
+        errors={errors as ErrorObject[]}
+      />
       <MicrosoftLoginButton />
     </div>
   );

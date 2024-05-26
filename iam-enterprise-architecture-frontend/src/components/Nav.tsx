@@ -6,17 +6,26 @@ import {
   Button,
   IconButton,
 } from "@material-tailwind/react";
- 
-export function Nav () {
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+export function Nav() {
   const [openNav, setOpenNav] = React.useState(false);
- 
+  const [signedIn, setSignedIn] = React.useState<boolean | null>(null);
+  const { isLoggedIn, logout } = useAuth();
+  const navigate = useNavigate();
+
   React.useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false),
-    );
-  }, []);
- 
+    const initialize = async () => {
+      window.addEventListener(
+        "resize",
+        () => window.innerWidth >= 960 && setOpenNav(false)
+      );
+      setSignedIn(await isLoggedIn());
+    };
+    initialize();
+  }, [isLoggedIn]);
+
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
@@ -65,10 +74,13 @@ export function Nav () {
       </Typography>
     </ul>
   );
- 
+
   return (
     <div>
-      <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none" placeholder={"nav"}>
+      <Navbar
+        className="sticky top-0 z-10 h-max max-w-full rounded-none"
+        placeholder={"nav"}
+      >
         <div className="flex items-center justify-between text-blue-gray-900">
           <Typography
             as="a"
@@ -80,24 +92,41 @@ export function Nav () {
           </Typography>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
-            <div className="flex items-center gap-x-1">
+            {!signedIn ? (
+              <div className="flex items-center gap-x-1">
+                <Button
+                  variant="text"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                  placeholder={"sign_in"}
+                  onClick={() => navigate("/login")}
+                >
+                  Sign in
+                </Button>
+                <Button
+                  variant="gradient"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                  placeholder={"register"}
+                  onClick={() => navigate("/register")}
+                >
+                  <a href="/register" className="flex items-center">
+                    Register
+                  </a>
+                </Button>
+              </div>
+            ) : (
               <Button
-                variant="text"
-                size="sm"
-                className="hidden lg:inline-block"
-                placeholder={"log-in"}
-              >
-                <span>Log In</span>
-              </Button>
-              <Button
+                fullWidth
                 variant="gradient"
                 size="sm"
-                className="hidden lg:inline-block"
-                placeholder={"sign-in"}
+                className=""
+                placeholder={"sign-out"}
+                onClick={() => logout()}
               >
-                <span>Sign in</span>
+                Sign out
               </Button>
-            </div>
+            )}
             <IconButton
               variant="text"
               className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
@@ -138,17 +167,44 @@ export function Nav () {
             </IconButton>
           </div>
         </div>
-        <Collapse  open={openNav}>
+        <Collapse open={openNav}>
           {navList}
-          <div className="flex items-center gap-x-1">
-            <Button fullWidth variant="text" size="sm" className="" placeholder={"log-in"}>
-              <span>Log In</span>
+          {!signedIn ? (
+            <div className="flex items-center gap-x-1">
+              <Button
+                fullWidth
+                variant="text"
+                size="sm"
+                className=""
+                placeholder={"log-in"}
+                onClick={() => navigate("/login")}
+              >
+                Sign in
+              </Button>
+              <Button
+                fullWidth
+                variant="gradient"
+                size="sm"
+                className=""
+                placeholder={"register"}
+                onClick={() => navigate("/register")}
+              >
+                Register
+              </Button>
+            </div>
+          ) : (
+            <Button
+              fullWidth
+              variant="gradient"
+              size="sm"
+              className=""
+              placeholder={"sign-out"}
+              onClick={() => logout()}
+            >
+              Sign out
             </Button>
-            <Button fullWidth variant="gradient" size="sm" className="" placeholder={"sign-in"}>
-              <span>Sign in</span>
-            </Button>
-          </div>
-        </Collapse >
+          )}
+        </Collapse>
       </Navbar>
     </div>
   );
