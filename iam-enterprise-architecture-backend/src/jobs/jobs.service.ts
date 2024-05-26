@@ -11,8 +11,8 @@ export class JobsService {
         @InjectRepository(Job) private readonly jobRepository: Repository<Job>
     ) { }
 
-    async create(jobDto: NewJobDTO, id: number): Promise<Job> {
-        const postedById: number = typeof id === 'string' ? parseInt(id) : id;
+    async create(jobDto: NewJobDTO, id: string): Promise<Job> {
+        const postedById: string = id;
 
         const newJob: Job = this.jobRepository.create({
             title: jobDto.title,

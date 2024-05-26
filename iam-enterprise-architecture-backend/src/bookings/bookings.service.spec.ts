@@ -96,10 +96,10 @@ describe('BookingService', () => {
             const bookingDto: NewBookingDTO = {
                 requester: 1, // Assuming userId
                 job: 1, // Assuming jobId
-                startDate:mockDate,
-                endDate:mockDate,
+                startDate: mockDate,
+                endDate: mockDate,
             };
-
+        
             // Mock the behavior of findById methods of UserService and JobService
             jest.spyOn(userService, 'findById').mockResolvedValueOnce({
                 id: 1,
@@ -108,16 +108,17 @@ describe('BookingService', () => {
                 full_name: 'Test User',
                 role: 'user',
             }); // Mock user found
+        
             jest.spyOn(jobService, 'findById').mockResolvedValueOnce({
                 id: 1,
                 title: 'Test Job',
                 description: 'This is a test job.',
                 location: 'Test Location',
                 price: 100,
-                posted_by: 1,
+                posted_by: '1', // posted_by is a string
                 posted_on: mockDate,
             }); // Mock job found
-
+        
             // Mock the behavior of bookingRepository methods
             jest.spyOn(repository, 'create').mockImplementationOnce(() => ({
                 id: 1,
@@ -134,14 +135,14 @@ describe('BookingService', () => {
                     description: 'This is a test job.',
                     location: 'Test Location',
                     price: 100,
-                    posted_by: 1,
+                    posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
                 },
-                startDate:mockDate,
-                endDate:mockDate,
-                creationDate:mockDate
+                startDate: mockDate,
+                endDate: mockDate,
+                creationDate: mockDate,
             }));
-
+        
             jest.spyOn(repository, 'save').mockResolvedValueOnce({
                 id: 1,
                 requester: {
@@ -157,17 +158,17 @@ describe('BookingService', () => {
                     description: 'This is a test job.',
                     location: 'Test Location',
                     price: 100,
-                    posted_by: 1,
+                    posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
                 },
-                startDate:mockDate,
-                endDate:mockDate,
-                creationDate:mockDate
+                startDate: mockDate,
+                endDate: mockDate,
+                creationDate: mockDate,
             });
-
+        
             // Call create method of BookingService
             const result = await service.create(bookingDto);
-
+        
             // Check if the result is as expected
             expect(result).toBeDefined();
             expect(result).toEqual({
@@ -185,12 +186,12 @@ describe('BookingService', () => {
                     description: 'This is a test job.',
                     location: 'Test Location',
                     price: 100,
-                    posted_by: 1,
+                    posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
                 },
-                startDate:mockDate,
-                endDate:mockDate,
-                creationDate:mockDate
+                startDate: mockDate,
+                endDate: mockDate,
+                creationDate: mockDate,
             });
         });
     });

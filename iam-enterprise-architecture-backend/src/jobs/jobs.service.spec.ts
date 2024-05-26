@@ -50,7 +50,7 @@ describe('JobsService', () => {
         description: newJobDto.description,
         location: newJobDto.location,
         price: newJobDto.price,
-        posted_by: 69,
+        posted_by: '69',
         posted_on: new Date(),
       };
 
@@ -58,7 +58,7 @@ describe('JobsService', () => {
       (repository.create as jest.Mock).mockReturnValue(newJob);
       (repository.save as jest.Mock).mockResolvedValue(newJob);
 
-      const createdJob = await service.create(newJobDto, 69);
+      const createdJob = await service.create(newJobDto, '69');
 
       expect(createdJob).toEqual(newJob);
 
@@ -68,7 +68,7 @@ describe('JobsService', () => {
         description: newJobDto.description,
         location: newJobDto.location,
         price: newJobDto.price,
-        posted_by: 69,
+        posted_by: '69',
         posted_on: expect.any(Date),
       });
 
@@ -86,7 +86,7 @@ describe('JobsService', () => {
         description: 'Developing software applications',
         location: 'Remote',
         price: 5000,
-        posted_by: 69,
+        posted_by: '69',
         posted_on: new Date(),
       };
 
