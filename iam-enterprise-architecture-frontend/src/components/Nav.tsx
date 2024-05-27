@@ -103,7 +103,7 @@ export function Nav() {
             {!signedIn ? (
               <div className="flex items-center gap-x-1">
                 <Button
-                  variant="text"
+                  variant="outlined"
                   size="sm"
                   className="hidden lg:inline-block"
                   placeholder={"sign_in"}
@@ -181,7 +181,7 @@ export function Nav() {
             <div className="flex items-center gap-x-1">
               <Button
                 fullWidth
-                variant="text"
+                variant="outlined"
                 size="sm"
                 className="items-center"
                 placeholder={"log-in"}
