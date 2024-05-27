@@ -18,7 +18,7 @@ import { useMsal } from "@azure/msal-react";
 interface AuthContextProps {
   accessToken: string | null;
   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
-  isLoggedIn: () => Promise<boolean|null>;
+  isLoggedIn: () => Promise<boolean | null>;
   login: (
     method: "local" | "Microsoft",
     credentials?: { email: string; password: string }
@@ -35,15 +35,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fetchToken = async () => {
-      if (await isAuthenticated()) {
-        const authResponse = await fetchAccessTokenMSAL();
-        setAccessToken(authResponse.data);
-      } else {
-        const authResponse = await fetchAccessTokenLocal();
-        setAccessToken(authResponse.data);
+      try {
+        if (await isAuthenticated()) {
+          const authResponse = await fetchAccessTokenMSAL();
+          setAccessToken(authResponse.data);
+        } else {
+          const authResponse = await fetchAccessTokenLocal();
+          setAccessToken(authResponse?.data);
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        if (error.response.status !== 401) {
+          console.error("Unexpected error in fetchToken: ", error);
+        }
       }
     };
-
     fetchToken();
   }, []);
 
@@ -56,12 +62,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         return false;
       }
-    } catch (error) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if ((error as any).response?.status === 401) {
+    } catch (error: any) {
+      if (error?.response?.status === 401) {
         return false;
       } else {
-        console.error('Unexpected error in isLoggedIn:', error);
+        console.error("Unexpected error in isLoggedIn: ", error);
         return null;
       }
     }
@@ -76,7 +82,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const refreshResponse = await fetchRefreshTokenLocal(credentials);
         if (refreshResponse.data.message === "Login successful") {
           const authResponse = await fetchAccessTokenLocal();
-          setAccessToken(authResponse.data);
+          setAccessToken(authResponse?.data);
         }
       } else if (method === "Microsoft") {
         const loginResponse = await instance.loginPopup({
@@ -90,7 +96,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setAccessToken(authResponse.data);
         }
       }
-      navigate("/home");
+      // Wait 1 second before navigating to "/home"
+      setTimeout(() => {
+        navigate("/home");
+      }, 1000);
     } catch (error) {
       console.error("Login error: ", error);
     }
@@ -98,10 +107,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     if (await isAuthenticated()) {
-        logoutMSAL();
-      } else {
-        logoutLocal();
-      }
+      await logoutMSAL();
+    } else {
+      await logoutLocal();
+    }
     setAccessToken(null);
     navigate("/login");
   };

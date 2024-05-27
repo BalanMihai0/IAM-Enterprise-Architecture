@@ -32,13 +32,13 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
           setAccessToken(authResponse.data);
         } else {
           const authResponse = await fetchAccessTokenLocal();
-          setAccessToken(authResponse.data);
+          setAccessToken(authResponse?.data);
         }
         setIsLoading(false);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         if (error.response.status === 401) {
-            setIsLoading(false);
+          setIsLoading(false);
         }
       }
     };
@@ -47,14 +47,19 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
   }, [setAccessToken]);
 
   if (isLoading) {
-    return <div className="h-full w-full left-1/2 top-1/2">Loading...</div>;
-  }
-
-  return accessToken && !isTokenExpired(accessToken) && allowedRoles.includes(jwtDecode<DecodedToken>(accessToken).role) ? (
-      <Outlet />
-    ) : (
-      <Navigate to="/not_found" state={{ from: location }} replace />
+    return (
+      <div className="flex items-center justify-center h-screen w-screen">
+        <div>Loading...</div>
+      </div>
     );
+  }
+  return accessToken &&
+    !isTokenExpired(accessToken) &&
+    allowedRoles.includes(jwtDecode<DecodedToken>(accessToken).role) ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/not_found" state={{ from: location }} replace />
+  );
 };
 
 export default ProtectedRoute;

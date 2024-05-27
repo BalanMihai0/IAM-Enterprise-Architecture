@@ -54,6 +54,7 @@ import {
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
+              autoComplete="username"
             />
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Password
@@ -73,6 +74,7 @@ import {
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
+              autoComplete="current-password"
             />
           </div>
           <Button

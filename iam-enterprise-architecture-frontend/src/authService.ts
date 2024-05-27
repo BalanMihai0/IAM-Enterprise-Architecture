@@ -37,8 +37,8 @@ export const isAuthenticated = async (): Promise<boolean> => {
    return false;
 }
 
-export const logout = () => {
-   msalInstance.logoutRedirect({
+export const logout = async () => {
+   await msalInstance.logoutRedirect({
      postLogoutRedirectUri: window.location.origin,
    });
  };

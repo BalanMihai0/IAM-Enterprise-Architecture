@@ -1,20 +1,21 @@
 import React from "react";
-import {
-  Navbar,
-  Collapse,
-  Button,
-  IconButton,
-} from "@material-tailwind/react";
+import { Navbar, Collapse, Button, IconButton } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { isAuthenticated } from "../authService";
 
 export function Nav() {
   const [openNav, setOpenNav] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [signedIn, setSignedIn] = React.useState<boolean | null>(null);
   const [isAdmin, setIsAdmin] = React.useState<boolean | null>(null);
   const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
+
+  async function logOut() {
+    setIsLoading(true);
+    await logout();
+  }
 
   React.useEffect(() => {
     const initialize = async () => {
@@ -30,7 +31,11 @@ export function Nav() {
     };
     initialize();
 
-    return () => window.removeEventListener("resize", () => window.innerWidth >= 960 && setOpenNav(false));
+    return () =>
+      window.removeEventListener(
+        "resize",
+        () => window.innerWidth >= 960 && setOpenNav(false)
+      );
   }, [isLoggedIn, signedIn]);
 
   const navList = (
@@ -128,9 +133,10 @@ export function Nav() {
                 fullWidth
                 variant="gradient"
                 size="sm"
-                className="hidden lg:inline-block"
+                className="flex flex-row invisible lg:visible"
                 placeholder={"sign-out"}
-                onClick={() => logout()}
+                onClick={() => logOut()}
+                loading={isLoading}
               >
                 Sign out
               </Button>
@@ -205,9 +211,10 @@ export function Nav() {
               fullWidth
               variant="gradient"
               size="sm"
-              className="items-center"
+              className="flex flex-row items-center"
               placeholder={"sign-out"}
-              onClick={() => logout()}
+              onClick={() => logOut()}
+              loading={isLoading}
             >
               Sign out
             </Button>
