@@ -1,5 +1,4 @@
 import NotFoundPage from "./pages/NotFoundPage.tsx"
-import UnauthorizedPage from "./pages/UnauthorizedPage.tsx"
 
 import LandingPage from "./pages/LandingPage.tsx"
 import RegisterPage from "./pages/RegisterPage.tsx"
@@ -35,7 +34,7 @@ function App() {
           {/* Exclusively not authenticated routes */}
           <Route element={<NotAuthenticatedRoute />}>
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage />} /> 
           </Route>
 
           {/* Stylized routes */}
@@ -56,7 +55,6 @@ function App() {
 
           {/* Catch all */} 
           <Route path="/test" element={<AuthTestPage />} />
-          <Route path="/unauthorized" element={<UnauthorizedPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>

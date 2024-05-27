@@ -8,6 +8,7 @@ import {
   fetchAccessTokenMSAL,
   fetchAccessTokenLocal,
 } from "../api/AxiosAuthentication";
+import { useLocation } from "react-router-dom";
 
 type ProtectedRouteProps = {
   allowedRoles: string[];
@@ -20,6 +21,7 @@ function isTokenExpired(accessToken: string): boolean {
 
 const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
   const { accessToken, setAccessToken } = useAuth();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -45,18 +47,14 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
   }, [setAccessToken]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="h-full w-full left-1/2 top-1/2">Loading...</div>;
   }
 
-  return accessToken && !isTokenExpired(accessToken) ? (
-    allowedRoles.includes(jwtDecode<DecodedToken>(accessToken).role) ? (
+  return accessToken && !isTokenExpired(accessToken) && allowedRoles.includes(jwtDecode<DecodedToken>(accessToken).role) ? (
       <Outlet />
     ) : (
-      <Navigate to="/unauthorized" />
-    )
-  ) : (
-    <Navigate to="/login" />
-  );
+      <Navigate to="/not_found" state={{ from: location }} replace />
+    );
 };
 
 export default ProtectedRoute;

@@ -2,16 +2,17 @@ import React from "react";
 import {
   Navbar,
   Collapse,
-  Typography,
   Button,
   IconButton,
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { isAuthenticated } from "../authService";
 
 export function Nav() {
   const [openNav, setOpenNav] = React.useState(false);
   const [signedIn, setSignedIn] = React.useState<boolean | null>(null);
+  const [isAdmin, setIsAdmin] = React.useState<boolean | null>(null);
   const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -21,57 +22,65 @@ export function Nav() {
         "resize",
         () => window.innerWidth >= 960 && setOpenNav(false)
       );
-      setSignedIn(await isLoggedIn());
+      const loggedIn = await isLoggedIn();
+      setSignedIn(loggedIn);
+      if (loggedIn) {
+        setIsAdmin(await isAuthenticated());
+      }
     };
     initialize();
-  }, [isLoggedIn]);
+
+    return () => window.removeEventListener("resize", () => window.innerWidth >= 960 && setOpenNav(false));
+  }, [isLoggedIn, signedIn]);
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-        placeholder={"home"}
-      >
-        <a href="/home" className="flex items-center">
-          Home
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
+      {isAdmin && (
+        <Button
+          variant="text"
+          color="black"
+          size="sm"
+          className="items-center"
+          placeholder={"admin"}
+        >
+          <a href="/admin" className="flex items-center">
+            Admin
+          </a>
+        </Button>
+      )}
+      <Button
+        variant="text"
+        color="black"
+        size="sm"
+        className="items-center"
         placeholder={"jobs"}
       >
         <a href="/offers" className="flex items-center">
           Offers
         </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
+      </Button>
+      <Button
+        variant="text"
+        color="black"
+        size="sm"
+        className="items-center"
         placeholder={"bookings"}
       >
         <a href="/bookings" className="flex items-center">
           Bookings
         </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
+      </Button>
+      <Button
+        variant="text"
+        color="black"
+        size="sm"
+        className="items-center"
         placeholder={"account"}
       >
         <a href="/account" className="flex items-center">
           Account
         </a>
-      </Typography>
+      </Button>
     </ul>
   );
 
@@ -82,14 +91,13 @@ export function Nav() {
         placeholder={"nav"}
       >
         <div className="flex items-center justify-between text-blue-gray-900">
-          <Typography
-            as="a"
-            href="#"
-            className="mr-4 cursor-pointer py-1.5 font-medium"
-            placeholder={"BlackHawk Security"}
-          >
-            BlackHawk Security
-          </Typography>
+          <a href="/home" className="ml-3 cursor-pointer flex items-center">
+            <img
+              src="black-logo-no-bg.png"
+              alt="BlackHawk Security"
+              className="h-10"
+            />
+          </a>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
             {!signedIn ? (
@@ -120,7 +128,7 @@ export function Nav() {
                 fullWidth
                 variant="gradient"
                 size="sm"
-                className=""
+                className="hidden lg:inline-block"
                 placeholder={"sign-out"}
                 onClick={() => logout()}
               >
@@ -175,7 +183,7 @@ export function Nav() {
                 fullWidth
                 variant="text"
                 size="sm"
-                className=""
+                className="items-center"
                 placeholder={"log-in"}
                 onClick={() => navigate("/login")}
               >
@@ -185,7 +193,7 @@ export function Nav() {
                 fullWidth
                 variant="gradient"
                 size="sm"
-                className=""
+                className="items-center"
                 placeholder={"register"}
                 onClick={() => navigate("/register")}
               >
@@ -197,7 +205,7 @@ export function Nav() {
               fullWidth
               variant="gradient"
               size="sm"
-              className=""
+              className="items-center"
               placeholder={"sign-out"}
               onClick={() => logout()}
             >

@@ -1,8 +1,6 @@
-import React from 'react'
-
 const AdminPage = () => {
   return (
-    <div>AdminPage</div>
+    <div className="m-5">Admin Page</div>
   )
 }
 

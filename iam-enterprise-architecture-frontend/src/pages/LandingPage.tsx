@@ -1,6 +1,6 @@
 const LandingPage = () => {
   return (
-    <p>DADADADADA</p>
+    <div className="m-5">DA MA BAGA-MI-AS PULA-N MA-TA</div>
   )
 };
 

@@ -22,7 +22,7 @@ const AuthTestPage: React.FC = () => {
         }
     }, [instance]);
     return (
-        <div>
+        <div className="m-5">
             {tokenResponse.loading ? (
                 <div>Loading...</div>
             ) : tokenResponse.data === null ? (
