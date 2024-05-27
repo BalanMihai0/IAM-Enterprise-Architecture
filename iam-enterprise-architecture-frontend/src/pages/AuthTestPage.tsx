@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
-
 import React, { useEffect, useState } from 'react';
 import { getTokenResponse } from '../authService';
 import { useNavigate } from 'react-router';
@@ -23,7 +22,7 @@ const AuthTestPage: React.FC = () => {
         }
     }, [instance]);
     return (
-        <div>
+        <div className="m-5">
             {tokenResponse.loading ? (
                 <div>Loading...</div>
             ) : tokenResponse.data === null ? (

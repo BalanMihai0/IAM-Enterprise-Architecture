@@ -4,10 +4,11 @@ import {
   Get,
   Post,
   Req,
+  Res,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { LocalGuard } from './guards/local.guard';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { Roles } from './roles/roles.decorator';
@@ -17,6 +18,7 @@ import { AzureADGuard } from './guards/azure-ad.guard';
 import { JwtService } from '@nestjs/jwt';
 import { jwtDecode } from 'jwt-decode';
 import * as jwt from 'jsonwebtoken';
+import { strict } from 'assert';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -27,8 +29,28 @@ export class AuthController {
   @Post('login')
   @Roles('*')
   @UseGuards(LocalGuard)
-  login(@Req() req: Request, @Body() authDto: AuthPayloadDto) {
-    return req.user;
+  login(@Req() req: Request, @Res() res: Response, @Body() authDto: AuthPayloadDto) {
+    const refreshToken = req.user;
+
+    res.cookie('refreshToken', refreshToken, {
+      sameSite: 'strict',
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).send({message: 'Login successful'});
+  }
+
+  @Get('logout')
+  @Roles("*")
+  logout(@Req() req: Request, @Res() res: Response) {
+    res.cookie('refreshToken', '', {
+      sameSite: 'strict',
+      httpOnly: true,
+      maxAge: 0,
+    });
+
+    return res.status(200).send({ message: 'Logout successful' });
   }
 
   //endpoint to retrieve an actual access token if refresh token was valid
