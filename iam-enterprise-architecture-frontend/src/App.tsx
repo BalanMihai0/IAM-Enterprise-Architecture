@@ -26,6 +26,8 @@ import { AuthProvider } from './context/AuthContext.tsx';
 function App() {
   return (
     <MsalProvider instance={msalInstance}>
+      <AuthProvider>
+      <Routes>
           {/* Exclusively not authenticated routes */}
           <Route element={<NotAuthenticatedRoute />}>
             <Route path="/register" element={<RegisterPage />} />
