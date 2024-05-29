@@ -4,6 +4,8 @@ import LandingPage from "./pages/LandingPage.tsx"
 import RegisterPage from "./pages/RegisterPage.tsx"
 import LoginPage from "./pages/LoginPage.tsx"
 import AdminPage from "./pages/AdminPage.tsx"
+import UsersAdminPage from "./pages/UsersAdminPage.tsx";
+import JobsAdminPage from "./pages/JobsAdminPage.tsx"
 
 import NotAuthenticatedRoute from "./components/NotAuthenticatedRoute.tsx"
 import ProtectedRoute from "./components/ProtectedRoute.tsx"
@@ -44,6 +46,8 @@ function App() {
             {/* Admin routes */}
             <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/admin/jobs" element={<JobsAdminPage />} />
+              <Route path="/admin/users" element={<UsersAdminPage />} />
             </Route>
 
             {/* Admin & Customer routes */}
