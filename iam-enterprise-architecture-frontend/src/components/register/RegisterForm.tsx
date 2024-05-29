@@ -83,6 +83,7 @@ export default function RegisterForm({ handleClick, isLoading, termsAgreed, togg
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
+                        autoComplete="username"
                     />
                     <Typography variant="h6" color="blue-gray" className="-mb-3">
                         Password
@@ -102,6 +103,7 @@ export default function RegisterForm({ handleClick, isLoading, termsAgreed, togg
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
+                        autoComplete="new-password"
                     />
                     <Typography variant="h6" color="blue-gray" className="-mb-3">
                         Confirm Password
@@ -121,6 +123,7 @@ export default function RegisterForm({ handleClick, isLoading, termsAgreed, togg
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }}
+                        autoComplete="new-password"
                     />
                 </div>
                 <div className="flex flex-row justify-left items-center underline">

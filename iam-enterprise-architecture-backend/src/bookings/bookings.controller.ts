@@ -6,6 +6,7 @@ import { Request } from 'express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { validate } from 'class-validator';
+import { Booking } from 'src/typeorm/entities/booking';
 
 @ApiTags('Bookings')
 @Controller('bookings')
@@ -20,7 +21,7 @@ export class BookingsController{
 
         const token: any = req.user;
 
-        if (token.id != bookingDto.requester) {
+        if (token.unique_name != bookingDto.requester) {
             throw new ForbiddenException("You are not authorized to create this resource.");
         }
 
@@ -36,7 +37,7 @@ export class BookingsController{
     @Roles("admin")
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    async delete(@Param('id') id: number){
+    async delete(@Param('id') id: number, @Req() req: Request){
         return await this.bookingService.delete(id);
     }
 
@@ -54,12 +55,13 @@ export class BookingsController{
     @UseGuards(JwtAuthGuard)
     async findById(@Param('id') id: number, @Req() req: Request){
         const token : any = req.user;
-        
-        if (token.id != id && token.role != "admin") {
+
+        const booking : Booking = await this.bookingService.findById(id);
+        if (token.unique_name != booking.requester.id && token.role != "admin") {
             throw new ForbiddenException("You are not authorized to access this resource.");
         }
 
-        return await this.bookingService.findById(id);
+        return booking;
     }
 
     @Get('/user:id')
@@ -67,7 +69,7 @@ export class BookingsController{
     async findBookingsByUser(@Param('id') id: number, @Req() req: Request) {
         const token : any = req.user;
 
-        if (token.id != id) {
+        if (token.unique_name != id) {
             throw new ForbiddenException("You are not authorized to access this resource.");
         }
 

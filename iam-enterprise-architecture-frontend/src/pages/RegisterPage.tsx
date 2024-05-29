@@ -1,5 +1,4 @@
 import RegisterForm from "../components/register/RegisterForm"
-import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { RegisterUserData } from "../types/RegisterUserData";
@@ -8,7 +7,6 @@ import { z } from "zod";
 import { ErrorObject } from "../types/ErrorObject";
 
 export default function RegisterPage() {
-    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [termsAgreed, setTermsAgreed] = useState(false);
     const {register, handleSubmit} = useForm();
@@ -26,8 +24,7 @@ export default function RegisterPage() {
                 RegisterUserData.parse(d);
                 setIsLoading(!isLoading);
                 console.log(d);
-                // Handle Data
-                navigate("");
+                // TODO: Connect with backend
             } catch (error) {
                 if (error instanceof z.ZodError) {
                     setErrors(error.errors.map(e => ({
