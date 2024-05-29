@@ -12,7 +12,7 @@ const Sidebar = ({ selectedDateRange, onDateRangeChange, onSearch }) => {
     };
 
     return (
-        <Card className="h-[calc(100vh-5rem)] w-full max-w-[20rem] m-1 p-4 shadow-lg shadow-blue-gray-900/5">
+        <Card className="md:h-[calc(100vh-5rem)] w-full md:max-w-[20rem] m-2 mx-4 md:m-1 md:mx-0 p-2 md:p-4 shadow-lg shadow-blue-gray-900/5">
             <div className="mb-4 p-4">
                 <Typography variant="h6" color="blue-gray" className="mb-1">
                     Search
@@ -28,7 +28,7 @@ const Sidebar = ({ selectedDateRange, onDateRangeChange, onSearch }) => {
                     Apply
                 </Button>
                 <Typography variant="h6" color="blue-gray" className="mb-2 mt-4">
-                    Filter by Date
+                    Filter by Creation Date
                 </Typography>
                 <div className="flex flex-col">
                     <Radio

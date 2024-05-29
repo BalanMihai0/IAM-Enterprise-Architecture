@@ -14,6 +14,7 @@ import { MsalProvider } from "@azure/msal-react"
 import AuthTestPage from "./pages/AuthTestPage.tsx"
 import { msalInstance } from "./authService.ts"
 import OffersPage from "./pages/OffersPage.tsx"
+import BookingsPage from "./pages/BookingsPage.tsx"
 import { AuthProvider } from './context/AuthContext.tsx';
 
 (async () => {
@@ -34,7 +35,7 @@ function App() {
           {/* Exclusively not authenticated routes */}
           <Route element={<NotAuthenticatedRoute />}>
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} /> 
+            <Route path="/login" element={<LoginPage />} />
           </Route>
 
           {/* Stylized routes */}
@@ -48,6 +49,11 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
               <Route path="/admin" element={<AdminPage />} />
             </Route>
+            
+            {/* Customer routes */}
+            <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
+              <Route path="/bookings" element={<BookingsPage />} />
+            </Route>
 
             {/* Admin & Customer routes */}
             <Route element={<ProtectedRoute allowedRoles={['admin', 'customer']} />}>
@@ -55,7 +61,7 @@ function App() {
             </Route>
           </Route>
 
-          {/* Catch all */} 
+          {/* Catch all */}
           <Route path="/test" element={<AuthTestPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

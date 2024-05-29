@@ -1,7 +1,7 @@
 import { Injectable, HttpException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Booking } from '../typeorm/entities/booking';
-import { Repository } from 'typeorm';
+import { IntegerType, Repository } from 'typeorm';
 import { NewBookingDTO } from './dto/booking.dto';
 import { UsersService } from '../users/users.service';
 import { JobsService } from '../jobs/jobs.service';
@@ -15,11 +15,10 @@ export class BookingService {
         private readonly jobService: JobsService
     ) { }
 
-    async create(bookingDto: NewBookingDTO): Promise<Booking> {
-        const foundUser = await this.userService.findById(bookingDto.requester);
+    async create(bookingDto: NewBookingDTO, requesterId: number): Promise<Booking> {
+        const foundUser = await this.userService.findById(requesterId);
         const foundJob = await this.jobService.findById(bookingDto.job);
         
-
         const newBooking = new Booking();
         newBooking.requester = foundUser;
         newBooking.job = foundJob;

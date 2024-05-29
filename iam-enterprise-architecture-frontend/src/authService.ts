@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
+
 import { PublicClientApplication } from "@azure/msal-browser";
 import { msalConfig } from './msalConfig';
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getTokenResponse = async (scope: string): Promise<any> => {
  try {
     const tokenResponse = await msalInstance.acquireTokenSilent({
-      // @ts-expect-error PROCESS.ENV
       scopes: [`api://${process.env.MSAL_API_CLIENT_ID}/${scope}`],
     });
-
+s
     return tokenResponse;
  } catch (error) {
     console.error(error);

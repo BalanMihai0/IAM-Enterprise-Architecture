@@ -64,17 +64,18 @@ export function Nav() {
           Offers
         </a>
       </Button>
-      <Button
-        variant="text"
-        color="black"
-        size="sm"
-        className="items-center"
-        placeholder={"bookings"}
-      >
-        <a href="/bookings" className="flex items-center">
-          Bookings
-        </a>
-      </Button>
+      {!isAdmin && signedIn && (
+        <Button
+          variant="text"
+          color="black"
+          size="sm"
+          className="items-center"
+          placeholder={"bookings"}
+        >
+          <a href="/bookings" className="flex items-center">
+            Bookings
+          </a>
+        </Button>)}
       <Button
         variant="text"
         color="black"

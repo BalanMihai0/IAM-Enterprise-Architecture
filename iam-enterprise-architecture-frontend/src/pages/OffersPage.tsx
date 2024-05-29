@@ -7,6 +7,7 @@ import OfferCard from '../components/offer/OfferCard'
 import axios from 'axios'
 import { IoLocationSharp } from "react-icons/io5";
 import { Typography } from "@material-tailwind/react";
+import { ToastContainer } from "react-toastify"
 
 const OffersPage = () => {
     const [selectedDateRange, setSelectedDateRange] = useState('all');
@@ -42,8 +43,9 @@ const OffersPage = () => {
     }, []);
 
     return (
-        <div className="flex flex-col lg:flex-row">
-            <div className="w-[340px] hidden lg:flex">
+        <div className="flex flex-col md:flex-row md:h-[calc(100vh-5rem)]">
+            <ToastContainer />
+            <div className="flex w-full md:w-[340px]">
                 <Sidebar
                     selectedDateRange={selectedDateRange}
                     onDateRangeChange={handleDateRangeChange}
@@ -51,7 +53,7 @@ const OffersPage = () => {
                 />
             </div>
             <div className="flex-1 overflow-y-auto p-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                     {
                         items.length > 0 ? (
                             items.map(item => (
