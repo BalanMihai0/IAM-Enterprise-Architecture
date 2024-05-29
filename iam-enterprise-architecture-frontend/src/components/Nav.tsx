@@ -143,9 +143,10 @@ export function Nav() {
             )}
             <IconButton
               variant="text"
-              size="sm"
-              className="hidden lg:inline-block"
-              placeholder={"log-in"}
+              className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+              ripple={false}
+              onClick={() => setOpenNav(!openNav)}
+              placeholder={"nav-toggle"}
             >
               {openNav ? (
                 <svg
