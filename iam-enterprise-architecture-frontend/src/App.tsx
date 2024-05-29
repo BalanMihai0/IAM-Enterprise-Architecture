@@ -13,6 +13,7 @@ import { Route, Routes, Navigate } from "react-router-dom"
 import { MsalProvider } from "@azure/msal-react"
 import AuthTestPage from "./pages/AuthTestPage.tsx"
 import { msalInstance } from "./authService.ts"
+import OffersPage from "./pages/OffersPage.tsx"
 import { AuthProvider } from './context/AuthContext.tsx';
 
 (async () => {
@@ -40,6 +41,8 @@ function App() {
           <Route element={<Layout />}>
             {/* Public routes */}
             <Route path="/home" element={<LandingPage />} />
+            <Route path="/offers" element={<OffersPage />} />
+
 
             {/* Admin routes */}
             <Route element={<ProtectedRoute allowedRoles={['admin']} />}>

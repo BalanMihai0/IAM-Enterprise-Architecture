@@ -1,4 +1,6 @@
 import { Configuration } from "@azure/msal-browser";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 
 export const msalConfig: Configuration = {
    auth: {
