@@ -38,7 +38,7 @@
     "formidable": "^3.2.4",
     "jwks-rsa": "^3.1.0",
     "jwt-decode": "^4.0.0",
-    "mysql2": "^3.9.3",
+    "mysql2": "^3.9.8",
     "nest": "^0.1.6",
     "passport": "^0.7.0",
     "passport-azure-ad": "^4.3.5",
