@@ -21,6 +21,7 @@ const roles_guard_1 = require("./auth/roles/roles.guard");
 const job_1 = require("./typeorm/entities/job");
 const booking_1 = require("./typeorm/entities/booking");
 const bookings_module_1 = require("./bookings/bookings.module");
+const health_module_1 = require("./health/health.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -50,6 +51,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             jobs_module_1.JobsModule,
             bookings_module_1.BookingsModule,
+            health_module_1.HealthModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

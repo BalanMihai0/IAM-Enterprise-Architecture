@@ -34,6 +34,7 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(8),
+    (0, class_validator_1.Matches)(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/, { message: 'Password too weak. It must contain at least 8 characters including a lowercase and uppercase letter, a digit and a special character.' }),
     __metadata("design:type", String)
 ], NewUserDto.prototype, "password", void 0);
 __decorate([
@@ -41,6 +42,7 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(8),
+    (0, class_validator_1.Matches)(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/, { message: 'Password too weak. It must contain at least 8 characters including a lowercase and uppercase letter, a digit and a special character.' }),
     __metadata("design:type", String)
 ], NewUserDto.prototype, "confirmPassword", void 0);
 //# sourceMappingURL=user.dto.js.map

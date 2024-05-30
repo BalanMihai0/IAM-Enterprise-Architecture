@@ -107,9 +107,4 @@ export class UsersController {
     return await this.usersService.deleteById(id);
   }
 
-  @Get('/health')
-  @HttpCode(HttpStatus.OK)
-  healthCheck() {
-    return { message: 'OK' };
-  }
 }
