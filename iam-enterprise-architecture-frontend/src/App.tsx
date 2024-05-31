@@ -16,7 +16,6 @@ import { Route, Routes, Navigate } from "react-router-dom"
 import { MsalProvider } from "@azure/msal-react"
 import AuthTestPage from "./pages/AuthTestPage.tsx"
 import { msalInstance } from "./authService.ts"
-import OffersPage from "./pages/OffersPage.tsx"
 
 import { AuthProvider } from './context/AuthContext.tsx';
 
