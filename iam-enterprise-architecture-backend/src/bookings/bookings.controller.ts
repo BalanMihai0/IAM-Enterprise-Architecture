@@ -72,11 +72,15 @@ export class BookingsController{
             throw new ForbiddenException("You are not authorized to access this resource.");
         }
 
+        if(token.id != id && token.role != 'admin') {
+            throw new ForbiddenException("You are not authorized to access this resource.");
+        }
+ 
         return await this.bookingService.findBookingsByUser(id);
     }
     
     @Get('/job/:id')
-    @Roles("admin", "customer")
+    @Roles("admin")
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     async findBookingsByJob(@Param('id') id: number, @Req() req: Request){
@@ -97,10 +101,13 @@ export class BookingsController{
     async findBookingsByUserAndJobs(@Param('userId') userId: number,@Param('jobId') jobId: number,@Req() req: Request){
         const token : any = req.user;
 
-        if (token.unique_name != userId) {
+        if (token.unique_name != userId)  {
             throw new ForbiddenException("You are not authorized to access this resource.");
         }
 
+        if(token.id != userId && token.role != 'admin') {
+            throw new ForbiddenException("You are not authorized to access this resource.");
+        }
         return await this.bookingService.findBookingsByUserAndJobs(userId,jobId);
     }
 
