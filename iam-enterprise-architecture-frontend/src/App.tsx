@@ -12,7 +12,7 @@ import NotAuthenticatedRoute from "./components/NotAuthenticatedRoute.tsx"
 import ProtectedRoute from "./components/ProtectedRoute.tsx"
 import Layout from "./components/Layout.tsx"
 
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, Navigate } from "react-router-dom"
 import { MsalProvider } from "@azure/msal-react"
 import AuthTestPage from "./pages/AuthTestPage.tsx"
 import { msalInstance } from "./authService.ts"
@@ -32,7 +32,7 @@ function App() {
     <MsalProvider instance={msalInstance}>
       <AuthProvider>
         <Routes>
-          {/* <Route path="/" element={<Navigate to="/home" />} /> */}
+          <Route path="/home" element={<Navigate to="/" />} />
 
           {/* Exclusively not authenticated routes */}
           <Route element={<NotAuthenticatedRoute />}>

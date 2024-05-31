@@ -4,7 +4,8 @@ import { DecodedToken } from "../types/DecodedToken";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { fetchAccessTokenLocal } from "../api/AxiosAuthentication"
+import { fetchAccessTokenLocal, fetchAccessTokenMSAL } from "../api/AxiosAuthentication"
+import { isAuthenticated } from "../authService";
 
 type ProtectedRouteProps = {
   allowedRoles: string[];
@@ -24,13 +25,16 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        if (!accessToken) {
+        if (!accessToken && await !isAuthenticated()) {
           const authResponse = await fetchAccessTokenLocal();
           setAccessToken(authResponse?.data);
+        } else if (!accessToken && await isAuthenticated()) {
+          const authResponse = await fetchAccessTokenMSAL();
+          setAccessToken(authResponse.data);
         }
       } catch (error: any) {
-        if (error.response.status !== 401) {
-          console.error("Unexpected error in fetchToken: ", error);
+        if (error.response.status === 401) {
+          setIsLoading(false);
         }
       } finally {
         setIsLoading(false);
