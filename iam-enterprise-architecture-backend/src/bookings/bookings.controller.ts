@@ -62,7 +62,9 @@ export class BookingsController{
     }
 
     @Get('/user:id')
-    @Roles()
+    @Roles("admin", "customer")
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
     async findBookingsByUser(@Param('id') id: number, @Req() req: Request) {
         const token : any = req.user;
 
@@ -72,16 +74,35 @@ export class BookingsController{
 
         return await this.bookingService.findBookingsByUser(id);
     }
-
-    // @Get('/job/:id')
-    // @Roles()
-    // async findBookingsByJobs(@Param('id') id: number){
-    //     return await this.bookingService.findBookingsByJobs(id);
-    // }
-
-    // @Get('/user:userid/job:jobid')
-    // @Roles()
-    // async findBookingsByUserAndJobs()
     
+    @Get('/job/:id')
+    @Roles("admin", "customer")
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    async findBookingsByJob(@Param('id') id: number, @Req() req: Request){
+        const token : any = req.user;
+
+        if (token.unique_name != id) {
+            throw new ForbiddenException("You are not authorized to access this resource.");
+        }
+
+        return await this.bookingService.findBookingsByJobs(id);
+    }
+
+
+    @Get('/user:userid/job:jobid')
+    @Roles("admin", "customer")
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    async findBookingsByUserAndJobs(@Param('userId') userId: number,@Param('jobId') jobId: number,@Req() req: Request){
+        const token : any = req.user;
+
+        if (token.unique_name != userId) {
+            throw new ForbiddenException("You are not authorized to access this resource.");
+        }
+
+        return await this.bookingService.findBookingsByUserAndJobs(userId,jobId);
+    }
+
 
 }
