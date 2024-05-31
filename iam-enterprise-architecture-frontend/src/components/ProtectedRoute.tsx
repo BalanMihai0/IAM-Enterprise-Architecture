@@ -3,12 +3,8 @@ import { useAuth } from "../context/AuthContext";
 import { DecodedToken } from "../types/DecodedToken";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
-import { isAuthenticated } from "../authService";
-import {
-  fetchAccessTokenMSAL,
-  fetchAccessTokenLocal,
-} from "../api/AxiosAuthentication";
 import { useLocation } from "react-router-dom";
+import { fetchAccessTokenLocal } from "../api/AxiosAuthentication"
 
 type ProtectedRouteProps = {
   allowedRoles: string[];
@@ -16,7 +12,8 @@ type ProtectedRouteProps = {
 
 function isTokenExpired(accessToken: string): boolean {
   const currentTime = Math.floor(Date.now() / 1000);
-  return currentTime >= jwtDecode<DecodedToken>(accessToken).exp;
+  const decodedToken = jwtDecode<DecodedToken>(accessToken);
+  return currentTime >= decodedToken.exp;
 }
 
 const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
@@ -27,24 +24,21 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        if (await isAuthenticated()) {
-          const authResponse = await fetchAccessTokenMSAL();
-          setAccessToken(authResponse.data);
-        } else {
+        if (!accessToken) {
           const authResponse = await fetchAccessTokenLocal();
           setAccessToken(authResponse?.data);
         }
-        setIsLoading(false);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
-        if (error.response.status === 401) {
-          setIsLoading(false);
+        if (error.response.status !== 401) {
+          console.error("Unexpected error in fetchToken: ", error);
         }
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchToken();
-  }, [setAccessToken]);
+  }, [accessToken, setAccessToken]);
 
   if (isLoading) {
     return (
@@ -53,6 +47,7 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
       </div>
     );
   }
+
   return accessToken &&
     !isTokenExpired(accessToken) &&
     allowedRoles.includes(jwtDecode<DecodedToken>(accessToken).role) ? (

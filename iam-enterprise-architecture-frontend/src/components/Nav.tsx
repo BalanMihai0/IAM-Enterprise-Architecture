@@ -15,6 +15,7 @@ export function Nav() {
   async function logOut() {
     setIsLoading(true);
     await logout();
+    setIsLoading(false);
   }
 
   React.useEffect(() => {
@@ -46,11 +47,10 @@ export function Nav() {
           color="black"
           size="sm"
           className="items-center"
-          placeholder={"admin"}
+          onClick={() => navigate("/admin")}
+          placeholder={undefined}
         >
-          <a href="/admin" className="flex items-center">
-            Admin
-          </a>
+          Admin
         </Button>
       )}
       <Button
@@ -58,11 +58,20 @@ export function Nav() {
         color="black"
         size="sm"
         className="items-center"
-        placeholder={"jobs"}
+        onClick={() => navigate("/")}
+        placeholder={undefined}
       >
-        <a href="/offers" className="flex items-center">
-          Offers
-        </a>
+        Home
+      </Button>
+      <Button
+        variant="text"
+        color="black"
+        size="sm"
+        className="items-center"
+        onClick={() => navigate("/offers")}
+        placeholder={undefined}
+      >
+        Offers
       </Button>
       {!isAdmin && signedIn && (
         <Button
@@ -70,23 +79,24 @@ export function Nav() {
           color="black"
           size="sm"
           className="items-center"
-          placeholder={"bookings"}
+          onClick={() => navigate("/bookings")}
+          placeholder={undefined}
         >
-          <a href="/bookings" className="flex items-center">
-            Bookings
-          </a>
-        </Button>)}
-      <Button
-        variant="text"
-        color="black"
-        size="sm"
-        className="items-center"
-        placeholder={"account"}
-      >
-        <a href="/account" className="flex items-center">
+          Bookings
+        </Button>
+      )}
+      {signedIn && (
+        <Button
+          variant="text"
+          color="black"
+          size="sm"
+          className="items-center"
+          onClick={() => navigate("/account")}
+          placeholder={undefined}
+        >
           Account
-        </a>
-      </Button>
+        </Button>
+      )}
     </ul>
   );
 
@@ -97,13 +107,16 @@ export function Nav() {
         placeholder={"nav"}
       >
         <div className="flex items-center justify-between text-blue-gray-900">
-          <a href="/home" className="ml-3 cursor-pointer flex items-center">
+          <div
+            className="ml-3 cursor-pointer flex items-center"
+            onClick={() => navigate("/")}
+          >
             <img
               src="black-logo-no-bg.png"
               alt="BlackHawk Security"
               className="h-10"
             />
-          </a>
+          </div>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
             {!signedIn ? (
@@ -124,9 +137,7 @@ export function Nav() {
                   placeholder={"register"}
                   onClick={() => navigate("/register")}
                 >
-                  <a href="/register" className="flex items-center">
-                    Register
-                  </a>
+                  Register
                 </Button>
               </div>
             ) : (
@@ -136,7 +147,7 @@ export function Nav() {
                 size="sm"
                 className="flex flex-row invisible lg:visible"
                 placeholder={"sign-out"}
-                onClick={() => logOut()}
+                onClick={logOut}
                 loading={isLoading}
               >
                 Sign out
@@ -214,7 +225,7 @@ export function Nav() {
               size="sm"
               className="flex flex-row items-center"
               placeholder={"sign-out"}
-              onClick={() => logOut()}
+              onClick={logOut}
               loading={isLoading}
             >
               Sign out

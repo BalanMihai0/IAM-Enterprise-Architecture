@@ -4,17 +4,19 @@ import LandingPage from "./pages/LandingPage.tsx"
 import RegisterPage from "./pages/RegisterPage.tsx"
 import LoginPage from "./pages/LoginPage.tsx"
 import AdminPage from "./pages/AdminPage.tsx"
+import OffersPage from "./pages/OffersPage.tsx"
+import BookingsPage from "./pages/BookingsPage.tsx"
+import AccountPage from "./pages/AccountPage.tsx"
 
 import NotAuthenticatedRoute from "./components/NotAuthenticatedRoute.tsx"
 import ProtectedRoute from "./components/ProtectedRoute.tsx"
 import Layout from "./components/Layout.tsx"
 
-import { Route, Routes, Navigate } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import { MsalProvider } from "@azure/msal-react"
 import AuthTestPage from "./pages/AuthTestPage.tsx"
 import { msalInstance } from "./authService.ts"
-import OffersPage from "./pages/OffersPage.tsx"
-import BookingsPage from "./pages/BookingsPage.tsx"
+
 import { AuthProvider } from './context/AuthContext.tsx';
 
 (async () => {
@@ -30,7 +32,7 @@ function App() {
     <MsalProvider instance={msalInstance}>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
+          {/* <Route path="/" element={<Navigate to="/home" />} /> */}
 
           {/* Exclusively not authenticated routes */}
           <Route element={<NotAuthenticatedRoute />}>
@@ -41,7 +43,7 @@ function App() {
           {/* Stylized routes */}
           <Route element={<Layout />}>
             {/* Public routes */}
-            <Route path="/home" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage />} />
             <Route path="/offers" element={<OffersPage />} />
 
 
@@ -58,6 +60,7 @@ function App() {
             {/* Admin & Customer routes */}
             <Route element={<ProtectedRoute allowedRoles={['admin', 'customer']} />}>
               {/* Place admin & customer shared routes here */}
+              <Route path="/account" element={<AccountPage />} />
             </Route>
           </Route>
 

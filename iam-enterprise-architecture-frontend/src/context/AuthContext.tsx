@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchToken = async () => {
+    const initializeAuth = async () => {
       try {
         if (await isAuthenticated()) {
           const authResponse = await fetchAccessTokenMSAL();
@@ -43,26 +43,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const authResponse = await fetchAccessTokenLocal();
           setAccessToken(authResponse?.data);
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         if (error.response.status !== 401) {
-          console.error("Unexpected error in fetchToken: ", error);
+          console.error("Unexpected error in initializeAuth: ", error);
         }
       }
     };
-    fetchToken();
+    initializeAuth();
   }, []);
 
   const isLoggedIn = async (): Promise<boolean | null> => {
     try {
       if (await isAuthenticated()) {
         return true;
-      } else if (await fetchAccessTokenLocal()) {
+      } else if (accessToken) {
         return true;
       } else {
         return false;
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error?.response?.status === 401) {
         return false;
@@ -86,7 +84,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       } else if (method === "Microsoft") {
         const loginResponse = await instance.loginPopup({
-          // @ts-expect-error PROCESS.ENV
           scopes: [`api://${process.env.MSAL_API_CLIENT_ID}/admin`],
         });
         if (loginResponse) {
@@ -96,10 +93,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setAccessToken(authResponse.data);
         }
       }
-      // Wait 1 second before navigating to "/home"
-      setTimeout(() => {
-        navigate("/home");
-      }, 1000);
     } catch (error) {
       console.error("Login error: ", error);
     }
@@ -124,7 +117,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
