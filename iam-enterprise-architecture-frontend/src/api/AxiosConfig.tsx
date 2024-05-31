@@ -39,7 +39,7 @@ axiosInstance.interceptors.response.use(
         accessToken = response.data;
       } else {
         const response = await fetchAccessTokenLocal();
-        accessToken = response.data;
+        accessToken = response?.data;
       }
       const { setAccessToken } = useAuth();
       setAccessToken(accessToken);
