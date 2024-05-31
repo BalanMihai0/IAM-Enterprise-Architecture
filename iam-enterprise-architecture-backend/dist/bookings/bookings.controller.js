@@ -126,6 +126,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('/job/:id'),
     (0, roles_decorator_1.Roles)("admin"),
+    (0, roles_decorator_1.Roles)("admin"),
     (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('id')),
