@@ -104,7 +104,6 @@ export class AuthController {
   @UseGuards(AzureADGuard)
   async validateToken(@Req() req) {
     let role = 'customer';
-    console.log(req.user);
     if (
       req.user.iss ===
       `https://sts.windows.net/${process.env.MSAL_WEB_TENANT_ID}/`

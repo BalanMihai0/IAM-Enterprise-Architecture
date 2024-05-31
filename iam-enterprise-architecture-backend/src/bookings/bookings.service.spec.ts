@@ -94,7 +94,6 @@ describe('BookingService', () => {
 
         it('should create a new booking', async () => {
             const bookingDto: NewBookingDTO = {
-                requester: 1, // Assuming userId
                 job: 1, // Assuming jobId
                 startDate: mockDate,
                 endDate: mockDate,
@@ -167,7 +166,7 @@ describe('BookingService', () => {
             });
         
             // Call create method of BookingService
-            const result = await service.create(bookingDto);
+            const result = await service.create(bookingDto, 1);
         
             // Check if the result is as expected
             expect(result).toBeDefined();

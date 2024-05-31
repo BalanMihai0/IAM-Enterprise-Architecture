@@ -7,10 +7,12 @@ import TeamMember1 from '../assets/Team-Member-1.png';
 import TeamMember2 from '../assets/Team-Member-2.png';
 import TeamMember3 from '../assets/Team-Member-3.png';
 import '../style/landingPage.css'
+import { useNavigate } from 'react-router-dom'
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+  
   return (
-
     <div>
       {/* Hero Section */}
       <section className="relative bg-cover bg-center h-screen" style={{ backgroundImage: `url(${blackHawkArmy})` }}>
@@ -20,7 +22,7 @@ const LandingPage = () => {
           <Typography variant="lead" className="mt-4 text-xl text-white">Professional Security Solutions for Any Occasion</Typography>
           <div className="mt-8">
             <Button variant="gradient" color="white" className="m-2">Learn More</Button>
-            <Button variant="gradient" color="white" className="m-2">Get Protected Now</Button>
+            <Button onClick={() => navigate("/offers")} variant="gradient" color="white" className="m-2">Get Protected Now</Button>
           </div>
         </div>
       </section>

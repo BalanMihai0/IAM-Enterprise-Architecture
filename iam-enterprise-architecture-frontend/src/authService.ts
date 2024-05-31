@@ -11,7 +11,7 @@ export const getTokenResponse = async (scope: string): Promise<any> => {
     const tokenResponse = await msalInstance.acquireTokenSilent({
       scopes: [`api://${process.env.MSAL_API_CLIENT_ID}/${scope}`],
     });
-s
+    
     return tokenResponse;
  } catch (error) {
     console.error(error);
