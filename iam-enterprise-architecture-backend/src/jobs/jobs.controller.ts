@@ -8,11 +8,12 @@ import { Request } from 'express';
 import { UpdateJobDto } from './dto/updateJob.dto';
 import { ValidationError, validate } from 'class-validator';
 import { Job } from 'src/typeorm/entities/job';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @ApiTags('Jobs')
 @Controller('jobs')
 export class JobsController {
-    constructor(private readonly jobsService : JobsService) { }
+    constructor(private readonly jobsService: JobsService) { }
 
     @Post()
     @Roles("admin")
@@ -24,17 +25,22 @@ export class JobsController {
     }
 
     @Get()
-    @Roles('*')
+    @Roles("*")
     @ApiQuery({ name: 'title', required: false })
     @ApiQuery({ name: 'startDate', required: false })
     @ApiQuery({ name: 'endDate', required: false })
+    @ApiQuery({ name: 'page', required: false, type: Number })
+    @ApiQuery({ name: 'limit', required: false, type: Number })
     async findAll(
         @Query('title') title?: string,
         @Query('startDate') startDate?: string,
         @Query('endDate') endDate?: string,
-    ): Promise<Job[]> {
-        return await this.jobsService.findAll(title, startDate, endDate);
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+    ): Promise<Pagination<Job>> {
+        return await this.jobsService.findAll(title, startDate, endDate, { page, limit });
     }
+
 
     @Get(':id')
     @Roles("*")

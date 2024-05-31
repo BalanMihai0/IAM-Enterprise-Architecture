@@ -40,6 +40,7 @@
     "jwt-decode": "^4.0.0",
     "mysql2": "^3.9.3",
     "nest": "^0.1.6",
+    "nestjs-typeorm-paginate": "^4.0.4",
     "passport": "^0.7.0",
     "passport-azure-ad": "^4.3.5",
     "passport-jwt": "^4.0.1",
