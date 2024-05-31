@@ -23,6 +23,8 @@ import OffersPage from "./pages/OffersPage.tsx"
   }
  })();
 
+ 
+
 function App() {
   return (
     <MsalProvider instance={msalInstance}>
