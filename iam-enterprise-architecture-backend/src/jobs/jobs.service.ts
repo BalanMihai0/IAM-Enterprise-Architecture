@@ -26,8 +26,22 @@ export class JobsService {
         return this.jobRepository.save(newJob);
     }
 
-    async findAll(): Promise<Job[]> {
-        const foundJobs = await this.jobRepository.find();
+    async findAll(title?: string, startDate?: string, endDate?: string): Promise<Job[]> {
+        const query = this.jobRepository.createQueryBuilder('job');
+
+        if (title) {
+            query.andWhere('job.title LIKE :title', { title: `%${title}%` });
+        }
+
+        if (startDate) {
+            query.andWhere('job.posted_on >= :startDate', { startDate });
+        }
+
+        if (endDate) {
+            query.andWhere('job.posted_on <= :endDate', { endDate });
+        }
+
+        const foundJobs = await query.getMany();
         return foundJobs;
     }
 
