@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
-
 import React, { useState } from 'react';
 import { Typography, Card, CardBody } from '@material-tailwind/react';
 import { IoLocationSharp } from 'react-icons/io5';
