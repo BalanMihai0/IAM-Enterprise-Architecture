@@ -25,8 +25,8 @@ let BookingService = class BookingService {
         this.userService = userService;
         this.jobService = jobService;
     }
-    async create(bookingDto) {
-        const foundUser = await this.userService.findById(bookingDto.requester);
+    async create(bookingDto, requesterId) {
+        const foundUser = await this.userService.findById(requesterId);
         const foundJob = await this.jobService.findById(bookingDto.job);
         const newBooking = new booking_1.Booking();
         newBooking.requester = foundUser;

@@ -1,5 +1,6 @@
 export declare class Job {
     id: number;
+    type: string;
     title: string;
     description: string;
     location: string;

@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const job_1 = require("../typeorm/entities/job");
 const typeorm_2 = require("typeorm");
+const nestjs_typeorm_paginate_1 = require("nestjs-typeorm-paginate");
 let JobsService = class JobsService {
     constructor(jobRepository) {
         this.jobRepository = jobRepository;
@@ -28,14 +29,24 @@ let JobsService = class JobsService {
             description: jobDto.description,
             location: jobDto.location,
             price: jobDto.price,
+            type: jobDto.type,
             posted_by: postedById,
             posted_on: new Date()
         });
         return this.jobRepository.save(newJob);
     }
-    async findAll() {
-        const foundJobs = await this.jobRepository.find();
-        return foundJobs;
+    async findAll(title, startDate, endDate, options) {
+        const query = this.jobRepository.createQueryBuilder('job');
+        if (title) {
+            query.andWhere('job.title LIKE :title', { title: `%${title}%` });
+        }
+        if (startDate) {
+            query.andWhere('job.posted_on >= :startDate', { startDate });
+        }
+        if (endDate) {
+            query.andWhere('job.posted_on <= :endDate', { endDate });
+        }
+        return (0, nestjs_typeorm_paginate_1.paginate)(query, options);
     }
     async findById(id) {
         const foundJob = await this.jobRepository.findOne({ where: { id } });

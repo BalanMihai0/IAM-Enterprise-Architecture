@@ -40,7 +40,7 @@ let UsersController = class UsersController {
     }
     async findById(id, req) {
         const token = req.user;
-        if (token.id != id && token.role != 'admin') {
+        if (token.unique_name != id && token.role != 'admin') {
             throw new common_1.ForbiddenException('You are not authorized to access this resource.');
         }
         return await this.usersService.findById(id);

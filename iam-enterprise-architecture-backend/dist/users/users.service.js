@@ -33,7 +33,6 @@ let UsersService = class UsersService {
             password: hashedPassword,
             role: 'customer'
         });
-        console.log('newUser', newUser);
         return this.userRepository.save(newUser);
     }
     async findAll() {
