@@ -21,7 +21,6 @@ export class JobsController {
     @UseGuards(JwtAuthGuard)
     async create(@Req() req: Request, @Body() jobDto: NewJobDTO) {
         const token: any = req.user;
-        console.log(token.unique_name)
         return await this.jobsService.create(jobDto, token.unique_name);
     }
 

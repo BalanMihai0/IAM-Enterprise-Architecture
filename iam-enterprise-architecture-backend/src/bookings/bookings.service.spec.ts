@@ -116,6 +116,7 @@ describe('BookingService', () => {
                 price: 100,
                 posted_by: '1', // posted_by is a string
                 posted_on: mockDate,
+                type: "job"
             }); // Mock job found
         
             // Mock the behavior of bookingRepository methods
@@ -136,6 +137,7 @@ describe('BookingService', () => {
                     price: 100,
                     posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
+                    type: "job"
                 },
                 startDate: mockDate,
                 endDate: mockDate,
@@ -159,6 +161,7 @@ describe('BookingService', () => {
                     price: 100,
                     posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
+                    type: "job"
                 },
                 startDate: mockDate,
                 endDate: mockDate,
@@ -187,6 +190,7 @@ describe('BookingService', () => {
                     price: 100,
                     posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
+                    type: "job"
                 },
                 startDate: mockDate,
                 endDate: mockDate,

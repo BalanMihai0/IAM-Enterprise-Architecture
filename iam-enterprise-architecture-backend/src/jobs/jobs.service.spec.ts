@@ -42,6 +42,7 @@ describe('JobsService', () => {
         description: 'Developing software applications',
         location: 'Remote',
         price: 5000,
+        type: "Job"
       };
 
       const newJob: Job = {
@@ -52,6 +53,7 @@ describe('JobsService', () => {
         price: newJobDto.price,
         posted_by: '69',
         posted_on: new Date(),
+        type: newJobDto.type
       };
 
       // Mock create and save methods of the repository
@@ -70,6 +72,7 @@ describe('JobsService', () => {
         price: newJobDto.price,
         posted_by: '69',
         posted_on: expect.any(Date),
+        type: newJobDto.type
       });
 
       // Ensure that save method was called
@@ -88,6 +91,7 @@ describe('JobsService', () => {
         price: 5000,
         posted_by: '69',
         posted_on: new Date(),
+        type: "Job"
       };
 
       // Mock findOne method of the repository

@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsISO8601, IsNotEmpty, IsNumber, IsString, Matches } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class NewJobDTO {
     @ApiProperty()
@@ -25,5 +25,5 @@ export class NewJobDTO {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    type: string;
+    type: string; 
 }

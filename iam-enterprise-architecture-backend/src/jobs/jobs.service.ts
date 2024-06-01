@@ -20,6 +20,7 @@ export class JobsService {
             description: jobDto.description,
             location: jobDto.location,
             price: jobDto.price,
+            type: jobDto.type,
             posted_by: postedById,
             posted_on: new Date()
         });

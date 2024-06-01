@@ -14,7 +14,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api/v1');
 
-  const excludedBranches = process.env.SWAGGER_EXCLUDE?.split(',') || [];  
+  const excludedBranches = process.env.SWAGGER_EXCLUDE?.split(',') || [];
   const git = simpleGit();
   const branch = await git.revparse(['--abbrev-ref', 'HEAD']);
 
