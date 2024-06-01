@@ -1,52 +1,62 @@
-import RegisterForm from "../components/register/RegisterForm"
-import { useNavigate } from "react-router";
+import RegisterForm from "../components/register/RegisterForm";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { RegisterUserData } from "../types/RegisterUserData";
 import Swal from "sweetalert2";
 import { z } from "zod";
 import { ErrorObject } from "../types/ErrorObject";
+import { registerUser } from "../api/AxiosAuthentication";
+import { useNavigate } from "react-router";
 
 export default function RegisterPage() {
-    const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
-    const [termsAgreed, setTermsAgreed] = useState(false);
-    const {register, handleSubmit} = useForm();
-    const [errors, setErrors] = useState<ErrorObject[]>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [termsAgreed, setTermsAgreed] = useState(false);
+  const { register, handleSubmit } = useForm();
+  const [errors, setErrors] = useState<ErrorObject[]>();
+  const navigate = useNavigate();
 
-    function handleClick(d: unknown) {
-        if (!termsAgreed) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "You must agree to the terms and conditions.",
-            });
-        } else {
-            try {
-                RegisterUserData.parse(d);
-                setIsLoading(!isLoading);
-                console.log(d);
-                // Handle Data
-                navigate("");
-            } catch (error) {
-                if (error instanceof z.ZodError) {
-                    setErrors(error.errors.map(e => ({
-                        field: e.path.join('.'),
-                        message: e.message,
-                    })));
-                }
-            }
+  async function handleClick(d: unknown) {
+    if (!termsAgreed) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "You must agree to the terms and conditions.",
+      });
+    } else {
+      try {
+        RegisterUserData.parse(d);
+        setIsLoading(!isLoading);
+        console.log(d);
+        await registerUser(d);
+        navigate("/login");
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          setErrors(
+            error.errors.map((e) => ({
+              field: e.path.join("."),
+              message: e.message,
+            }))
+          );
         }
+      }
     }
+  }
 
-    function toggleTerms() {
-        setTermsAgreed(!termsAgreed);
-    }
+  function toggleTerms() {
+    setTermsAgreed(!termsAgreed);
+  }
 
-    return (
-        <div className="page-center-items flex-col">
-            <img src="./black-logo-no-bg.png" className="pb-5" />
-            <RegisterForm handleClick={handleSubmit(handleClick)} isLoading={isLoading} termsAgreed={termsAgreed} toggleTerms={toggleTerms} registerData={register} errors={errors as ErrorObject[]} />
-        </div>
-    )
+  return (
+    <div className="page-center-items flex-col">
+      <img src="./black-logo-no-bg.png" className="pb-5" />
+      <RegisterForm
+        handleClick={handleSubmit(handleClick)}
+        isLoading={isLoading}
+        termsAgreed={termsAgreed}
+        toggleTerms={toggleTerms}
+        registerData={register}
+        errors={errors as ErrorObject[]}
+      />
+    </div>
+  );
 }

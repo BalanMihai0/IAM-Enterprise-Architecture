@@ -39,4 +39,10 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], NewJobDTO.prototype, "price", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], NewJobDTO.prototype, "type", void 0);
 //# sourceMappingURL=job.dto.js.map

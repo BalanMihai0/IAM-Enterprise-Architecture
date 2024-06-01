@@ -26,14 +26,12 @@ let BookingsController = class BookingsController {
     }
     async create(bookingDto, req) {
         const token = req.user;
-        if (token.unique_name != bookingDto.requester) {
-            throw new common_1.ForbiddenException("You are not authorized to create this resource.");
-        }
         const errors = await (0, class_validator_1.validate)(bookingDto);
         if (errors.length > 0) {
             throw new common_1.BadRequestException(errors);
         }
-        return await this.bookingService.create(bookingDto);
+        const requesterId = token.unique_name;
+        return await this.bookingService.create(bookingDto, requesterId);
     }
     async delete(id, req) {
         return await this.bookingService.delete(id);

@@ -94,7 +94,6 @@ describe('BookingService', () => {
 
         it('should create a new booking', async () => {
             const bookingDto: NewBookingDTO = {
-                requester: 1, // Assuming userId
                 job: 1, // Assuming jobId
                 startDate: mockDate,
                 endDate: mockDate,
@@ -117,6 +116,7 @@ describe('BookingService', () => {
                 price: 100,
                 posted_by: '1', // posted_by is a string
                 posted_on: mockDate,
+                type: "job"
             }); // Mock job found
         
             // Mock the behavior of bookingRepository methods
@@ -137,6 +137,7 @@ describe('BookingService', () => {
                     price: 100,
                     posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
+                    type: "job"
                 },
                 startDate: mockDate,
                 endDate: mockDate,
@@ -160,6 +161,7 @@ describe('BookingService', () => {
                     price: 100,
                     posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
+                    type: "job"
                 },
                 startDate: mockDate,
                 endDate: mockDate,
@@ -167,7 +169,7 @@ describe('BookingService', () => {
             });
         
             // Call create method of BookingService
-            const result = await service.create(bookingDto);
+            const result = await service.create(bookingDto, 1);
         
             // Check if the result is as expected
             expect(result).toBeDefined();
@@ -188,6 +190,7 @@ describe('BookingService', () => {
                     price: 100,
                     posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
+                    type: "job"
                 },
                 startDate: mockDate,
                 endDate: mockDate,

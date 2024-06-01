@@ -1,35 +1,46 @@
-import { Body, Controller, Post, Get, Patch, Delete, Param, Req, UseGuards, ForbiddenException, BadRequestException } from '@nestjs/common';
+import { Body, Controller, Post, Get, Query, Patch, Delete, Param, Req, UseGuards, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { NewJobDTO } from './dto/job.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { Request } from 'express';
 import { UpdateJobDto } from './dto/updateJob.dto';
 import { ValidationError, validate } from 'class-validator';
+import { Job } from 'src/typeorm/entities/job';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @ApiTags('Jobs')
 @Controller('jobs')
 export class JobsController {
-    constructor(private readonly jobsService : JobsService) { }
+    constructor(private readonly jobsService: JobsService) { }
 
     @Post()
     @Roles("admin")
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     async create(@Req() req: Request, @Body() jobDto: NewJobDTO) {
-
-        console.log(jobDto)
         const token: any = req.user;
-        console.log(token.unique_name)
         return await this.jobsService.create(jobDto, token.unique_name);
     }
 
     @Get()
     @Roles("*")
-    async findAll() {
-        return await this.jobsService.findAll();
+    @ApiQuery({ name: 'title', required: false })
+    @ApiQuery({ name: 'startDate', required: false })
+    @ApiQuery({ name: 'endDate', required: false })
+    @ApiQuery({ name: 'page', required: false, type: Number })
+    @ApiQuery({ name: 'limit', required: false, type: Number })
+    async findAll(
+        @Query('title') title?: string,
+        @Query('startDate') startDate?: string,
+        @Query('endDate') endDate?: string,
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 50,
+    ): Promise<Pagination<Job>> {
+        return await this.jobsService.findAll(title, startDate, endDate, { page, limit });
     }
+
 
     @Get(':id')
     @Roles("*")

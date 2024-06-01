@@ -1,103 +1,158 @@
 import React from "react";
-import {
-  Navbar,
-  MobileNav,
-  Typography,
-  Button,
-  IconButton,
-} from "@material-tailwind/react";
- 
-export function Nav () {
+import { Navbar, Collapse, Button, IconButton } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { isAuthenticated } from "../authService";
+
+export function Nav() {
   const [openNav, setOpenNav] = React.useState(false);
- 
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [signedIn, setSignedIn] = React.useState<boolean | null>(null);
+  const [isAdmin, setIsAdmin] = React.useState<boolean | null>(null);
+  const { isLoggedIn, logout } = useAuth();
+  const navigate = useNavigate();
+
+  async function logOut() {
+    setIsLoading(true);
+    await logout();
+    setIsLoading(false);
+  }
+
   React.useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false),
-    );
-  }, []);
- 
+    const initialize = async () => {
+      window.addEventListener(
+        "resize",
+        () => window.innerWidth >= 960 && setOpenNav(false)
+      );
+      const loggedIn = await isLoggedIn();
+      setSignedIn(loggedIn);
+      if (loggedIn) {
+        setIsAdmin(await isAuthenticated());
+      }
+    };
+    initialize();
+
+    return () =>
+      window.removeEventListener(
+        "resize",
+        () => window.innerWidth >= 960 && setOpenNav(false)
+      );
+  }, [isLoggedIn, signedIn]);
+
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-        placeholder={"home"}
+      {isAdmin && (
+        <Button
+          variant="text"
+          color="black"
+          size="sm"
+          className="items-center"
+          onClick={() => navigate("/admin")}
+          placeholder={undefined}
+        >
+          Admin
+        </Button>
+      )}
+      <Button
+        variant="text"
+        color="black"
+        size="sm"
+        className="items-center"
+        onClick={() => navigate("/")}
+        placeholder={undefined}
       >
-        <a href="/home" className="flex items-center">
-          Home
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-        placeholder={"jobs"}
+        Home
+      </Button>
+      <Button
+        variant="text"
+        color="black"
+        size="sm"
+        className="items-center"
+        onClick={() => navigate("/offers")}
+        placeholder={undefined}
       >
-        <a href="/offers" className="flex items-center">
-          Offers
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-        placeholder={"bookings"}
-      >
-        <a href="/bookings" className="flex items-center">
+        Offers
+      </Button>
+      {!isAdmin && signedIn && (
+        <Button
+          variant="text"
+          color="black"
+          size="sm"
+          className="items-center"
+          onClick={() => navigate("/bookings")}
+          placeholder={undefined}
+        >
           Bookings
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-        placeholder={"account"}
-      >
-        <a href="/account" className="flex items-center">
+        </Button>
+      )}
+      {signedIn && (
+        <Button
+          variant="text"
+          color="black"
+          size="sm"
+          className="items-center"
+          onClick={() => navigate("/account")}
+          placeholder={undefined}
+        >
           Account
-        </a>
-      </Typography>
+        </Button>
+      )}
     </ul>
   );
- 
+
   return (
     <div>
-      <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none" placeholder={"nav"}>
+      <Navbar
+        className="sticky top-0 z-10 h-max max-w-full rounded-none"
+        placeholder={"nav"}
+      >
         <div className="flex items-center justify-between text-blue-gray-900">
-          <Typography
-            as="a"
-            href="#"
-            className="mr-4 cursor-pointer py-1.5 font-medium"
-            placeholder={"BlackHawk Security"}
+          <div
+            className="ml-3 cursor-pointer flex items-center"
+            onClick={() => navigate("/")}
           >
-            BlackHawk Security
-          </Typography>
+            <img
+              src="black-logo-no-bg.png"
+              alt="BlackHawk Security"
+              className="h-10"
+            />
+          </div>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
-            <div className="flex items-center gap-x-1">
+            {!signedIn ? (
+              <div className="flex items-center gap-x-1">
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                  placeholder={"sign_in"}
+                  onClick={() => navigate("/login")}
+                >
+                  Sign in
+                </Button>
+                <Button
+                  variant="gradient"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                  placeholder={"register"}
+                  onClick={() => navigate("/register")}
+                >
+                  Register
+                </Button>
+              </div>
+            ) : (
               <Button
-                variant="text"
-                size="sm"
-                className="hidden lg:inline-block"
-                placeholder={"log-in"}
-              >
-                <span>Log In</span>
-              </Button>
-              <Button
+                fullWidth
                 variant="gradient"
                 size="sm"
-                className="hidden lg:inline-block"
-                placeholder={"sign-in"}
+                className="flex flex-row invisible lg:visible"
+                placeholder={"sign-out"}
+                onClick={logOut}
+                loading={isLoading}
               >
-                <span>Sign in</span>
+                Sign out
               </Button>
-            </div>
+            )}
             <IconButton
               variant="text"
               className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
@@ -138,17 +193,45 @@ export function Nav () {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>
+        <Collapse open={openNav}>
           {navList}
-          <div className="flex items-center gap-x-1">
-            <Button fullWidth variant="text" size="sm" className="" placeholder={"log-in"}>
-              <span>Log In</span>
+          {!signedIn ? (
+            <div className="flex items-center gap-x-1">
+              <Button
+                fullWidth
+                variant="outlined"
+                size="sm"
+                className="items-center"
+                placeholder={"log-in"}
+                onClick={() => navigate("/login")}
+              >
+                Sign in
+              </Button>
+              <Button
+                fullWidth
+                variant="gradient"
+                size="sm"
+                className="items-center"
+                placeholder={"register"}
+                onClick={() => navigate("/register")}
+              >
+                Register
+              </Button>
+            </div>
+          ) : (
+            <Button
+              fullWidth
+              variant="gradient"
+              size="sm"
+              className="flex flex-row items-center"
+              placeholder={"sign-out"}
+              onClick={logOut}
+              loading={isLoading}
+            >
+              Sign out
             </Button>
-            <Button fullWidth variant="gradient" size="sm" className="" placeholder={"sign-in"}>
-              <span>Sign in</span>
-            </Button>
-          </div>
-        </MobileNav>
+          )}
+        </Collapse>
       </Navbar>
     </div>
   );

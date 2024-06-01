@@ -21,16 +21,13 @@ export class BookingsController{
 
         const token: any = req.user;
 
-        if (token.unique_name != bookingDto.requester) {
-            throw new ForbiddenException("You are not authorized to create this resource.");
-        }
-
         const errors = await validate(bookingDto);
         if (errors.length > 0) {
             throw new BadRequestException(errors);
         }
         
-        return await this.bookingService.create(bookingDto);
+        const requesterId = token.unique_name;
+        return await this.bookingService.create(bookingDto, requesterId);
     }
 
     @Delete(':id')

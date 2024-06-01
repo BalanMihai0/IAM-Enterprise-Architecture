@@ -58,7 +58,7 @@ export class UsersController {
   async findById(@Param('id') id: number, @Req() req: Request) {
     const token: any = req.user;
 
-    if (token.id != id && token.role != 'admin') {
+    if (token.unique_name != id && token.role != 'admin') {
       throw new ForbiddenException(
         'You are not authorized to access this resource.',
       );

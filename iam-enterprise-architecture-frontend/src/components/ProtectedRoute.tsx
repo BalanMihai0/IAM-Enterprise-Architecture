@@ -1,33 +1,64 @@
-/* import { useLocation, Navigate, Outlet } from "react-router-dom";
-
-export default function ProtectedRoute({ allowedRoles }) {
-    const location = useLocation();
-
-    return (
-        isLoggedIn
-            ? (user?.role && allowedRoles.includes(user.role)
-                ? (
-                    <div className="flex">
-                        <Sidebar role={user.role} />
-                        <div className="flex-1 p-4 bg-dracula-darker-500">
-                            <Outlet />
-                        </div>
-                    </div>
-                )
-                : <Navigate to="/unauthorized" state={{ from: location }} replace />
-            )
-            : <Navigate to="/login" state={{ from: location }} replace />
-    );
-} */
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { DecodedToken } from "../types/DecodedToken";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { fetchAccessTokenLocal, fetchAccessTokenMSAL } from "../api/AxiosAuthentication"
+import { isAuthenticated } from "../authService";
 
 type ProtectedRouteProps = {
-    allowedRoles: string[];
+  allowedRoles: string[];
 };
 
-export default function ProtectedRoute({allowedRoles}:ProtectedRouteProps) {
-    console.log(allowedRoles);
-    return (
-        <>
-        </>
-    )
+function isTokenExpired(accessToken: string): boolean {
+  const currentTime = Math.floor(Date.now() / 1000);
+  const decodedToken = jwtDecode<DecodedToken>(accessToken);
+  return currentTime >= decodedToken.exp;
 }
+
+const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
+  const { accessToken, setAccessToken } = useAuth();
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        if (!accessToken && await !isAuthenticated()) {
+          const authResponse = await fetchAccessTokenLocal();
+          setAccessToken(authResponse?.data);
+        } else if (!accessToken && await isAuthenticated()) {
+          const authResponse = await fetchAccessTokenMSAL();
+          setAccessToken(authResponse.data);
+        }
+      } catch (error: any) {
+        if (error.response.status === 401) {
+          setIsLoading(false);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchToken();
+  }, [accessToken, setAccessToken]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen w-screen">
+        <div>Loading...</div>
+      </div>
+    );
+  }
+
+  return accessToken &&
+    !isTokenExpired(accessToken) &&
+    allowedRoles.includes(jwtDecode<DecodedToken>(accessToken).role) ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/not_found" state={{ from: location }} replace />
+  );
+};
+
+export default ProtectedRoute;

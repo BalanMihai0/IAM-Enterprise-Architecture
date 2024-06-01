@@ -1,60 +1,76 @@
 import NotFoundPage from "./pages/NotFoundPage.tsx"
-import UnauthorizedPage from "./pages/UnauthorizedPage.tsx"
 
 import LandingPage from "./pages/LandingPage.tsx"
 import RegisterPage from "./pages/RegisterPage.tsx"
 import LoginPage from "./pages/LoginPage.tsx"
+import AdminPage from "./pages/AdminPage.tsx"
+import OffersPage from "./pages/OffersPage.tsx"
+import BookingsPage from "./pages/BookingsPage.tsx"
+import AccountPage from "./pages/AccountPage.tsx"
 
+import NotAuthenticatedRoute from "./components/NotAuthenticatedRoute.tsx"
 import ProtectedRoute from "./components/ProtectedRoute.tsx"
 import Layout from "./components/Layout.tsx"
 
-import { Route, Routes } from "react-router"
+import { Route, Routes, Navigate } from "react-router-dom"
 import { MsalProvider } from "@azure/msal-react"
 import AuthTestPage from "./pages/AuthTestPage.tsx"
 import { msalInstance } from "./authService.ts"
-import OffersPage from "./pages/OffersPage.tsx"
+
+import { AuthProvider } from './context/AuthContext.tsx';
 
 (async () => {
   try {
-     await msalInstance.initialize();
-     console.log("MSAL instance initialized");
+    await msalInstance.initialize();
   } catch (error) {
-     console.error("Failed to initialize MSAL instance", error);
+    console.error("Failed to initialize MSAL instance", error);
   }
- })();
+})();
 
  
 
 function App() {
   return (
     <MsalProvider instance={msalInstance}>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          {/* Public routes */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="register" element={<RegisterPage />} />
-          <Route path="login" element={<LoginPage />} />
+      <AuthProvider>
+        <Routes>
+          <Route path="/home" element={<Navigate to="/" />} />
+          {/* Exclusively not authenticated routes */}
+          <Route element={<NotAuthenticatedRoute />}>
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+          </Route>
+
+          {/* Stylized routes */}
+          <Route element={<Layout />}>
+            {/* Public routes */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/offers" element={<OffersPage />} />
+
+
+            {/* Admin routes */}
+            <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+              <Route path="/admin" element={<AdminPage />} />
+            </Route>
+            
+            {/* Customer routes */}
+            <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
+              <Route path="/bookings" element={<BookingsPage />} />
+            </Route>
+
+            {/* Admin & Customer routes */}
+            <Route element={<ProtectedRoute allowedRoles={['admin', 'customer']} />}>
+              {/* Place admin & customer shared routes here */}
+              <Route path="/account" element={<AccountPage />} />
+            </Route>
+          </Route>
+
+          {/* Catch all */}
           <Route path="/test" element={<AuthTestPage />} />
-          <Route path="/offers" element={<OffersPage />} />
-
-          {/* Protected routes */}
-          {/* Common */}
-          <Route element={<ProtectedRoute allowedRoles={["STUDENT", "TEACHER", "ADMINISTRATOR"]} />}>
-
-          </Route>
-
-          {/* Student, Teacher */}
-          <Route element={<ProtectedRoute allowedRoles={["STUDENT", "TEACHER"]} />}>
-
-          </Route>
-        </Route>
-
-        {/* Catch all */}
-        <Route path="*" element={<NotFoundPage />} />
-        <Route path="unauthorized" element={<UnauthorizedPage />} />
-      </Routes>
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </AuthProvider>
     </MsalProvider>
-
   )
 }
 

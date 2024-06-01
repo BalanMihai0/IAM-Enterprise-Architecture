@@ -43,7 +43,7 @@ const OfferCard = ({ item }) => {
                     </Button>
                 </CardFooter>
             </Card>
-            <OfferDetailsModal isOpen={isModalOpen} onClose={handleModalToggle} />
+            <OfferDetailsModal isOpen={isModalOpen} onClose={handleModalToggle} offer={item} />
         </>
     );
 };

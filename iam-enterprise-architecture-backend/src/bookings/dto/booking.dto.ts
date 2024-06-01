@@ -5,11 +5,6 @@ export class NewBookingDTO{
     @ApiProperty()
     @IsNumber()
     @IsNotEmpty()
-    requester: number;
-
-    @ApiProperty()
-    @IsNumber()
-    @IsNotEmpty()
     job: number;
 
     @ApiProperty()
