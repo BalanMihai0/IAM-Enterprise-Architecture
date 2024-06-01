@@ -4,6 +4,7 @@ import { Job } from '../typeorm/entities/job';
 import { DeleteResult, Repository, Timestamp } from 'typeorm';
 import { NewJobDTO } from './dto/job.dto';
 import { UpdateJobDto } from './dto/updateJob.dto';
+import { IPaginationOptions, Pagination, paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class JobsService {
@@ -19,6 +20,7 @@ export class JobsService {
             description: jobDto.description,
             location: jobDto.location,
             price: jobDto.price,
+            type: jobDto.type,
             posted_by: postedById,
             posted_on: new Date()
         });
@@ -26,9 +28,22 @@ export class JobsService {
         return this.jobRepository.save(newJob);
     }
 
-    async findAll(): Promise<Job[]> {
-        const foundJobs = await this.jobRepository.find();
-        return foundJobs;
+    async findAll(title?: string, startDate?: string, endDate?: string, options?: IPaginationOptions): Promise<Pagination<Job>> {
+        const query = this.jobRepository.createQueryBuilder('job');
+
+        if (title) {
+            query.andWhere('job.title LIKE :title', { title: `%${title}%` });
+        }
+
+        if (startDate) {
+            query.andWhere('job.posted_on >= :startDate', { startDate });
+        }
+
+        if (endDate) {
+            query.andWhere('job.posted_on <= :endDate', { endDate });
+        }
+
+        return paginate<Job>(query, options);
     }
 
     async findById(id: number): Promise<Job> {
