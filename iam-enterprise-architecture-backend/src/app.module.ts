@@ -14,6 +14,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { Job } from './typeorm/entities/job';
 import { Booking } from './typeorm/entities/booking';
 import { BookingsModule } from './bookings/bookings.module';
+import { HealthModule } from './health/health.module';
 
 
 @Module({
@@ -41,6 +42,7 @@ import { BookingsModule } from './bookings/bookings.module';
     }),
     JobsModule,
     BookingsModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [
