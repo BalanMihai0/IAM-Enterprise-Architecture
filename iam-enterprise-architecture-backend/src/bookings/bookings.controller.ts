@@ -1,4 +1,4 @@
-import { Controller, Body, Delete, Post, Get, Param, UseGuards, Req, UnauthorizedException, ForbiddenException, BadRequestException } from '@nestjs/common';
+import { Controller, Body, Delete, Post, Get, Param, UseGuards, Req, UnauthorizedException, ForbiddenException, BadRequestException, Query } from '@nestjs/common';
 import { BookingService } from './bookings.service';
 import { NewBookingDTO } from './dto/booking.dto';
 import { Roles } from '../auth/roles/roles.decorator';
@@ -61,18 +61,14 @@ export class BookingsController{
         return booking;
     }
 
-    @Get('/user:id')
+    @Get('/user/:id')
     @Roles("admin", "customer")
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     async findBookingsByUser(@Param('id') id: number, @Req() req: Request) {
         const token : any = req.user;
 
-        if (token.unique_name != id) {
-            throw new ForbiddenException("You are not authorized to access this resource.");
-        }
-
-        if(token.id != id && token.role != 'admin') {
+        if(token.unique_name != id && token.role != 'admin') {
             throw new ForbiddenException("You are not authorized to access this resource.");
         }
  
@@ -86,7 +82,7 @@ export class BookingsController{
     async findBookingsByJob(@Param('id') id: number, @Req() req: Request){
         const token : any = req.user;
 
-        if (token.unique_name != id) {
+        if (token.role != 'admin') {
             throw new ForbiddenException("You are not authorized to access this resource.");
         }
 
@@ -94,22 +90,17 @@ export class BookingsController{
     }
 
 
-    @Get('/user:userid/job:jobid')
-    @Roles("admin", "customer")
+    @Get('/user/:userId/job/:jobId')
+    @Roles('admin', 'customer')
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    async findBookingsByUserAndJobs(@Param('userId') userId: number,@Param('jobId') jobId: number,@Req() req: Request){
-        const token : any = req.user;
+    async findBookingsByUserAndJobs(@Param('userId') userId: number, @Param('jobId') jobId: number, @Req() req: Request) {
+        const token: any = req.user;
 
-        if (token.unique_name != userId)  {
-            throw new ForbiddenException("You are not authorized to access this resource.");
+        if (token.unique_name != userId && token.role != 'admin') {
+            throw new ForbiddenException('You are not authorized to access this resource.');
         }
 
-        if(token.id != userId && token.role != 'admin') {
-            throw new ForbiddenException("You are not authorized to access this resource.");
-        }
-        return await this.bookingService.findBookingsByUserAndJobs(userId,jobId);
+        return await this.bookingService.findBookingsByUserAndJobs(userId, jobId);
     }
-
-
 }
