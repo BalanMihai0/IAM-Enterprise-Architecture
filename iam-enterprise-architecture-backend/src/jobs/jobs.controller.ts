@@ -21,6 +21,7 @@ export class JobsController {
     @UseGuards(JwtAuthGuard)
     async create(@Req() req: Request, @Body() jobDto: NewJobDTO) {
         const token: any = req.user;
+        console.log(token.unique_name)
         return await this.jobsService.create(jobDto, token.unique_name);
     }
 
@@ -36,7 +37,7 @@ export class JobsController {
         @Query('startDate') startDate?: string,
         @Query('endDate') endDate?: string,
         @Query('page') page: number = 1,
-        @Query('limit') limit: number = 10,
+        @Query('limit') limit: number = 50,
     ): Promise<Pagination<Job>> {
         return await this.jobsService.findAll(title, startDate, endDate, { page, limit });
     }

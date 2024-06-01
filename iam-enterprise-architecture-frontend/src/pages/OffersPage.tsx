@@ -18,7 +18,7 @@ const OffersPage = () => {
     const [selectedOffer, setSelectedOffer] = useState(null);
 
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(7);
+    const [limit, setLimit] = useState(15);
     const [totalItems, setTotalItems] = useState(0);
 
     const handleDateRangeChange = (newDateRange) => {
@@ -53,6 +53,7 @@ const OffersPage = () => {
             if (query) {
                 params.title = query;
             }
+
             const response = await axios.get(url, { params });
             setItems(response.data.items);
             setTotalItems(response.data.meta.totalItems);

@@ -21,4 +21,9 @@ export class NewJobDTO {
     @IsNotEmpty()
     @IsNumber()
     price: number;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    type: string;
 }

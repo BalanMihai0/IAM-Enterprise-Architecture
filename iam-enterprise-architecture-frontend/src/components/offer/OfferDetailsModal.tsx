@@ -90,21 +90,32 @@ const OfferDetailsModal = ({ isOpen, onClose, offer }) => {
                     </div>
                     <div className="flex flex-col p-4 overflow-auto h-[calc(100%-7.5rem)]">
                         {step === 1 ? (
-                            <div className='h-full flex flex-col gap-20'>
-                                <div>
-                                    <Typography variant='h5' className="font-medium flex items-center gap-1">
-                                        <IoLocationSharp />
-                                        {offer.location}
-                                    </Typography>
-                                    <Typography variant='h5' className="font-medium flex items-center gap-1">
-                                        <FaEuroSign />
-                                        {offer.price}
-                                    </Typography>
-                                    <div className='mt-5'>
-                                        <Typography className='max-w-[300px] md:max-w-[500px]'>{offer.description}</Typography>
+                            <div className='h-full flex flex-col'>
+                                <div className="flex flex-row gap-52">
+                                    <div>
+                                        <Typography variant='h5' className="font-medium flex items-center gap-1">
+                                            <IoLocationSharp />
+                                            {offer.location}
+                                        </Typography>
+                                        <Typography variant='h5' className="font-medium flex items-center gap-1">
+                                            <FaEuroSign />
+                                            {offer.price} / Day
+                                        </Typography>
+                                    </div>
+                                    <div className='flex gap-5'>
+                                        <Typography variant='h5' className="font-medium flex items-center gap-1">
+                                            Type:
+                                        </Typography>
+                                        <Typography variant='h5' className="font-medium flex items-center gap-1">
+                                            {offer.type ? offer.type : 'Not specified'}
+                                        </Typography>
+
                                     </div>
                                 </div>
-                                <div className='flex flex-row gap-4'>
+                                <div className='mt-5'>
+                                    <Typography className='max-w-[300px] md:max-w-[500px]'>{offer.description}</Typography>
+                                </div>
+                                <div className='flex flex-row gap-4 mt-20'>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <DatePicker
                                             label="Start Date"

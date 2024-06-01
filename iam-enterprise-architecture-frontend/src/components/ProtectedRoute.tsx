@@ -30,6 +30,7 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
           setAccessToken(authResponse?.data);
         } else if (!accessToken && await isAuthenticated()) {
           const authResponse = await fetchAccessTokenMSAL();
+          console.log(authResponse.data)
           setAccessToken(authResponse.data);
         }
       } catch (error: any) {
