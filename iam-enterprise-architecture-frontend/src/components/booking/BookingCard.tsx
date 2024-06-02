@@ -22,7 +22,6 @@ const BookingCard = ({ booking }: { booking: Booking }) => {
 
                 const response = await axios.get(`/api/v1/bookings/${booking.id}`, headers);
                 setJob(response.data.job);
-                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching job:', error);
             }

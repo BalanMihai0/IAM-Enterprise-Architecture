@@ -38,6 +38,7 @@ let BookingService = class BookingService {
         return this.bookingRepository.save(newBooking);
     }
     async findById(id) {
+        console.log('findById called');
         const foundBooking = await this.bookingRepository.findOne({ where: { id }, relations: ["requester", "job"] });
         if (!foundBooking)
             throw new common_1.HttpException("Booking with this id does not exist", 404);
@@ -47,6 +48,7 @@ let BookingService = class BookingService {
         return await this.bookingRepository.find({ relations: ["requester", "job"] });
     }
     async delete(id) {
+        console.log('delete called');
         const foundBooking = await this.bookingRepository.findOne({ where: { id } });
         if (!foundBooking)
             throw new common_1.HttpException("Booking with this id does not exist", 404);

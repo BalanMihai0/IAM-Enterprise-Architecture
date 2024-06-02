@@ -41,6 +41,7 @@ let BookingsController = class BookingsController {
     }
     async findById(id, req) {
         const token = req.user;
+        console.log('here for some reason');
         const booking = await this.bookingService.findById(id);
         if (token.unique_name != booking.requester.id && token.role != "admin") {
             throw new common_1.ForbiddenException("You are not authorized to access this resource.");
@@ -136,12 +137,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BookingsController.prototype, "findBookingsByJob", null);
 __decorate([
-    (0, common_1.Get)('/user/:userId/job/:jobId'),
+    (0, common_1.Get)('/userjob'),
     (0, roles_decorator_1.Roles)('admin', 'customer'),
     (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiQuery)({ name: 'userId', required: true, type: Number }),
+    (0, swagger_1.ApiQuery)({ name: 'jobId', required: true, type: Number }),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
-    __param(0, (0, common_1.Param)('userId')),
-    __param(1, (0, common_1.Param)('jobId')),
+    __param(0, (0, common_1.Query)('userId')),
+    __param(1, (0, common_1.Query)('jobId')),
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number, Object]),
