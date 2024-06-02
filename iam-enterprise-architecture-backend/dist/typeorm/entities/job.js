@@ -21,9 +21,12 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Job.prototype, "title", void 0);
+], Job.prototype, "type", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Job.prototype, "title", void 0);
+__decorate([
     (0, typeorm_1.Column)({ length: 1000 }),
     __metadata("design:type", String)
 ], Job.prototype, "description", void 0);

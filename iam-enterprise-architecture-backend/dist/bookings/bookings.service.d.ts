@@ -8,7 +8,7 @@ export declare class BookingService {
     private readonly userService;
     private readonly jobService;
     constructor(bookingRepository: Repository<Booking>, userService: UsersService, jobService: JobsService);
-    create(bookingDto: NewBookingDTO): Promise<Booking>;
+    create(bookingDto: NewBookingDTO, requesterId: number): Promise<Booking>;
     findById(id: number): Promise<Booking>;
     findAll(): Promise<Booking[]>;
     delete(id: number): Promise<void>;

@@ -3,4 +3,5 @@ export declare class NewJobDTO {
     description: string;
     location: string;
     price: number;
+    type: string;
 }

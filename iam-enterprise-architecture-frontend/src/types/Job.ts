@@ -1,10 +1,9 @@
-export declare class Job {
+export type Job = {
     id: number;
-    type: string;
     title: string;
     description: string;
     location: string;
-    price: number;
+    price: string;
     posted_by: string;
-    posted_on: Date;
+    posted_on: string;
 }

@@ -26,13 +26,11 @@ let JobsController = class JobsController {
         this.jobsService = jobsService;
     }
     async create(req, jobDto) {
-        console.log(jobDto);
         const token = req.user;
-        console.log(token.unique_name);
         return await this.jobsService.create(jobDto, token.unique_name);
     }
-    async findAll() {
-        return await this.jobsService.findAll();
+    async findAll(title, startDate, endDate, page = 1, limit = 50) {
+        return await this.jobsService.findAll(title, startDate, endDate, { page, limit });
     }
     async findById(id, req) {
         return await this.jobsService.findById(id);
@@ -67,8 +65,18 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, roles_decorator_1.Roles)("*"),
+    (0, swagger_1.ApiQuery)({ name: 'title', required: false }),
+    (0, swagger_1.ApiQuery)({ name: 'startDate', required: false }),
+    (0, swagger_1.ApiQuery)({ name: 'endDate', required: false }),
+    (0, swagger_1.ApiQuery)({ name: 'page', required: false, type: Number }),
+    (0, swagger_1.ApiQuery)({ name: 'limit', required: false, type: Number }),
+    __param(0, (0, common_1.Query)('title')),
+    __param(1, (0, common_1.Query)('startDate')),
+    __param(2, (0, common_1.Query)('endDate')),
+    __param(3, (0, common_1.Query)('page')),
+    __param(4, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String, String, Number, Number]),
     __metadata("design:returntype", Promise)
 ], JobsController.prototype, "findAll", null);
 __decorate([
