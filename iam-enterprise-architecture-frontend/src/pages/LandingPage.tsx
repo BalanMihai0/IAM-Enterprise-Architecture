@@ -117,7 +117,7 @@ const LandingPage = () => {
             <Typography className='text-white'>Address: 123 Security Lane, Safe City, ST 12345</Typography>
           </div>
           <div className="mt-8 w-fit mx-auto">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2486.3819716222993!2d5.477202276416863!3d51.45114301481187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c6d9bbf31bd8fb%3A0xbb209e5872fefac8!2sFontys%20R10!5e0!3m2!1sen!2snl!4v1716475915302!5m2!1sen!2snl" className='w-[300px] md:w-[600px] h-[225px] md:h-[450px]' style={{ border: 0 }} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2486.3819716222993!2d5.477202276416863!3d51.45114301481187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c6d9bbf31bd8fb%3A0xbb209e5872fefac8!2sFontys%20R10!5e0!3m2!1sen!2snl!4v1716475915302!5m2!1sen!2snl" className='w-[300px] md:w-[600px] h-[225px] md:h-[450px]' style={{ border: 0 }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
           </div>
         </div>
       </section>
