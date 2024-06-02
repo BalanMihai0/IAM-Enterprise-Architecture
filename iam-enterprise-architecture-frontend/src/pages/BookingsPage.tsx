@@ -10,6 +10,7 @@ import BookingCard from '../components/booking/BookingCard';
 import Sidebar from '../components/booking/Sidebar';
 
 const BookingsPage = () => {
+  const [allBookings, setAllBookings] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [userId, setUserId] = useState(getTokenUniqueName());
   const { accessToken } = useAuth();
@@ -24,11 +25,10 @@ const BookingsPage = () => {
         }
       } : {};
 
-      console.log(accessToken)
-
       if (!userId) return console.error('No user ID found');
 
       const response = await axios.get(`/api/v1/bookings/user/${userId}`, headers);
+      setAllBookings(response.data);
       setBookings(response.data);
     } catch (error) {
       console.error('Error fetching bookings:', error);
@@ -36,10 +36,27 @@ const BookingsPage = () => {
   };
 
   useEffect(() => {
-    
-
     fetchBookings();
   }, []);
+
+  useEffect(() => {
+    if (selectedFilter === 'all') {
+      setBookings(allBookings);
+    }
+    else if (selectedFilter === 'ongoing') {
+      setBookings(allBookings.filter((booking) => new Date(booking.startDate) <= new Date() && new Date(booking.endDate) >= new Date()));
+    }
+    else if (selectedFilter === 'past') {
+      setBookings(allBookings.filter((booking) => new Date(booking.endDate) < new Date()));
+    }
+    else if (selectedFilter === 'upcoming') {
+      setBookings(allBookings.filter((booking) => new Date(booking.startDate) > new Date()));
+    }
+
+    if (searchQuery) {
+      setBookings(bookings.filter((booking) => booking.job.title.toLowerCase().includes(searchQuery.toLowerCase())));
+    }
+  }, [selectedFilter, searchQuery]);
 
   const handleSelectedFilterChange = (filter: string) => {
     setSelectedFilter(filter);
