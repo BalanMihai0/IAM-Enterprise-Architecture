@@ -43,7 +43,7 @@ export class BookingService {
 
     async delete(id: number) {
         console.log('delete called')
-        const foundBooking = await this.bookingRepository.findOne({ where: { id } })
+        const foundBooking = await this.bookingRepository.findOne({ where: { id }, relations: ["requester", "job"]})
         if (!foundBooking) throw new HttpException("Booking with this id does not exist", 404)
         else this.bookingRepository.delete(foundBooking);
     }
@@ -51,7 +51,7 @@ export class BookingService {
     async findBookingsByUser(id: number): Promise<Booking[]> {
         const foundUser = await this.userService.findById(id)
         if (!foundUser) throw new HttpException("User with this email does not exist", 404)
-        const foundBookings = await this.bookingRepository.find({ where: { requester: foundUser } });
+        const foundBookings = await this.bookingRepository.find({ where: { requester: foundUser }, relations: ["requester", "job"] });
         if (!foundBookings.length) throw new HttpException("There are no bookings made by this user!", 404)
         else return foundBookings;
     }
@@ -59,7 +59,7 @@ export class BookingService {
     async findBookingsByJobs(id: number): Promise<Booking[]> {
         const foundJob = await this.jobService.findById(id)
         if (!foundJob) throw new HttpException("Job with this id does not exist", 404)
-        const foundBookings = await this.bookingRepository.find({ where: { job: foundJob } });
+        const foundBookings = await this.bookingRepository.find({ where: { job: foundJob }, relations: ["requester", "job"]});
         if (!foundBookings.length) throw new HttpException("There are no bookings with this job!", 404)
         else return foundBookings;
     }
@@ -69,7 +69,7 @@ export class BookingService {
         if (!foundUser) throw new HttpException("User with this email does not exist", 404)
         const foundJob = await this.jobService.findById(jobId)
         if (!foundJob) throw new HttpException("Job with this id does not exist", 404)
-        const foundBookings = await this.bookingRepository.find({ where: { requester: foundUser, job: foundJob } })
+        const foundBookings = await this.bookingRepository.find({ where: { requester: foundUser, job: foundJob }, relations: ["requester", "job"]})
         if (!foundBookings.length) throw new HttpException("There are no bookings with this job!", 404)
         else return foundBookings;
     }

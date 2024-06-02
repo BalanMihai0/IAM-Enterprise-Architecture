@@ -48,10 +48,7 @@ const Sidebar = (props: SidebarProps) => {
                         id="past"
                         name="past"
                         label="Past"
-                        onChange={() => {
-                            onSelectedFilterChange('past')
-                            console.log('Past filter selected');
-                        }}
+                        onChange={() => onSelectedFilterChange('past')}
                         checked={selectedFilter === 'past'}
                         crossOrigin={undefined}
                     />
