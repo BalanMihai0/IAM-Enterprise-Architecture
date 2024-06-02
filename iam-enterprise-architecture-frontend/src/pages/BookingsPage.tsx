@@ -3,11 +3,11 @@
 
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardBody, Typography } from "@material-tailwind/react";
-import axios from 'axios';
 import { getTokenUniqueName } from '../context/AuthContext';
 import { useAuth } from '../context/AuthContext';
 import BookingCard from '../components/booking/BookingCard';
 import Sidebar from '../components/booking/Sidebar';
+import { axiosInstance } from '../api/AxiosConfig';
 
 const BookingsPage = () => {
   const [allBookings, setAllBookings] = useState([]);
@@ -19,15 +19,9 @@ const BookingsPage = () => {
 
   const fetchBookings = async () => {
     try {
-      const headers = accessToken ? {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      } : {};
-
       if (!userId) return console.error('No user ID found');
 
-      const response = await axios.get(`/api/v1/bookings/user/${userId}`, headers);
+      const response = await axiosInstance.get(`/api/v1/bookings/user/${userId}`);
       setAllBookings(response.data);
       setBookings(response.data);
     } catch (error) {
