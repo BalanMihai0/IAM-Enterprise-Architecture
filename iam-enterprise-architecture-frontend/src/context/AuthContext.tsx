@@ -126,4 +126,14 @@ export const useAuth = () => {
   return context;
 };
 
+export const getTokenUniqueName = () : number | null => {
+  const { accessToken } = useAuth();
+  if (!accessToken) {
+    return null;
+  }
+  const tokenParts = accessToken.split(".");
+  const tokenBody = JSON.parse(atob(tokenParts[1]));
+  return tokenBody.unique_name;
+}
+
 export { AuthContext };

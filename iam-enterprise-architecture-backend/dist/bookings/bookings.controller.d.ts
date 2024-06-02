@@ -10,4 +10,6 @@ export declare class BookingsController {
     findAll(): Promise<Booking[]>;
     findById(id: number, req: Request): Promise<Booking>;
     findBookingsByUser(id: number, req: Request): Promise<Booking[]>;
+    findBookingsByJob(id: number, req: Request): Promise<Booking[]>;
+    findBookingsByUserAndJobs(userId: number, jobId: number, req: Request): Promise<Booking[]>;
 }

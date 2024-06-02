@@ -49,10 +49,24 @@ let BookingsController = class BookingsController {
     }
     async findBookingsByUser(id, req) {
         const token = req.user;
-        if (token.unique_name != id) {
+        if (token.unique_name != id && token.role != 'admin') {
             throw new common_1.ForbiddenException("You are not authorized to access this resource.");
         }
         return await this.bookingService.findBookingsByUser(id);
+    }
+    async findBookingsByJob(id, req) {
+        const token = req.user;
+        if (token.role != 'admin') {
+            throw new common_1.ForbiddenException("You are not authorized to access this resource.");
+        }
+        return await this.bookingService.findBookingsByJobs(id);
+    }
+    async findBookingsByUserAndJobs(userId, jobId, req) {
+        const token = req.user;
+        if (token.unique_name != userId && token.role != 'admin') {
+            throw new common_1.ForbiddenException('You are not authorized to access this resource.');
+        }
+        return await this.bookingService.findBookingsByUserAndJobs(userId, jobId);
     }
 };
 exports.BookingsController = BookingsController;
@@ -99,14 +113,39 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BookingsController.prototype, "findById", null);
 __decorate([
-    (0, common_1.Get)('/user:id'),
-    (0, roles_decorator_1.Roles)(),
+    (0, common_1.Get)('/user/:id'),
+    (0, roles_decorator_1.Roles)("admin", "customer"),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], BookingsController.prototype, "findBookingsByUser", null);
+__decorate([
+    (0, common_1.Get)('/job/:id'),
+    (0, roles_decorator_1.Roles)("admin"),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], BookingsController.prototype, "findBookingsByJob", null);
+__decorate([
+    (0, common_1.Get)('/user/:userId/job/:jobId'),
+    (0, roles_decorator_1.Roles)('admin', 'customer'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Param)('jobId')),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, Object]),
+    __metadata("design:returntype", Promise)
+], BookingsController.prototype, "findBookingsByUserAndJobs", null);
 exports.BookingsController = BookingsController = __decorate([
     (0, swagger_1.ApiTags)('Bookings'),
     (0, common_1.Controller)('bookings'),
