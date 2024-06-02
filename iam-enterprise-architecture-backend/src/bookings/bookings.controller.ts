@@ -3,7 +3,7 @@ import { BookingService } from './bookings.service';
 import { NewBookingDTO } from './dto/booking.dto';
 import { Roles } from '../auth/roles/roles.decorator';
 import { Request } from 'express';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { validate } from 'class-validator';
 import { Booking } from 'src/typeorm/entities/booking';
@@ -53,6 +53,8 @@ export class BookingsController{
     async findById(@Param('id') id: number, @Req() req: Request){
         const token : any = req.user;
 
+        console.log('here for some reason')
+
         const booking : Booking = await this.bookingService.findById(id);
         if (token.unique_name != booking.requester.id && token.role != "admin") {
             throw new ForbiddenException("You are not authorized to access this resource.");
@@ -90,11 +92,16 @@ export class BookingsController{
     }
 
 
-    @Get('/user/:userId/job/:jobId')
+    @Get('/userjob')
     @Roles('admin', 'customer')
     @ApiBearerAuth()
+    @ApiQuery({ name: 'userId', required: true, type: Number })
+    @ApiQuery({ name: 'jobId', required: true, type: Number })
     @UseGuards(JwtAuthGuard)
-    async findBookingsByUserAndJobs(@Param('userId') userId: number, @Param('jobId') jobId: number, @Req() req: Request) {
+    async findBookingsByUserAndJobs(
+        @Query('userId') userId: number,
+        @Query('jobId') jobId: number,
+        @Req() req: Request) {
         const token: any = req.user;
 
         if (token.unique_name != userId && token.role != 'admin') {

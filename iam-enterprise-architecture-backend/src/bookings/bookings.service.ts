@@ -31,6 +31,7 @@ export class BookingService {
     }
 
     async findById(id: number): Promise<Booking> {
+        console.log('findById called');
         const foundBooking = await this.bookingRepository.findOne({ where: { id }, relations: ["requester", "job"] })
         if (!foundBooking) throw new HttpException("Booking with this id does not exist", 404)
         return foundBooking;
@@ -41,6 +42,7 @@ export class BookingService {
     }
 
     async delete(id: number) {
+        console.log('delete called')
         const foundBooking = await this.bookingRepository.findOne({ where: { id } })
         if (!foundBooking) throw new HttpException("Booking with this id does not exist", 404)
         else this.bookingRepository.delete(foundBooking);
