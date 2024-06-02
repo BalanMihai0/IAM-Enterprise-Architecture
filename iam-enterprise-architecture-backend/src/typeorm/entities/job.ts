@@ -5,8 +5,9 @@ export class Job {
     @PrimaryGeneratedColumn()
     id: number;
     @Column()
-    title: string;
+    type: string;
     @Column()
+    title: string;
     @Column({ length: 1000 })
     description: string;
     @Column()
@@ -14,7 +15,7 @@ export class Job {
     @Column({ type: 'decimal', precision: 10, scale: 2 })
     price: number;
     @Column()
-    posted_by: number;
+    posted_by: string;
     @Column()
     posted_on: Date;
 }

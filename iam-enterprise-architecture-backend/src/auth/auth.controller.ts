@@ -85,7 +85,6 @@ export class AuthController {
       },
       { expiresIn: '30m' },
     );
-
     return newToken;
   }
 
@@ -104,12 +103,13 @@ export class AuthController {
   @UseGuards(AzureADGuard)
   async validateToken(@Req() req) {
     let role = 'customer';
-    console.log(req.user);
-    if (
-      req.user.iss ===
-      `https://sts.windows.net/${process.env.MSAL_WEB_TENANT_ID}/`
-    ) {
+    if (req.user.iss ===
+      `https://sts.windows.net/${process.env.MSAL_WEB_TENANT_ID}/`) {
       role = 'admin';
+    }
+
+    if (!req.user.unique_name) {
+      throw new UnauthorizedException("Invalid token!")
     }
 
     const newToken = this.jwtService.sign(

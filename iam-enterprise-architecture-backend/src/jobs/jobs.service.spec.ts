@@ -42,6 +42,7 @@ describe('JobsService', () => {
         description: 'Developing software applications',
         location: 'Remote',
         price: 5000,
+        type: "Job"
       };
 
       const newJob: Job = {
@@ -50,15 +51,16 @@ describe('JobsService', () => {
         description: newJobDto.description,
         location: newJobDto.location,
         price: newJobDto.price,
-        posted_by: 69,
+        posted_by: '69',
         posted_on: new Date(),
+        type: newJobDto.type
       };
 
       // Mock create and save methods of the repository
       (repository.create as jest.Mock).mockReturnValue(newJob);
       (repository.save as jest.Mock).mockResolvedValue(newJob);
 
-      const createdJob = await service.create(newJobDto, 69);
+      const createdJob = await service.create(newJobDto, '69');
 
       expect(createdJob).toEqual(newJob);
 
@@ -68,8 +70,9 @@ describe('JobsService', () => {
         description: newJobDto.description,
         location: newJobDto.location,
         price: newJobDto.price,
-        posted_by: 69,
+        posted_by: '69',
         posted_on: expect.any(Date),
+        type: newJobDto.type
       });
 
       // Ensure that save method was called
@@ -86,8 +89,9 @@ describe('JobsService', () => {
         description: 'Developing software applications',
         location: 'Remote',
         price: 5000,
-        posted_by: 69,
+        posted_by: '69',
         posted_on: new Date(),
+        type: "Job"
       };
 
       // Mock findOne method of the repository

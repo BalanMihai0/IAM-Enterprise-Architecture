@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 const NotFoundPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleGoBack = () => {
-    navigate(-1); // Navigate to the previous page
+  const handleGoHome = () => {
+    navigate("/"); // Navigate to the previous page
   };
 
   return (
@@ -19,8 +19,8 @@ const NotFoundPage: React.FC = () => {
           The page you are looking for does not exist. It might have been moved
           or deleted.
         </Typography>
-        <Button className="mt-4" variant="gradient" onClick={handleGoBack} placeholder={"button"}>
-          Go Back
+        <Button className="mt-4" variant="gradient" onClick={handleGoHome} placeholder={"button"}>
+          Go Home
         </Button>
       </Card>
     </div>

@@ -29,8 +29,6 @@ export class UsersService {
             role: 'customer'
         });
 
-        //save to db
-        console.log('newUser', newUser)
         return this.userRepository.save(newUser);
     }
 

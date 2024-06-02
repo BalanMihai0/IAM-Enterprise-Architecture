@@ -23,5 +23,5 @@ export default function NotAuthenticatedRoute() {
     );
   }
 
-  return !signedIn ? <Outlet /> : <Navigate to="/home" />;
+  return !signedIn ? <Outlet /> : <Navigate to="/" />;
 }

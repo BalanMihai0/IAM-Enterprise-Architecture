@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
-import { BrowserRouter as Routes,Route, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Card,
   Typography,
@@ -13,9 +12,9 @@ import {
   PresentationChartBarIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
-import '../style/landingPage.css';
-import UsersAdminPage from './UsersAdminPage';
-import JobsAdminPage from './JobsAdminPage.tsx';
+import "../style/landingPage.css";
+import UsersAdminPage from "./UsersAdminPage";
+import JobsAdminPage from "./JobsAdminPage.tsx";
 
 const Sidebar = ({ setSelectedPage }) => (
   <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
@@ -25,13 +24,13 @@ const Sidebar = ({ setSelectedPage }) => (
       </Typography>
     </div>
     <List>
-      <ListItem onClick={() => setSelectedPage('jobs')}>
+      <ListItem onClick={() => setSelectedPage("jobs")}>
         <ListItemPrefix>
           <PresentationChartBarIcon className="h-5 w-5" />
         </ListItemPrefix>
         Jobs
       </ListItem>
-      <ListItem onClick={() => setSelectedPage('users')}>
+      <ListItem onClick={() => setSelectedPage("users")}>
         <ListItemPrefix>
           <UserCircleIcon className="h-5 w-5" />
         </ListItemPrefix>
@@ -42,14 +41,14 @@ const Sidebar = ({ setSelectedPage }) => (
 );
 
 const AdminPage = () => {
-  const [selectedPage, setSelectedPage] = useState('jobs');
+  const [selectedPage, setSelectedPage] = useState("jobs");
 
   return (
     <div className="flex">
       <Sidebar setSelectedPage={setSelectedPage} />
       <div className="w-3/4 p-5">
-        {selectedPage === 'jobs' && <JobsAdminPage />}
-        {selectedPage === 'users' && <UsersAdminPage />}
+        {selectedPage === "jobs" && <JobsAdminPage />}
+        {selectedPage === "users" && <UsersAdminPage />}
       </div>
     </div>
   );
