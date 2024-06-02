@@ -19,17 +19,8 @@ import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import Layout from "./components/Layout.tsx";
 
 import { Route, Routes, Navigate } from "react-router-dom";
-import { MsalProvider } from "@azure/msal-react";
-import AuthTestPage from "./pages/AuthTestPage.tsx";
-import { msalInstance } from "./authService.ts";
 
-(async () => {
-  try {
-    await msalInstance.initialize();
-  } catch (error) {
-    console.error("Failed to initialize MSAL instance", error);
-  }
-})();
+import AuthTestPage from "./pages/AuthTestPage.tsx";
 
 function App() {
   const { accessToken } = useAuth();
@@ -41,47 +32,45 @@ function App() {
   }, [accessToken]);
 
   return (
-    <MsalProvider instance={msalInstance}>
-      <Routes>
-        <Route path="/home" element={<Navigate to="/" />} />
-        {/* Exclusively not authenticated routes */}
-        <Route element={<NotAuthenticatedRoute />}>
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
+    <Routes>
+      <Route path="/home" element={<Navigate to="/" />} />
+      {/* Exclusively not authenticated routes */}
+      <Route element={<NotAuthenticatedRoute />}>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Route>
+
+      {/* Stylized routes */}
+      <Route element={<Layout />}>
+        {/* Public routes */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/offers" element={<OffersPage />} />
+
+        {/* Admin routes */}
+        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/jobs" element={<JobsAdminPage />} />
+          <Route path="/admin/users" element={<UsersAdminPage />} />
         </Route>
 
-        {/* Stylized routes */}
-        <Route element={<Layout />}>
-          {/* Public routes */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/offers" element={<OffersPage />} />
-
-          {/* Admin routes */}
-          <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/admin/jobs" element={<JobsAdminPage />} />
-            <Route path="/admin/users" element={<UsersAdminPage />} />
-          </Route>
-
-          {/* Customer routes */}
-          <Route element={<ProtectedRoute allowedRoles={["customer"]} />}>
-            <Route path="/bookings" element={<BookingsPage />} />
-          </Route>
-
-          {/* Admin & Customer routes */}
-          <Route
-            element={<ProtectedRoute allowedRoles={["admin", "customer"]} />}
-          >
-            {/* Place admin & customer shared routes here */}
-            <Route path="/account" element={<AccountPage />} />
-          </Route>
+        {/* Customer routes */}
+        <Route element={<ProtectedRoute allowedRoles={["customer"]} />}>
+          <Route path="/bookings" element={<BookingsPage />} />
         </Route>
 
-        {/* Catch all */}
-        <Route path="/test" element={<AuthTestPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </MsalProvider>
+        {/* Admin & Customer routes */}
+        <Route
+          element={<ProtectedRoute allowedRoles={["admin", "customer"]} />}
+        >
+          {/* Place admin & customer shared routes here */}
+          <Route path="/account" element={<AccountPage />} />
+        </Route>
+      </Route>
+
+      {/* Catch all */}
+      <Route path="/test" element={<AuthTestPage />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
 

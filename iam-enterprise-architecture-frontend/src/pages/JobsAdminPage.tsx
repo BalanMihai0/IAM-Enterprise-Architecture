@@ -42,6 +42,7 @@ const reducer = (state: JobState, action: Action): JobState => {
       return state;
   }
 };
+
 const JobsAdminPage = () => {
   const [job, dispatch] = useReducer(reducer, initialState);
   const [message, setMessage] = useState<string>("");
