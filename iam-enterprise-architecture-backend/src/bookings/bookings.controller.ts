@@ -79,7 +79,6 @@ export class BookingsController{
     
     @Get('/job/:id')
     @Roles("admin")
-    @Roles("admin")
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     async findBookingsByJob(@Param('id') id: number, @Req() req: Request){
