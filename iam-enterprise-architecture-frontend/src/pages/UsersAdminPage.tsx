@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 import "../style/landingPage.css";
-import { axiosInstance } from "../api/AxiosConfig";
+import useAxiosInterceptors from "../api/AxiosConfig";
 
 const UsersAdminPage = () => {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [users, setUsers] = useState([]);
+  const axiosInstance = useAxiosInterceptors();
 
   useEffect(() => {
     axiosInstance.get("/api/v1/users").then((response) => {

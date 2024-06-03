@@ -2,25 +2,23 @@ import { useEffect, useState } from "react";
 import { Typography } from "@material-tailwind/react";
 import BookingCard from "../components/booking/BookingCard";
 import Sidebar from "../components/booking/Sidebar";
-import { axiosInstance } from "../api/AxiosConfig";
+import useAxiosInterceptors from "../api/AxiosConfig";
 import { useAuth } from "../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 
 const BookingsPage = () => {
   const [allBookings, setAllBookings] = useState([]);
   const [bookings, setBookings] = useState([]);
-  const [userId, setUserId] = useState<string | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const { accessToken } = useAuth();
+  const axiosInstance = useAxiosInterceptors();
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         //@ts-expect-error - unique_name is a property of the decoded token
-        setUserId(jwtDecode(accessToken as string)?.unique_name || null);
-        if (!userId) return console.error("No user ID found");
-
+        const userId = jwtDecode(accessToken as string)?.unique_name;
         const response = await axiosInstance.get(
           `/api/v1/bookings/user/${userId}`
         );
@@ -32,7 +30,7 @@ const BookingsPage = () => {
     };
 
     fetchBookings();
-  }, [accessToken, userId]);
+  }, [accessToken, axiosInstance]);
 
   useEffect(() => {
     if (selectedFilter === "all") {
