@@ -10,8 +10,8 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 import "../style/landingPage.css";
-import { axiosInstance } from "../api/AxiosConfig";
 import { FormEvent } from "react";
+import useAxiosInterceptors from "../api/AxiosConfig";
 
 interface JobState {
   title: string;
@@ -46,6 +46,7 @@ const reducer = (state: JobState, action: Action): JobState => {
 const JobsAdminPage = () => {
   const [job, dispatch] = useReducer(reducer, initialState);
   const [message, setMessage] = useState<string>("");
+  const axiosInstance = useAxiosInterceptors();
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

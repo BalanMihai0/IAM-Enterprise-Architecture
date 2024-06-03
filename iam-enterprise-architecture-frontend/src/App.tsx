@@ -1,7 +1,3 @@
-import { useEffect } from "react";
-import { useAuth } from "./context/AuthContext.tsx";
-import { setupInterceptors } from "./api/AxiosConfig";
-
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 
 import LandingPage from "./pages/LandingPage.tsx";
@@ -14,23 +10,14 @@ import OffersPage from "./pages/OffersPage.tsx";
 import BookingsPage from "./pages/BookingsPage.tsx";
 import AccountPage from "./pages/AccountPage.tsx";
 
-import AuthTestPage from "./pages/AuthTestPage.tsx"
+import AuthTestPage from "./pages/AuthTestPage.tsx";
 import NotAuthenticatedRoute from "./components/NotAuthenticatedRoute.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import Layout from "./components/Layout.tsx";
 
 import { Route, Routes, Navigate } from "react-router-dom";
 
-
 function App() {
-  const { accessToken } = useAuth();
-
-  useEffect(() => {
-    if (accessToken !== null) {
-      setupInterceptors(accessToken);
-    }
-  }, [accessToken]);
-
   return (
     <Routes>
       <Route path="/home" element={<Navigate to="/" />} />
