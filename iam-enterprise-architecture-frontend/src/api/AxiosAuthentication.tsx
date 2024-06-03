@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAccessToken } from "../authService";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5173",
+  baseURL: "https://localhost:5173",
 });
 
 export async function fetchRefreshTokenLocal(requestBody: unknown) {
