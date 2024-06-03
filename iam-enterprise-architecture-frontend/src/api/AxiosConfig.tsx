@@ -7,7 +7,7 @@ import {
 import { isAuthenticated } from "../authService";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5173",
+  baseURL: `${process.env.API_BASE_URL}`,
 });
 
 // Intercepting requests to add Authorization header

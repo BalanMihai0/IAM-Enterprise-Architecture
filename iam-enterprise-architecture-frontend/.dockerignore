@@ -1,0 +1,13 @@
+.git
+.vscode
+.dockerignore
+.gitignore
+.env
+config
+build
+node_modules
+docker-compose.yaml
+Dockerfile
+certificate.csr
+private.key
+README.md
