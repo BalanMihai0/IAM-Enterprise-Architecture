@@ -91,11 +91,8 @@ export function Nav() {
   );
 
   return (
-    <div>
-      <Navbar
-        className="sticky top-0 z-10 h-max max-w-full rounded-none"
-        placeholder={"nav"}
-      >
+    <div className="sticky top-0 z-30 h-max rounded-none w-full">
+      <Navbar className="max-w-full z-20 w-full rounded-none" placeholder={"nav"}>
         <div className="flex items-center justify-between text-blue-gray-900">
           <div
             className="ml-3 cursor-pointer flex items-center"
