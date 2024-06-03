@@ -8,7 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5173",
+  baseURL: "https://localhost:5173",
 });
 
 const setupInterceptors = (accessToken: string | null) => {
