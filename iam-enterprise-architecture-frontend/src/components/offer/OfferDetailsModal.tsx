@@ -27,7 +27,7 @@ const OfferDetailsModal = ({ isOpen, onClose, offer }) => {
         if ((startDate >= new Date()) && endDate&& startDate && (startDate < endDate)){
             setStep(2);
         }
-        else{}
+        else{toast.error("Please enter a valid start and end date!")}
     };
 
     const handleBack = () => {
