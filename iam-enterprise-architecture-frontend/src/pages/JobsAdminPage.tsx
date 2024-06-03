@@ -145,15 +145,22 @@ const JobsAdminPage = () => {
                   required
                 />
                 <label htmlFor="type">Type</label>
-                <Input
-                  type="text"
+                  <select
                   name="type"
                   value={job.type}
                   onChange={handleChange}
-                  placeholder="Type"
                   className="p-4 rounded-lg bg-white bg-opacity-70 border border-gray-600"
                   required
-                />
+                >
+                  <option value="">Select a type</option>
+                  <option value="Cybersecurity">Cybersecurity</option>
+                  <option value="Warfare">Warfare</option>
+                  <option value="Anti-Terrorsim">Anti-Terrorism</option>
+                  <option value="Escort">Escort</option>
+                  <option value="Bodyguard">Bodyguard</option>
+                  <option value="Other">Other</option>
+                  {/* Add more options as needed */}
+                </select>
               </div>
               <Button
                 type="submit"
