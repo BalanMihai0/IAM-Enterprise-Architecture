@@ -155,9 +155,11 @@ const JobsAdminPage = () => {
                   <option value="">Select a type</option>
                   <option value="Cybersecurity">Cybersecurity</option>
                   <option value="Warfare">Warfare</option>
-                  <option value="Anti-Terrorsim">Anti-Terrorism</option>
+                  <option value="AntiTerrorsim">Anti-Terrorism</option>
                   <option value="Escort">Escort</option>
                   <option value="Bodyguard">Bodyguard</option>
+                  <option value="Divorce">Divorce Management</option>
+                  <option value="Hostage Rescue">Hostage Rescue</option>
                   <option value="Other">Other</option>
                   {/* Add more options as needed */}
                 </select>
