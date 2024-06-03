@@ -58,16 +58,6 @@ export function Nav() {
         color="black"
         size="sm"
         className="items-center"
-        onClick={() => navigate("/")}
-        placeholder={undefined}
-      >
-        Home
-      </Button>
-      <Button
-        variant="text"
-        color="black"
-        size="sm"
-        className="items-center"
         onClick={() => navigate("/offers")}
         placeholder={undefined}
       >

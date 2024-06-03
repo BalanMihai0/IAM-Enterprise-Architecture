@@ -13,4 +13,10 @@ export class UpdateJobDto {
     @IsNotEmpty()
     @IsNumber()
     price?: number;
+    
+    @ApiProperty()
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    type?: string;
 }

@@ -5,8 +5,9 @@ export class Job {
     @PrimaryGeneratedColumn()
     id: number;
     @Column()
-    title: string;
+    type: string;
     @Column()
+    title: string;
     @Column({ length: 1000 })
     description: string;
     @Column()

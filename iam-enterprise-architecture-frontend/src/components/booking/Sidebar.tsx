@@ -1,11 +1,15 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
-
 import { useState } from 'react';
 import { Card, Input, Radio, Typography, Button } from '@material-tailwind/react';
 
-const Sidebar = ({ selectedDateRange, onDateRangeChange, onSearch }) => {
+interface SidebarProps {
+    selectedFilter: string;
+    onSelectedFilterChange: (filter: string) => void;
+    onSearch: (searchQuery: string) => void;
+}
+
+const Sidebar = (props: SidebarProps) => {
     const [searchQuery, setSearchQuery] = useState('');
+    const { selectedFilter, onSelectedFilterChange, onSearch } = props;
 
     const handleSearchClick = () => {
         onSearch(searchQuery);
@@ -33,39 +37,35 @@ const Sidebar = ({ selectedDateRange, onDateRangeChange, onSearch }) => {
                 </Typography>
                 <div className="flex flex-col">
                     <Radio
-                        id="last-7-days"
-                        name="date-range"
-                        label="Last 7 days"
-                        onChange={() => onDateRangeChange('last-7-days')}
-                        checked={selectedDateRange === 'last-7-days'}
-                        placeholder={undefined}
+                        id="ongoing"
+                        name="ongoing"
+                        label="Ongoing"
+                        onChange={() => onSelectedFilterChange('ongoing')}
+                        checked={selectedFilter === 'ongoing'}
                         crossOrigin={undefined}
                     />
                     <Radio
-                        id="last-month"
-                        name="date-range"
-                        label="Last Month"
-                        onChange={() => onDateRangeChange('last-month')}
-                        checked={selectedDateRange === 'last-month'}
-                        placeholder={undefined}
+                        id="past"
+                        name="past"
+                        label="Past"
+                        onChange={() => onSelectedFilterChange('past')}
+                        checked={selectedFilter === 'past'}
                         crossOrigin={undefined}
                     />
                     <Radio
-                        id="last-year"
-                        name="date-range"
-                        label="Last Year"
-                        onChange={() => onDateRangeChange('last-year')}
-                        checked={selectedDateRange === 'last-year'}
-                        placeholder={undefined}
+                        id="upcoming"
+                        name="upcoming"
+                        label="Upcoming"
+                        onChange={() => onSelectedFilterChange('upcoming')}
+                        checked={selectedFilter === 'upcoming'}
                         crossOrigin={undefined}
                     />
                     <Radio
                         id="all"
                         name="date-range"
                         label="All"
-                        onChange={() => onDateRangeChange('all')}
-                        checked={selectedDateRange === 'all'}
-                        placeholder={undefined}
+                        onChange={() => onSelectedFilterChange('all')}
+                        checked={selectedFilter === 'all'}
                         crossOrigin={undefined}
                     />
                 </div>

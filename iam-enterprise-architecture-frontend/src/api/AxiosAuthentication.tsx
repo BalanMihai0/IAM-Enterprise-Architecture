@@ -13,6 +13,14 @@ export async function fetchRefreshTokenLocal(requestBody: unknown) {
     });
 }
 
+export async function registerUser(requestBody: unknown) {
+  return await axiosInstance
+    .post("/api/v1/users", requestBody)
+    .then((response) => {
+      return response;
+    });
+}
+
 export async function fetchAccessTokenLocal() {
   try {
     return await axiosInstance.get("/api/v1/auth/refresh", {

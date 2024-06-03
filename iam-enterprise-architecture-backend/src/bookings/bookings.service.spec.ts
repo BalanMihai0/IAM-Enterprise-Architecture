@@ -116,6 +116,7 @@ describe('BookingService', () => {
                 price: 100,
                 posted_by: '1', // posted_by is a string
                 posted_on: mockDate,
+                type: "job"
             }); // Mock job found
         
             // Mock the behavior of bookingRepository methods
@@ -136,6 +137,7 @@ describe('BookingService', () => {
                     price: 100,
                     posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
+                    type: "job"
                 },
                 startDate: mockDate,
                 endDate: mockDate,
@@ -159,6 +161,7 @@ describe('BookingService', () => {
                     price: 100,
                     posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
+                    type: "job"
                 },
                 startDate: mockDate,
                 endDate: mockDate,
@@ -187,6 +190,7 @@ describe('BookingService', () => {
                     price: 100,
                     posted_by: '1', // Ensure posted_by is a string
                     posted_on: mockDate,
+                    type: "job"
                 },
                 startDate: mockDate,
                 endDate: mockDate,
@@ -246,7 +250,7 @@ describe('BookingService', () => {
 
             await service.delete(id);
 
-            expect(repository.findOne).toHaveBeenCalledWith({ where: { id } });
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { id }, relations: ["requester", "job"] });
             expect(repository.delete).toHaveBeenCalledWith(booking);
         });
 
@@ -256,7 +260,7 @@ describe('BookingService', () => {
             jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
 
             await expect(service.delete(id)).rejects.toThrow(HttpException);
-            expect(repository.findOne).toHaveBeenCalledWith({ where: { id } });
+            expect(repository.findOne).toHaveBeenCalledWith({ where: { id }, relations: ["requester", "job"] });
         });
     });
 
@@ -273,7 +277,7 @@ describe('BookingService', () => {
 
             expect(await service.findBookingsByUser(userId)).toEqual(bookings);
             expect(userService.findById).toHaveBeenCalledWith(userId);
-            expect(repository.find).toHaveBeenCalledWith({ where: { requester: user } });
+            expect(repository.find).toHaveBeenCalledWith({ where: { requester: user }, relations: ["requester", "job"] });
         });
 
         it('should throw an error if user does not exist', async () => {
@@ -295,7 +299,7 @@ describe('BookingService', () => {
 
             await expect(service.findBookingsByUser(userId)).rejects.toThrow(HttpException);
             expect(userService.findById).toHaveBeenCalledWith(userId);
-            expect(repository.find).toHaveBeenCalledWith({ where: { requester: user } });
+            expect(repository.find).toHaveBeenCalledWith({ where: { requester: user }, relations: ["requester", "job"] });
         });
     });
 
@@ -312,7 +316,7 @@ describe('BookingService', () => {
 
             expect(await service.findBookingsByJobs(jobId)).toEqual(bookings);
             expect(jobService.findById).toHaveBeenCalledWith(jobId);
-            expect(repository.find).toHaveBeenCalledWith({ where: { job } });
+            expect(repository.find).toHaveBeenCalledWith({ where: { job }, relations: ["requester", "job"] });
         });
 
         it('should throw an error if job does not exist', async () => {
@@ -334,7 +338,7 @@ describe('BookingService', () => {
 
             await expect(service.findBookingsByJobs(jobId)).rejects.toThrow(HttpException);
             expect(jobService.findById).toHaveBeenCalledWith(jobId);
-            expect(repository.find).toHaveBeenCalledWith({ where: { job } });
+            expect(repository.find).toHaveBeenCalledWith({ where: { job }, relations: ["requester", "job"] });
         });
     });
 
@@ -357,7 +361,7 @@ describe('BookingService', () => {
             expect(await service.findBookingsByUserAndJobs(userId, jobId)).toEqual(bookings);
             expect(userService.findById).toHaveBeenCalledWith(userId);
             expect(jobService.findById).toHaveBeenCalledWith(jobId);
-            expect(repository.find).toHaveBeenCalledWith({ where: { requester: user, job } });
+            expect(repository.find).toHaveBeenCalledWith({ where: { requester: user, job }, relations: ["requester", "job"]});
         });
 
         it('should throw an error if user does not exist', async () => {
