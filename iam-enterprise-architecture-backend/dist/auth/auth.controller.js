@@ -27,8 +27,22 @@ let AuthController = class AuthController {
     constructor(jwtService) {
         this.jwtService = jwtService;
     }
-    login(req, authDto) {
-        return req.user;
+    login(req, res, authDto) {
+        const refreshToken = req.user;
+        res.cookie('refreshToken', refreshToken, {
+            sameSite: 'strict',
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000,
+        });
+        return res.status(200).send({ message: 'Login successful' });
+    }
+    logout(req, res) {
+        res.cookie('refreshToken', '', {
+            sameSite: 'strict',
+            httpOnly: true,
+            maxAge: 0,
+        });
+        return res.status(200).send({ message: 'Logout successful' });
     }
     loginRefresh(req) {
         const refreshToken = req.cookies.refreshToken;
@@ -57,7 +71,6 @@ let AuthController = class AuthController {
     }
     async validateToken(req) {
         let role = 'customer';
-        console.log(req.user);
         if (req.user.iss ===
             `https://sts.windows.net/${process.env.MSAL_WEB_TENANT_ID}/`) {
             role = 'admin';
@@ -76,11 +89,21 @@ __decorate([
     (0, roles_decorator_1.Roles)('*'),
     (0, common_1.UseGuards)(local_guard_1.LocalGuard),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, auth_dto_1.AuthPayloadDto]),
+    __metadata("design:paramtypes", [Object, Object, auth_dto_1.AuthPayloadDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Get)('logout'),
+    (0, roles_decorator_1.Roles)("*"),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "logout", null);
 __decorate([
     (0, common_1.Get)('refresh'),
     (0, roles_decorator_1.Roles)('*'),

@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HealthController = void 0;
 const common_1 = require("@nestjs/common");
+const roles_decorator_1 = require("../auth/roles/roles.decorator");
 let HealthController = class HealthController {
     check(res) {
         res.status(200).send('OK');
@@ -22,6 +23,7 @@ let HealthController = class HealthController {
 exports.HealthController = HealthController;
 __decorate([
     (0, common_1.Get)(),
+    (0, roles_decorator_1.Roles)('*'),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

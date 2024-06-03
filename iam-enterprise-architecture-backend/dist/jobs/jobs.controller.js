@@ -26,9 +26,7 @@ let JobsController = class JobsController {
         this.jobsService = jobsService;
     }
     async create(req, jobDto) {
-        console.log(jobDto);
         const token = req.user;
-        console.log(token.unique_name);
         return await this.jobsService.create(jobDto, token.unique_name);
     }
     async findAll() {
