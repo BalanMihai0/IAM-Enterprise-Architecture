@@ -20,6 +20,7 @@ export default defineConfig({
       '/api': {
         target: 'https://localhost:3000',
         changeOrigin: true,
+        secure: false, //change this on deploy
       },
     },
   },
