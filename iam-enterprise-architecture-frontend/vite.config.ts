@@ -23,5 +23,6 @@ export default defineConfig({
         secure: false, //change this on deploy to true
       },
     },
+    port: 443,
   },
 });

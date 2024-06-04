@@ -1,17 +1,21 @@
-FROM node:alpine
+FROM nginx:alpine
 
-WORKDIR /app
+# Copy website files
+COPY build/ /etc/nginx/html
 
-COPY package.json package-lock.json ./
+# Copy Nginx config
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN npm install
+# Copy SSL certificate files
+COPY ./extra/fullchain.pem /etc/nginx/certs/fullchain.pem
+COPY ./extra/privkey.pem /etc/nginx/certs/privkey.pem
 
-COPY . .
+# Set file permissions  
+RUN chown nginx:nginx /etc/nginx/certs/fullchain.pem
+RUN chown nginx:nginx /etc/nginx/certs/privkey.pem
 
-RUN npm run build
+# Expose HTTP port 
+EXPOSE 443
 
-RUN npm install -g serve
-
-EXPOSE 5000
-
-CMD ["serve", "-s", "dist"]
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
