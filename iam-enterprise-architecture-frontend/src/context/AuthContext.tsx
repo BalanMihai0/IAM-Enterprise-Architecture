@@ -5,7 +5,6 @@ import {
   useContext,
   useEffect,
 } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   fetchAccessTokenLocal,
   fetchAccessTokenMSAL,
@@ -31,7 +30,6 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const { instance } = useMsal();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -43,6 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const authResponse = await fetchAccessTokenLocal();
           setAccessToken(authResponse?.data);
         }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         if (error.response.status !== 401) {
           console.error("Unexpected error in initializeAuth: ", error);
@@ -61,8 +60,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         return false;
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      if (error?.response?.status === 401) {
+      if (error.response.status === 401) {
         return false;
       } else {
         console.error("Unexpected error in isLoggedIn: ", error);
@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await logoutLocal();
     }
     setAccessToken(null);
-    navigate("/login");
+    window.location.href = "/login";
   };
 
   return (
@@ -117,6 +117,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

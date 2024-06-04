@@ -62,8 +62,8 @@ const LandingPage = () => {
       <section id="about" className="bg-black bg-opacity-70 py-12">
         <div className="container mx-auto text-center">
           <Typography variant="h2" className="text-3xl font-bold text-white">About BlackHawk Security</Typography>
-          <Typography className="mt-4 mx-52 text-white">We are a very diverse team of hardened security professionals. Look at how threatening we are. Not convinced? Well idk what to tell you.</Typography>
-          <div className='flex'>
+          <Typography className="mt-4 mx-auto text-white">We are a very diverse team of hardened security professionals. Look at how threatening we are. Not convinced? Well idk what to tell you.</Typography>
+          <div className='flex flex-wrap'>
             <img src={TeamMember1} alt="BlackHawk Security Team" className="mx-auto mt-8 rounded-lg w-[150px] h-[150px]" />
             <img src={TeamMember2} alt="BlackHawk Security Team" className="mx-auto mt-8 rounded-lg w-[150px] h-[150px]" />
             <img src={TeamMember3} alt="BlackHawk Security Team" className="mx-auto mt-8 rounded-lg w-[150px] h-[150px]" />
@@ -76,20 +76,20 @@ const LandingPage = () => {
       {/* Testimonials Section */}
       <section id="testimonials" className="container mx-auto py-12">
         <Typography variant="h2" className="text-3xl font-bold text-center">What Our Clients Say</Typography>
-        <div className="mt-8 flex gap-3">
-          <Card className="bg-polka border p-6 rounded-lg w-1/3">
+        <div className="mt-8 flex flex-col md:flex-row gap-3">
+          <Card className="bg-polka border p-6 rounded-lg lg:w-1/3">
             <CardBody className='flex flex-col h-full'>
               <Typography className='italic p-1 bg-white rounded-md'>"Excellent service! They protected my son against terrorists! Highly recommend."</Typography>
               <Typography variant='h5' className="mt-auto bg-white rounded-md">Totally legitimate client 1</Typography>
             </CardBody>
           </Card>
-          <Card className="bg-polka border p-6 rounded-lg w-1/3">
+          <Card className="bg-polka border p-6 rounded-lg lg:w-1/3">
             <CardBody className='flex flex-col h-full'>
               <Typography className='italic bg-white rounded-md'>"If you need someone to be your bodyguard, these are the guys. They're so macho and strong and their masculine aura intimidates everyone."</Typography>
               <Typography variant='h5' className="mt-auto bg-white rounded-md">Totally legitimate client 2</Typography>
             </CardBody>
           </Card>
-          <Card className="bg-polka border p-6 rounded-lg w-1/3">
+          <Card className="bg-polka border p-6 rounded-lg lg:w-1/3">
             <CardBody className='flex flex-col h-full'>
               <Typography className='italic bg-white rounded-md'>"I hired them to guard the moon base. They're so dedicated to the job, they still haven't returned, even though we stop supplying them oxygen! 10/10!"</Typography>
               <Typography variant='h5' className="mt-4 bg-white rounded-md">Totally legitimate client 3</Typography>
@@ -117,7 +117,7 @@ const LandingPage = () => {
             <Typography className='text-white'>Address: 123 Security Lane, Safe City, ST 12345</Typography>
           </div>
           <div className="mt-8 w-fit mx-auto">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2486.3819716222993!2d5.477202276416863!3d51.45114301481187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c6d9bbf31bd8fb%3A0xbb209e5872fefac8!2sFontys%20R10!5e0!3m2!1sen!2snl!4v1716475915302!5m2!1sen!2snl" className='w-[300px] md:w-[600px] h-[225px] md:h-[450px]' style={{ border: 0 }} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2486.3819716222993!2d5.477202276416863!3d51.45114301481187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c6d9bbf31bd8fb%3A0xbb209e5872fefac8!2sFontys%20R10!5e0!3m2!1sen!2snl!4v1716475915302!5m2!1sen!2snl" className='w-[300px] md:w-[600px] h-[225px] md:h-[450px]' style={{ border: 0 }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
           </div>
         </div>
       </section>

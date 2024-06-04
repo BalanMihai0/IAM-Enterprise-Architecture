@@ -5,12 +5,21 @@ import * as dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import simpleGit from 'simple-git';
+import { readFileSync } from 'fs';
+import * as https from 'https';
 
 async function bootstrap() {
 
+
+  const httpsOptions = {
+    key: readFileSync('./certs/private.key'),
+    cert: readFileSync('./certs/certificate.crt'),
+  };
+
+
   dotenv.config({ path: '.env' });
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { httpsOptions });
 
   app.setGlobalPrefix('api/v1');
 
@@ -31,6 +40,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
+
 
   await app.listen(3000);
 }

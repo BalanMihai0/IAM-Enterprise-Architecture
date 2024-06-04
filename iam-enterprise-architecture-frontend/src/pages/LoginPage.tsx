@@ -37,7 +37,11 @@ export default function LoginPage() {
 
   return (
     <div className="page-center-items flex-col">
-      <img onClick={() => navigate("/")} src="./black-logo-no-bg.png" className="pb-5 hover:cursor-pointer" />
+      <img
+        onClick={() => navigate("/")}
+        src="./black-logo-no-bg.png"
+        className="pb-5 hover:cursor-pointer"
+      />
       <LoginForm
         handleClick={handleSubmit(handleClick)}
         isLoading={isLoading}

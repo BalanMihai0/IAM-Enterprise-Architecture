@@ -4,7 +4,10 @@ import { DecodedToken } from "../types/DecodedToken";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { fetchAccessTokenLocal, fetchAccessTokenMSAL } from "../api/AxiosAuthentication"
+import {
+  fetchAccessTokenLocal,
+  fetchAccessTokenMSAL,
+} from "../api/AxiosAuthentication";
 import { isAuthenticated } from "../authService";
 
 type ProtectedRouteProps = {
@@ -21,20 +24,33 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
   const { accessToken, setAccessToken } = useAuth();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
+  const [isTokenValid, setIsTokenValid] = useState(false);
 
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        if (!accessToken && await !isAuthenticated()) {
+        let token = accessToken;
+        if (!token && !(await isAuthenticated())) {
           const authResponse = await fetchAccessTokenLocal();
-          setAccessToken(authResponse?.data);
-        } else if (!accessToken && await isAuthenticated()) {
+          token = authResponse?.data;
+        } else if (!token && (await isAuthenticated())) {
           const authResponse = await fetchAccessTokenMSAL();
-          setAccessToken(authResponse.data);
+          token = authResponse.data;
         }
+
+        if (token) {
+          setAccessToken(token);
+          if (!isTokenExpired(token)) {
+            const decodedToken = jwtDecode<DecodedToken>(token);
+            if (allowedRoles.includes(decodedToken.role)) {
+              setIsTokenValid(true);
+            }
+          }
+        }
+        //eslint-disable-next-line
       } catch (error: any) {
-        if (error.response.status === 401) {
-          setIsLoading(false);
+        if (error.response?.status === 401) {
+          setIsTokenValid(false);
         }
       } finally {
         setIsLoading(false);
@@ -42,7 +58,7 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     };
 
     fetchToken();
-  }, [accessToken, setAccessToken]);
+  }, [accessToken, setAccessToken, allowedRoles]);
 
   if (isLoading) {
     return (
@@ -52,13 +68,11 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     );
   }
 
-  return accessToken &&
-    !isTokenExpired(accessToken) &&
-    allowedRoles.includes(jwtDecode<DecodedToken>(accessToken).role) ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/not_found" state={{ from: location }} replace />
-  );
+  if (isTokenValid) {
+    return <Outlet />;
+  } else {
+    return <Navigate to="/not_found" state={{ from: location }} replace />;
+  }
 };
 
 export default ProtectedRoute;

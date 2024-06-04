@@ -1,9 +1,9 @@
-import { Controller, Body, Delete, Post, Get, Param, UseGuards, Req, UnauthorizedException, ForbiddenException, BadRequestException } from '@nestjs/common';
+import { Controller, Body, Delete, Post, Get, Param, UseGuards, Req, UnauthorizedException, ForbiddenException, BadRequestException, Query } from '@nestjs/common';
 import { BookingService } from './bookings.service';
 import { NewBookingDTO } from './dto/booking.dto';
 import { Roles } from '../auth/roles/roles.decorator';
 import { Request } from 'express';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { validate } from 'class-validator';
 import { Booking } from 'src/typeorm/entities/booking';
@@ -53,6 +53,8 @@ export class BookingsController{
     async findById(@Param('id') id: number, @Req() req: Request){
         const token : any = req.user;
 
+        console.log('here for some reason')
+
         const booking : Booking = await this.bookingService.findById(id);
         if (token.unique_name != booking.requester.id && token.role != "admin") {
             throw new ForbiddenException("You are not authorized to access this resource.");
@@ -61,27 +63,51 @@ export class BookingsController{
         return booking;
     }
 
-    @Get('/user:id')
-    @Roles()
+    @Get('/user/:id')
+    @Roles("admin", "customer")
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
     async findBookingsByUser(@Param('id') id: number, @Req() req: Request) {
         const token : any = req.user;
 
-        if (token.unique_name != id) {
+        if(token.unique_name != id && token.role != 'admin') {
+            throw new ForbiddenException("You are not authorized to access this resource.");
+        }
+ 
+        return await this.bookingService.findBookingsByUser(id);
+    }
+    
+    @Get('/job/:id')
+    @Roles("admin")
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    async findBookingsByJob(@Param('id') id: number, @Req() req: Request){
+        const token : any = req.user;
+
+        if (token.role != 'admin') {
             throw new ForbiddenException("You are not authorized to access this resource.");
         }
 
-        return await this.bookingService.findBookingsByUser(id);
+        return await this.bookingService.findBookingsByJobs(id);
     }
 
-    // @Get('/job/:id')
-    // @Roles()
-    // async findBookingsByJobs(@Param('id') id: number){
-    //     return await this.bookingService.findBookingsByJobs(id);
-    // }
 
-    // @Get('/user:userid/job:jobid')
-    // @Roles()
-    // async findBookingsByUserAndJobs()
-    
+    @Get('/userjob')
+    @Roles('admin', 'customer')
+    @ApiBearerAuth()
+    @ApiQuery({ name: 'userId', required: true, type: Number })
+    @ApiQuery({ name: 'jobId', required: true, type: Number })
+    @UseGuards(JwtAuthGuard)
+    async findBookingsByUserAndJobs(
+        @Query('userId') userId: number,
+        @Query('jobId') jobId: number,
+        @Req() req: Request) {
+        const token: any = req.user;
 
+        if (token.unique_name != userId && token.role != 'admin') {
+            throw new ForbiddenException('You are not authorized to access this resource.');
+        }
+
+        return await this.bookingService.findBookingsByUserAndJobs(userId, jobId);
+    }
 }
