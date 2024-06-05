@@ -1,7 +1,7 @@
 FROM nginx:alpine
 
 # Copy website files
-COPY ./build/* /etc/nginx/html
+COPY build/ /etc/nginx/html
 
 # Copy Nginx config
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
