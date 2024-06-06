@@ -107,7 +107,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await logoutLocal();
     }
     setAccessToken(null);
-    navigate("/login");
   };
 
   return (
