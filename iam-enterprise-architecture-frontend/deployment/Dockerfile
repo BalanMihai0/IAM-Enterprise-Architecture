@@ -3,8 +3,10 @@ FROM nginx:alpine
 # Copy website files
 COPY build/ /etc/nginx/html
 
-# Copy Nginx config
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+# Replace default Nginx config
+RUN rm /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./default.conf /etc/nginx/conf.d/default.conf
 
 # Copy SSL certificate files
 COPY ./extra/certificate.crt /etc/nginx/certs/certificate.crt

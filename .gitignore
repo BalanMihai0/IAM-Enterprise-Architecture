@@ -3,3 +3,7 @@
 
 # Ignore the artifacts directory
 /artifacts/
+
+# Ignore my "trashbin" - Mario
+/old/
+
