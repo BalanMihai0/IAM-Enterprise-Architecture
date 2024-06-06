@@ -13,6 +13,7 @@ import {
 } from "../api/AxiosAuthentication";
 import { isAuthenticated, logout as logoutMSAL } from "../authService";
 import { useMsal } from "@azure/msal-react";
+import { useNavigate } from "react-router";
 
 interface AuthContextProps {
   accessToken: string | null;
@@ -30,6 +31,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const { instance } = useMsal();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -105,7 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await logoutLocal();
     }
     setAccessToken(null);
-    window.location.href = "/login";
+    navigate("/login");
   };
 
   return (
