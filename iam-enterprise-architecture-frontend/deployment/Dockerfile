@@ -9,12 +9,12 @@ COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 
 # Copy SSL certificate files
-COPY ./extra/certificate.crt /etc/nginx/certs/certificate.crt
-COPY ./extra/private.key /etc/nginx/certs/private.key
+COPY ./extra/fullchain.pem /etc/nginx/certs/fullchain.pem
+COPY ./extra/privkey.pem /etc/nginx/certs/privkey.pem
 
 # Set file permissions  
-RUN chown nginx:nginx /etc/nginx/certs/certificate.crt
-RUN chown nginx:nginx /etc/nginx/certs/private.key
+RUN chown nginx:nginx /etc/nginx/certs/fullchain.pem
+RUN chown nginx:nginx /etc/nginx/certs/privkey.pem
 
 # Expose HTTP port 
 EXPOSE 443
