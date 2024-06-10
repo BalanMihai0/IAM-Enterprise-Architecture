@@ -27,9 +27,9 @@ export class NewUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(8)
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])/, {
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/, {
     message:
-      'Password too weak. It must contain at least 8 characters including a lowercase and uppercase letter, a digit and a special character.',
+      'Password too weak. It must be at least 8 characters long and include a lowercase and uppercase letter, a digit, and a special character.',
   })
   password: string;
 
@@ -37,9 +37,9 @@ export class NewUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(8)
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])/, {
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/, {
     message:
-      'Password too weak. It must contain at least 8 characters including a lowercase and uppercase letter, a digit and a special character.',
+      'Password too weak. It must be at least 8 characters long and include a lowercase and uppercase letter, a digit, and a special character.',
   })
   confirmPassword: string;
 }

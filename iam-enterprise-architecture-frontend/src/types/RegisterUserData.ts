@@ -19,7 +19,9 @@ export const RegisterUserData = z
   })
   .refine(
     (data) =>
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])/.test(data.password),
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s]).{8,}$/.test(
+        data.password
+      ),
     {
       message:
         "Password must contain at least one lowercase character, one uppercase character, one number, and one special character",

@@ -8,6 +8,7 @@ import UsersAdminPage from "./pages/UsersAdminPage.tsx";
 import JobsAdminPage from "./pages/JobsAdminPage.tsx";
 import OffersPage from "./pages/OffersPage.tsx";
 import BookingsPage from "./pages/BookingsPage.tsx";
+import TrollPage from "./pages/TrollPage.tsx";
 
 import AuthTestPage from "./pages/AuthTestPage.tsx";
 import NotAuthenticatedRoute from "./components/NotAuthenticatedRoute.tsx";
@@ -42,6 +43,7 @@ function App() {
         {/* Customer routes */}
         <Route element={<ProtectedRoute allowedRoles={["customer"]} />}>
           <Route path="/bookings" element={<BookingsPage />} />
+          <Route path="/admins" element={<TrollPage />} />
         </Route>
 
         {/* Admin & Customer routes */}
