@@ -8,7 +8,6 @@ import UsersAdminPage from "./pages/UsersAdminPage.tsx";
 import JobsAdminPage from "./pages/JobsAdminPage.tsx";
 import OffersPage from "./pages/OffersPage.tsx";
 import BookingsPage from "./pages/BookingsPage.tsx";
-import AccountPage from "./pages/AccountPage.tsx";
 
 import AuthTestPage from "./pages/AuthTestPage.tsx";
 import NotAuthenticatedRoute from "./components/NotAuthenticatedRoute.tsx";
@@ -50,7 +49,6 @@ function App() {
           element={<ProtectedRoute allowedRoles={["admin", "customer"]} />}
         >
           {/* Place admin & customer shared routes here */}
-          <Route path="/account" element={<AccountPage />} />
         </Route>
       </Route>
 
