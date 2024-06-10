@@ -75,24 +75,15 @@ export function Nav() {
           Bookings
         </Button>
       )}
-      {signedIn && (
-        <Button
-          variant="text"
-          color="black"
-          size="sm"
-          className="items-center"
-          onClick={() => navigate("/account")}
-          placeholder={undefined}
-        >
-          Account
-        </Button>
-      )}
     </ul>
   );
 
   return (
     <div className="sticky top-0 z-30 h-max rounded-none w-full">
-      <Navbar className="max-w-full z-20 w-full rounded-none" placeholder={"nav"}>
+      <Navbar
+        className="max-w-full z-20 w-full rounded-none"
+        placeholder={"nav"}
+      >
         <div className="flex items-center justify-between text-blue-gray-900">
           <div
             className="ml-3 cursor-pointer flex items-center"
