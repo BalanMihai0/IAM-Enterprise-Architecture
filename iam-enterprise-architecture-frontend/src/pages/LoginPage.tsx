@@ -22,19 +22,11 @@ export default function LoginPage() {
     try {
       LoginUserData.parse(d);
       setIsLoading(!isLoading);
-      const response = await login("local", {
+      await login("local", {
         email: d.email,
         password: d.password,
       });
-      if (response.status === 404) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "You have entered wrong credentials.",
-        });
-      } else {
-        navigate("/");
-      }
+      navigate("/");
     } catch (error) {
       if (error instanceof z.ZodError) {
         setErrors(
