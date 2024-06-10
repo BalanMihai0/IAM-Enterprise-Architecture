@@ -26,7 +26,6 @@ export default function RegisterPage() {
       try {
         RegisterUserData.parse(d);
         setIsLoading(!isLoading);
-        console.log(d);
         await registerUser(d);
         navigate("/login");
       } catch (error) {

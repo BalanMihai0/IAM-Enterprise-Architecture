@@ -95,6 +95,10 @@ const BookingsPage = () => {
           Your Bookings
         </Typography>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+          {bookings.length === 0 && (
+            <>
+              You haven't made any bookings yet!
+            </>)}
           {bookings.map((booking: { id: string }) => (
             <BookingCard key={booking.id} booking={booking} />
           ))}

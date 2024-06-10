@@ -9,6 +9,7 @@ import { z } from "zod";
 import MicrosoftLoginButton from "../components/login/MicrosoftLoginButton";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -21,7 +22,10 @@ export default function LoginPage() {
     try {
       LoginUserData.parse(d);
       setIsLoading(!isLoading);
-      await login("local", { email: d.email, password: d.password });
+      await login("local", {
+        email: d.email,
+        password: d.password,
+      });
       navigate("/");
     } catch (error) {
       if (error instanceof z.ZodError) {
