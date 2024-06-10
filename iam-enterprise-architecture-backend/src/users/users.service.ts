@@ -29,7 +29,11 @@ export class UsersService {
             role: 'customer'
         });
 
-        return this.userRepository.save(newUser);
+        const response = this.userRepository.save(newUser);
+
+        
+
+        return response;
     }
 
     async findAll(): Promise<User[]> {
