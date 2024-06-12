@@ -28,7 +28,8 @@ export default function RegisterPage() {
         setIsLoading(!isLoading);
         await registerUser(d);
         navigate("/login");
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         if (error instanceof z.ZodError) {
           setErrors(
             error.errors.map((e) => ({
@@ -36,6 +37,15 @@ export default function RegisterPage() {
               message: e.message,
             }))
           );
+        } else if (
+          error.response.data.message === "User with this email already exists"
+        ) {
+          Swal.fire({
+            icon: "error",
+            title: "Whoops...",
+            text: error.response.data.message + "!",
+          });
+          setIsLoading(false);
         }
       }
     }
