@@ -13,7 +13,6 @@ import {
 } from "../api/AxiosAuthentication";
 import { isAuthenticated, logout as logoutMSAL } from "../authService";
 import { useMsal } from "@azure/msal-react";
-// import { useNavigate } from "react-router";
 
 interface AuthContextProps {
   accessToken: string | null;
@@ -31,7 +30,6 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const { instance } = useMsal();
-  // const navigate = useNavigate()
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -80,7 +78,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       if (method === "local") {
         const refreshResponse = await fetchRefreshTokenLocal(credentials);
-        if (refreshResponse.data.message === "Login successful") {
+        if (
+          refreshResponse &&
+          refreshResponse.data.message === "Login successful"
+        ) {
           const authResponse = await fetchAccessTokenLocal();
           setAccessToken(authResponse?.data);
         }
@@ -95,8 +96,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setAccessToken(authResponse.data);
         }
       }
-    } catch (error) {
-      console.error("Login error: ", error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.response) {
+        throw error as Error;
+      }
     }
   };
 

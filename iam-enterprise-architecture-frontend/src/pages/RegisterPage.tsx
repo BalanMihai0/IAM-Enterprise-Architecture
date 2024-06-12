@@ -19,8 +19,8 @@ export default function RegisterPage() {
     if (!termsAgreed) {
       Swal.fire({
         icon: "error",
-        title: "Oops...",
-        text: "You must agree to the terms and conditions.",
+        title: "Whoops...",
+        text: "You must agree to the terms and conditions first!",
       });
     } else {
       try {

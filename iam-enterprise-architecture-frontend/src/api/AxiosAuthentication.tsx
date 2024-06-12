@@ -6,11 +6,18 @@ const axiosInstance = axios.create({
 });
 
 export async function fetchRefreshTokenLocal(requestBody: unknown) {
-  return await axiosInstance
-    .post("/api/v1/auth/login", requestBody)
-    .then((response) => {
-      return response;
-    });
+  try {
+    return await axiosInstance
+      .post("/api/v1/auth/login", requestBody)
+      .then((response) => {
+        return response;
+      });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response) {
+      throw error as Error;
+    }
+  }
 }
 
 export async function registerUser(requestBody: unknown) {
