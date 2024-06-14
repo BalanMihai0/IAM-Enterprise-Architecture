@@ -12,14 +12,14 @@ async function bootstrap() {
 
 
   const httpsOptions = {
-    // key: readFileSync('./certs/private.key'),
-    // cert: readFileSync('./certs/certificate.crt'),
+    key: readFileSync('./certs/privkey.pem'),
+    cert: readFileSync('./certs/fullchain.pem'),
   };  
   
 
   dotenv.config({ path: '.env' });
 
-  const app = await NestFactory.create(AppModule,); { httpsOptions }
+  const app = await NestFactory.create(AppModule, { httpsOptions }); 
 
   app.setGlobalPrefix('api/v1');
 
@@ -42,6 +42,6 @@ async function bootstrap() {
   app.use(cookieParser());
 
 
-  await app.listen(80);
+  await app.listen(3000);
 }
 bootstrap();
