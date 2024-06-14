@@ -35,6 +35,16 @@ export default function LoginPage() {
             message: e.message,
           }))
         );
+      } else if (
+        error.response.data.message ===
+        "Login was not successful! Please check credentials and try again..."
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Whoops...",
+          text: error.response.data.message,
+        });
+        setIsLoading(false);
       }
     }
   }
