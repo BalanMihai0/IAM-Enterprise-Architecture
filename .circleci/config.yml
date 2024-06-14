@@ -105,16 +105,36 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build-frontend
-      - build-backend
+      - build-frontend:
+          filters:
+            branches:
+              ignore: "!^dev$|^main$"
+            tags:
+              ignore: ["*"]
+      - build-backend:
+          filters:
+            branches:
+              ignore: "!^dev$|^main$"
+            tags:
+              ignore: ["*"]
       - test-backend:
           requires:
             - build-backend
+          filters:
+            branches:
+              ignore: "!^dev$|^main$"
+            tags:
+              ignore: ["*"]
       - sonarqube-analysis:
           requires:
             - build-backend
             - test-backend
             - build-frontend
+          filters:
+            branches:
+              ignore: "!^dev$|^main$"
+            tags:
+              ignore: ["*"]
       - deploy:
           requires:
             - sonarqube-analysis
