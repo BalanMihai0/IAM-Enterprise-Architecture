@@ -18,11 +18,11 @@ export default defineConfig({
     },
     proxy: {
       "/api": {
-        target: "https://10.2.1.5:3000",
+        target: "https://localhost:3000",
         changeOrigin: true,
-        secure: true, //change this on deploy to true
+        secure: false, //change this on deploy to true
       },
     },
-    port: 443,
+    port: 5173,
   },
 });
