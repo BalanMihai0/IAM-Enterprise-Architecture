@@ -1,8 +1,34 @@
-# Enterprise IAM solutions - Group EHV01-e
+## Project Overview
 
-### Information on the repository
+This is the GitHub repository for the "Enterprise IAM solutions" software project. The project is a secure web application built in TypeScript, with React and Nest. The application features integration with the on-premise network setup, constructed in a vSphere NetLab environment.
 
-This is the GitHub repository for the "Enterprise IAM solutions" software project.
+## Application Details
+
+- **Deployment Environment**: Microsoft Azure
+- **Key Features**:
+  - Secure web application
+  - Integration with on-premise network
+  - Built in TypeScript, React, and Nest
+  - Constructed in vSphere NetLab environment
+  - Certificate management and validation handled by cloud environment
+
+## Security Considerations
+
+- The application is deployed on Microsoft Azure, designed with security, performance, and cost optimization in mind.
+- The cloud environment utilizes an optimal combination of resources to achieve desired functionality.
+- The on-premise network features live threat monitoring, advanced ELK, Kibana, and Logstash monitoring dashboard that securely integrates with the cloud environment.
+
+## Assessment Results
+
+Penetration testing of the previously hosted application at https://blackhawksec.nl/ concluded with:
+
+- No vulnerabilities found
+- Overall assessment meets industry standards
+
+## Additional Information
+
+- Diagrams related to the cloud deployment can be found in the <b>Diagrams</b> folder.
+- The repository contains information about the cloud environment setup, including security measures and resource allocation.
 ___
 
 ### Student credentials
@@ -34,3 +60,5 @@ Client: http://localhost:{fe-port}/login
   npm install
   npm run dev
 ```
+
+To run a development build, please contact a repository member regarding environment variables.
