@@ -27,7 +27,8 @@ Penetration testing of the previously hosted application at https://blackhawksec
 
 ## Additional Information
 
-- Diagrams related to the cloud deployment can be found in the <b>Diagrams</b> folder.
+- Diagram related to the cloud deployment:
+![Image Description](./Diagrams/DIAGRAM.png)
 - The repository contains information about the cloud environment setup, including security measures and resource allocation.
 ___
 
