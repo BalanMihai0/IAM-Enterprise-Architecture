@@ -32,18 +32,6 @@ Penetration testing of the previously hosted application at https://blackhawksec
 - The repository contains information about the cloud environment setup, including security measures and resource allocation.
 ___
 
-### Student credentials
-
-| Student name       | Student number     |
-|--------------------|--------------------|
-| Atanasov Dimitar   | **4740335**        | 
-| Balan Mihai        | **4748425**        |
-| Constantin Mario   | **4721063**        |   
-| Digrys Augustinas  | **4852311**        | 
-| Dragomir Ionut     | **4877675**        | 
-| Ivan Alexandru     | **4804813**        | 
-___
-
 
 ### Run backend on localhost (dev):
   API endpoints: http://localhost:{be-port}/api/v1  
